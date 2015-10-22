@@ -1,0 +1,92 @@
+sc_primary
+	inspection_number
+	
+	inspection_title
+	lead_inspector
+	team_members
+	type_of_inspection
+	against_organization
+	
+	
+sc_primary_safety_issue
+	inspection_number
+    safety_issue_number
+	
+	
+	
+	
+sc_safety_issue
+	inspection_number
+	safety_issue_number
+
+	
+	safety_issue_title
+	type_of_issue
+	poi_or_responsible 
+	issue_finding_status
+	assigned_inspector
+	issue_finding_date
+	issue_finding_local_time
+	place_or_airport
+	cvr_statement 
+	initial_risk_analysis
+	corrective_status
+	corrective_priority
+	resived_time_and_date
+	provided_to
+	target_date
+		*eir_file
+	regulation_issue
+	public_practise
+	regulation
+	job_adi_file
+	question
+    answer
+	responsible_pels
+	
+	aircraft_msn
+	aircraft_rgistration_number
+	final_regulation_date
+	final_regulation_inspector
+	final_regulation_metnod
+	
+	residual_risk
+	actual_finding
+	safety_concern
+	risk_statement
+	
+	forworded_for_currective_action
+	
+sc_currective
+	inspection_number
+    safety_issue_number 
+	
+	currective_action
+	revived_date
+	corrective_action_file
+	concern_authority_officer
+	regulation_metigation
+	regulation_metigation_date
+	
+	forwording_note
+	forworded_for_currective_action_or_approval
+	
+sc_approval 
+	inspection_number
+    safety_issue_number
+	
+	approve_status
+	approved_by
+	date_of_approval
+	
+sc_safety_issue_follwup
+	inspection_number
+    safety_issue_number
+	
+	
+	
+	
+sc_follwup
+	inspection_number
+	safety_issue_number
+

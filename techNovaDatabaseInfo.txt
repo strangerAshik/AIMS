@@ -1,0 +1,11 @@
+
+		'mysql' => array(
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'tecnolog_caab',
+			'username'  => 'tecnolog_caab',
+			'password'  => '_&RczO4;_D;0',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),

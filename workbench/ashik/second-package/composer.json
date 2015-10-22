@@ -1,0 +1,20 @@
+{
+    "name": "ashik/second-package",
+    "description": "",
+    "authors": [
+        {
+            "name": "Md.Ashikuzzaman",
+            "email": "ashik@binaryfall.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Ashik\\SecondPackage": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

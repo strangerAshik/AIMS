@@ -1,0 +1,23 @@
+{
+    "name": "ashik/first-package",
+    "description": "",
+    "authors": [
+        {
+            "name": "Md.Ashikuzzaman",
+            "email": "ashik@binaryfall.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Ashik\\FirstPackage\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

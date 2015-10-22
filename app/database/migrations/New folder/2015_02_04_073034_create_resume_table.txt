@@ -1,0 +1,134 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateResumeTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('resumes',function($table){
+			//personal info
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('title');
+			$table->string('first_name');
+			$table->string('middle_name');
+			$table->string('last_name');
+			$table->string('mother_name');
+			$table->string('father_name');
+			$table->string('mailing_address');
+			$table->string('parmanent_address');
+			$table->string('telephone_work');
+			$table->string('telephone_residence');
+			$table->string('mobile_no');
+			$table->string('nationality');
+			$table->string('national_id');
+			$table->string('sex');
+			$table->string('blood_group');
+			$table->string('date_of_birth');
+			$table->string('photo');
+			//education
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('level');
+			$table->string('discipline');
+			$table->string('specialization');
+			$table->string('name_of_degree');
+			$table->string('institute');
+			$table->string('pussing_year');
+			$table->string('grade');
+			$table->string('out_of');
+			$table->string('division');
+		//Thesis/Project/Internship/Dissertation 
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('dgree_level');
+			$table->string('dgree_type');
+			$table->string('dgree_title');
+			$table->string('dgree_institute');
+			$table->string('dgree_duration');
+		//Employment Details / job history 
+			//$table->string('job_status');
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('org_name');
+			$table->string('org_type');
+			$table->string('org_address');
+			$table->string('major_responsibilities');
+			$table->string('start_day');
+			$table->string('start_month');
+			$table->string('start_year');
+			$table->string('end_day');
+			$table->string('end_month');
+			$table->string('end_year');
+			$table->string('supervisor_name');
+			$table->string('supervisor_phone');
+			//$table->string('salary');
+		//Professional Degree 
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('pro_degree');
+			$table->string('pro_degree_institute');
+			$table->string('pro_degree_duration');
+			$table->string('pro_degree_grade');
+			$table->string('pro_degree_major_area');
+			$table->string('pro_degree_year');
+		//Training/Workshop 
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('tw_title');
+			$table->string('tw_institute_name');
+			$table->string('tw_major_topic');
+			$table->string('tw_duration');
+			$table->string('tw_year');
+		//language
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('mother_tounge');
+			$table->string('lang');
+			$table->string('lang_speak');
+			$table->string('lang_understanding');
+			$table->string('lang_reading');
+			$table->string('lang_writing');
+		//Professional References 
+		
+		//others
+			//(parent, spouse, child, sibling, uncle/aunt, nephew/niece, cousin, in-laws, etc.)
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('name');
+			$table->string('designation');
+			$table->string('unit');
+			//Publication(s) 
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('publication_details');
+			//Professional membership
+			$table->increments('id');
+			$table->integer('emp_id');
+			$table->string('mem_organigation');
+			$table->string('mem_degignation');
+			$table->string('mem_no');
+			$table->string('mem_start_year');
+			$table->string('mem_status');
+			
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('resumes');
+	}
+
+}
