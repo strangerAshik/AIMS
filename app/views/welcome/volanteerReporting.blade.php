@@ -3,7 +3,7 @@
 
     <div class="container ">
         <div class="page-header">
-  <h1 class="text-center">Volanteer Reporting</h1>
+  <h1 class="text-center">Volantary Reporting</h1>
 </div>
         <div class="row">
 

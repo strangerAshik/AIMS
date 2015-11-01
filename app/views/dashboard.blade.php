@@ -15,7 +15,7 @@
 						@if('true'==CommonFunction::hasPermission('surveillance_inspection_audit',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
-						<div class="small-box bg-aqua  height" >
+						<div class="small-box bg-blue  height" >
 							<div class="inner">
 								<h4 style='font-weight:bold;'>Surveillance,Inspection & Audit (SIA)</h4>
 							</div>
@@ -31,7 +31,7 @@
 						@if('true'==CommonFunction::hasPermission('safety_concern',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
-                            <div class="small-box bg-aqua  height" >
+                            <div class="small-box bg-blue  height" >
                                 <div class="inner">
                                     <h4 style='font-weight:bold;'> Safety Concern</h4>
                                     
@@ -48,7 +48,7 @@
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
-                            <div class="small-box bg-aqua  height" >
+                            <div class="small-box bg-blue  height" >
                                 <div class="inner">
                                    <h4 style='font-weight:bold;'>Aircraft</h4>
                                    
@@ -63,9 +63,9 @@
                         </div><!-- ./col -->
 						@endif
 						@if('true'==CommonFunction::hasPermission('organization',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-red height">
+                            <div class="small-box bg-blue height">
                                 <div class="inner">
                                    <h4 style='font-weight:bold;'>Organization</h4>
                                  
@@ -81,7 +81,7 @@
 						@endif
                     
 					@if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-blue height">
                                 <div class="inner">
@@ -99,39 +99,20 @@
                             </div>
                         </div><!-- ./col -->
 						@endif
-						@if('true'==CommonFunction::hasPermission('admin_tracking',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+						@if('true'==CommonFunction::hasPermission('service_provider',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-purple height">
-                                <div class="inner">
-                                    <h4 class="title">
-                                         Admin Tracking
-                                    </h4>
-                                  
-                                </div>
-                                <div class="icon">
-                                    <i class="icon ion-eye"></i>
-                                </div>
-                                <a class="small-box-footer" href="{{'admin/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
-						@endif
-						@if('true'==CommonFunction::hasPermission('document_control ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
-                            <!-- small box -->
-                            <div class="small-box bg-teal height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
-                                         Document Control 
+                                         Service Provider Certification
                                     </h4>
                                     
                                 </div>
                                 <div class="icon">
                                     <i class="icon ion-pricetags"></i>
                                 </div>
-                                <a class="small-box-footer" href="{{'doc/main'}}">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -140,7 +121,7 @@
 						@if('true'==CommonFunction::hasPermission('employee ',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-aqua  height">
+                            <div class="small-box bg-blue  height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Employee
@@ -158,7 +139,7 @@
 						@endif
                     
 					@if('true'==CommonFunction::hasPermission('ans_aga_aerodrome_inspection ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-aqua height">
                                 <div class="inner">
@@ -172,16 +153,16 @@
                                 <div class="icon">
                                     <i class="ion ion-bag"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
 						@endif
                     @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-green height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Environment 
@@ -190,16 +171,16 @@
                                 <div class="icon">
                                    <span class="glyphicons glyphicons-snowflake">❄</span>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
                     @endif
 						@if('true'==CommonFunction::hasPermission('wild_life_strike ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-yellow height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Wild Life Strike
@@ -209,16 +190,16 @@
                                 <div class="icon">
                                     <i class="icon ion-alert"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
 						@endif
 						@if('true'==CommonFunction::hasPermission('accident_&_incident_investigation',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-red height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'> 
 											Accident & Incident Investigation 
@@ -228,7 +209,7 @@
                                 <div class="icon">
                                     <i class="icon ion-ios7-compose"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -239,7 +220,7 @@
 					@if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-aqua  height">
+                            <div class="small-box bg-blue  height">
                                 <div class="inner">
                                     <h4 class='title'>
                                          E-Library
@@ -256,9 +237,9 @@
                         </div><!-- ./col -->
 					@endif
 					@if('true'==CommonFunction::hasPermission('volunteer_reporting',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-purple height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Volunteer Reporting 
@@ -270,7 +251,7 @@
                                 <div class="icon">
                                     <i class="icon ion-flag"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -279,9 +260,9 @@
                         
                     
                     @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-blue height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         SMS & SSP
@@ -290,14 +271,14 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
                     @endif
                     @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-aqua height">
                                 <div class="inner">
@@ -308,25 +289,25 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a class="small-box-footer" href="{{'usoap/main'}}">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
                     @endif
                     @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-yellow height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Aviation Security
                                     </h4>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-pie-graph"></i>
+                                    <i class="ion ion-eye"></i>
                                 </div>
-                                <a class="small-box-footer" href="#">
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -335,7 +316,7 @@
                      @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
                             <div class="col-lg-3 col-xs-6 col-md-3 ">
                                 <!-- small box -->
-                                <div class="small-box bg-aqua  height">
+                                <div class="small-box bg-blue  height">
                                     <div class="inner">
                                         <h4 class='title'>
                                             Report
@@ -350,10 +331,64 @@
                                 </div>
                             </div><!-- ./col -->
                         @endif
-                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                    @if('true'==CommonFunction::hasPermission('notifications',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua  height">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                        Notifications
+                                    </h4>                                    
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-ios7-alarm-outline"></i>
+                                </div>
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                        @endif
+                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-blue  height">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                        Help & FAQ
+                                    </h4>                                    
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-question-circle"></i>
+                                </div>
+                                <a class="small-box-footer" href="{{'settings'}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                    @endif
+                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-blue  height">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                        Voluntary  Reporting
+                                    </h4>                                    
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <a class="small-box-footer" href="{{'settings'}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                    @endif
+                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-blue  height">
                                 <div class="inner">
                                     <h4 class='title'>
                                         Settings
@@ -367,30 +402,7 @@
                                 </a>
                             </div>
                         </div><!-- ./col -->
-                        @endif
-                       
-						@if('true'==CommonFunction::hasPermission('notifications',Auth::user()->emp_id(),'access'))
-                            <div class="col-lg-3 col-xs-6 col-md-3 disNon">
-                        <div class="col-lg-3 col-xs-6 col-md-3 ">
-                            <!-- small box -->
-                            <div class="small-box bg-teal height">
-                                <div class="inner">
-                                    <h4 class='title'>
-                                        Notifications
-                                    </h4>
-                                    <p>
-                                        
-                                    </p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-ios7-alarm-outline"></i>
-                                </div>
-                                <a class="small-box-footer" href="#">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
-						@endif
+                    @endif
 
 						
                     </div>
@@ -398,7 +410,7 @@
 	
  
 
-{{--Password Change Check --}}
+<!--Password Change Check -->
 @if(Auth::User()->PassChange()!='1')
 
 	<style>
@@ -445,9 +457,9 @@
       keyboard: true
    })});
 </script>
-<!------End ON TEST MODAL--------->
+<!--End ON TEST MODAL-->
 
-	{{--End Password Change--}}
+	
 @endif
 </section>
 @stop

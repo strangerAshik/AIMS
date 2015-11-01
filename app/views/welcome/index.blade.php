@@ -5,23 +5,24 @@
 </style>
 <div class='row'>
 <!--News-->
-<div class='col-md-4'>
+<div class='col-md-3'>
 
 <a href="#" class="list-group-item active widget">
    Publicly Accessible Area 
 </a>
+<a href="http://arcg.is/1ORgGoB" target="_blink" class="list-group-item ">Automated Height Certification</a>
 <a href="{{URL::to('libraryPublicView')}}" class="list-group-item" target='_blink'>E-library</a>
-<a href="{{URL::to('volanteerReporting')}}" class="list-group-item disNon">Volunteer Reporting</a>
+<a href="{{URL::to('volanteerReporting')}}" class="list-group-item ">Voluntary Reporting</a>
 <a href="#" class="list-group-item disNon">Wild Life Strike Reporting</a>
 <a href="#" class="list-group-item disNon">Incident Reporting</a>
-<a href="#" class="list-group-item disNon">Automated Height Certification</a>
+<a href="#" class="list-group-item ">PEL Exam Management</a>
 
 <a href="#" class="list-group-item active widget" >
 Notice Board
 </a>
 <!-- <marquee style="border:1px dotted #DDD"  scrollamount='2' behavior=ALTERNATE height='300' direction=up> -->
-<a href="#" class="list-group-item">ASRTM Partially Released</a>
-<a href="#" class="list-group-item">Update Your Employee Information</a>
+
+<a href="#" class="list-group-item">Update Surveillance Program</a>
 <a href="#" class="list-group-item">Update Aircraft Information</a>
 <a href="#" class="list-group-item">Safety Concern Module Released</a>
 <a href="#" class="list-group-item">Supporting Document Now Publicly Accessable</a>
@@ -29,7 +30,7 @@ Notice Board
 
 </div>
 <!--Carasol -->
-<div class='col-md-8'>
+<div class='col-md-6'>
 <div id="myCarousel" class="carousel slide">
    <!-- Carousel indicators -->
    <ol class="carousel-indicators">
@@ -55,6 +56,23 @@ Notice Board
    <a class="carousel-control right" href="#myCarousel" 
       data-slide="next">&rsaquo;</a>
 </div> 
+</div>
+<div class="col-md-3">
+  <a href="#" class="list-group-item active widget">
+   Sponsored Area 
+</a>
+<a href="#">
+<iframe width="263" height="134" frameborder="0" allowfullscreen="" src="https://www.youtube.com/embed/aA7yagaYmdk">
+</iframe>
+</a>
+<a href="#">
+<iframe width="263" height="134" frameborder="0" allowfullscreen="" src="https://www.youtube.com/embed/s63WTfyPUWw">
+</iframe>
+</a>
+<a href="#">
+<iframe width="263" height="134" frameborder="0" allowfullscreen="" src="https://www.youtube.com/embed/X1M0pbxNUF8">
+</iframe>
+</a>
 </div>
 
 </div>

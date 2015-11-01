@@ -1,30 +1,77 @@
 @include('welcome/header')
 @yield('header')
 <div class="panel-group" id="accordion" style="min-hight:700px;">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-I have a question or need help to perform an anlaysis. Can I contact you to get any help?        </a>
-      </h4>
-    </div>
-    <div id="collapseFour" class="panel-collapse collapse ">
-      <div class="panel-body">
-Yes, we are reachable by email. For general questions about OMA, our preferred way of answering questions is through BioStar. Please consider asking your question there, including the tag OMA. We monitor BioStar for such questions and will answer them directly on that platform.       </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
-Why is my favorite genome not present in OMA?        </a>
-      </h4>
-    </div>
-    <div id="collapseFive" class="panel-collapse collapse">
-      <div class="panel-body">
-        We strive to include as many complete genomes as possible, provided they are released publicly and meet reasonable quality standards. We are open for suggestions and are willing to adapt our priority queue based on user requests. If you want to analyze your "own" genomes, you can use the <a href="/standalone">OMA standalone pipeline</a> to do so and even make use of already analyzed genomes using the export function. OMA standalone is licenced under the Mozilla Public License Version 2.0. In a nutshell, OMA standalone is open source and free for commercial and non-commercial use.       </div>
-    </div>
-  </div>
+<button class="btn btn-primary ">Ask a Question</button><span>Before Asking Qustion Please Search The Solution</span></br></br>
+
+<table class="search-faq">
+      <thead>
+        <tr>
+          <th>Name</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Allen</td>
+          
+        </tr>
+        <tr>
+          <td>James Mark</td>
+          
+        </tr>
+        <tr>
+          <td>Christine Augilera</td>
+          
+        </tr>
+      </tbody>
+</table>
+
+ <table  class="table table-bordered table-striped search-faq">
+                    <thead>
+                      <tr>
+                        <th>FAQ</th>
+                      </tr>
+                    </thead>
+                        <tr>
+                          <td>
+                            
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                            I have a question or need help to perform an anlaysis. Can I contact you to get any help?        </a>
+                                  </h4>
+                                </div>
+                                <div id="collapseFour" class="panel-collapse collapse ">
+                                  <div class="panel-body">
+                            Yes, we are reachable by email. For general questions about OMA, our preferred way of answering questions is through BioStar. Please consider asking your question there, including the tag OMA. We monitor BioStar for such questions and will answer them directly on that platform.       </div>
+                                </div>
+                              </div>
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                                <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                            Why is my favorite genome not present in OMA?        </a>
+                                  </h4>
+                                </div>
+                                <div id="collapseFive" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                    We strive to include as many complete genomes as possible, provided they are released publicly and meet reasonable quality standards. We are open for suggestions and are willing to adapt our priority queue based on user requests. If you want to analyze your "own" genomes, you can use the <a href="/standalone">OMA standalone pipeline</a> to do so and even make use of already analyzed genomes using the export function. OMA standalone is licenced under the Mozilla Public License Version 2.0. In a nutshell, OMA standalone is open source and free for commercial and non-commercial use.       </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+                    <tbody>
+                    </tbody>
+</table>
+
+
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">

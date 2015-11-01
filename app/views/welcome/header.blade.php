@@ -58,8 +58,21 @@
 </style>
 <!----Menu End------>
 <!--Bootstrap start -->
- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<!--
+ <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
+ <link href={{"css/bootstrap.css"}} rel="stylesheet" type="text/css" />
 <!--End Bootstrap -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src={{"js/html-table-search.js"}}></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('table.search-table').tableSearch({
+					searchText:'Search Table',
+					searchPlaceHolder:'Input Value'
+				});
+			});
+		</script>
+
 <style type="text/css">
 	
 	.title {
@@ -86,13 +99,13 @@
   </div>
 </div>
   
-<div class='container' style="background:#fff!important;min-height: 700px;">
+<div class='container' style="background:#fff!important;min-height: 500px;">
 <!-- Sample menu definition -->
 <nav  class="navbar navbar-default">
 <ul id="main-menu" class="sm sm-blue">
   <li><a href="{{URL::to('/')}}">AIMS</a></li>
   <li><a href="{{URL::to('about')}}">About</a></li>
-  <li><a href="{{URL::to('faq')}}">FAQ</a></li>
+  <li><a href="{{URL::to('faq')}}">Help & FAQ</a></li>
   <li><a href="{{URL::to('contact')}}">Contact</a></li>
   <li><a href="#" data-toggle="modal" 
    data-target="#myModal">Login</a></li>

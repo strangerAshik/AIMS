@@ -51,10 +51,11 @@
 </div>
 
 <div class='container-fluid' style='color:#fff;background:#357CA5;padding:5px;'  >
-	<p style='padding:13px 0px 0px 99px;' >Copywrite &copy; 2015 Soft Lab BD. All Right Reserved</p>
+	<p style='padding:13px 0px 0px 99px;' ><span>Copywrite &copy; 2015 Soft Lab BD. All Right Reserved</span><span class="pull-right" style="padding-right:99px;"><i class="fa-3x fa-home fa-fw"> <i class="fa fa-camera-retro"></i>, <i class="fa fa-camera-retro"></i></span></p> 
 </div>
-<!----- Bootstrap ---------------->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<!-- Bootstrap -->
+<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>-->
+<script src={{"js/bootstrap.js"}} type="text/javascript"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     
         <!-- AdminLTE App -->
@@ -63,8 +64,8 @@
         <!-- AdminLTE for demo purposes -->
       
 		<script src="{{URL::asset('js/AdminLTE/demo.js')}}" type="text/javascript"></script>
-<!----- Bootstrap ---------------->
-<!------------->
+<!-- Bootstrap -->
+
 </body>
 </html>
 @stop

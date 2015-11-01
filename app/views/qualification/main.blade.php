@@ -179,7 +179,7 @@
                             <div class="small-box bg-aqua ">
                                 <div class="inner">
                                     <h4 class='title'>
-                                       Others
+                                       Publication & Membership
                                     </h4>
                                     
                                 </div>
@@ -210,7 +210,24 @@
                             <div class="small-box bg-aqua ">
                                 <div class="inner">
                                     <h4 class='title'> 
-											Report
+                                            Report
+                                    </h4>
+                                   
+                                </div>
+                                
+                                <a class="small-box-footer" href="{{URL::to('qualification/report')}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                        @endif
+                        @if('true'==CommonFunction::hasPermission('employee',Auth::user()->emp_id(),'report'))
+                        <div class="col-lg-3 col-xs-6 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua ">
+                                <div class="inner">
+                                    <h4 class='title'> 
+											ITS-OJT Record
                                     </h4>
                                    
                                 </div>

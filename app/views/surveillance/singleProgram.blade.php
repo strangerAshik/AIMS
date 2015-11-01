@@ -108,7 +108,11 @@
 			@else 
 			<table class="table table-bordered">
 			<tbody>
-			<tr><td colspan="2">This is Not Planned Program!</td></tr>
+			<tr><td colspan="2" class="text-center text-bold">This is Not Planned Program!</td></tr>
+			@foreach ($actionDetails as $info) 	
+			<tr><td>SIA Number</td><td>{{$info->sia_number}}</td></tr>
+			@endforeach
+
 			</tbody>
 			</table>
 			@endif
