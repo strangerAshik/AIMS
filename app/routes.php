@@ -1312,6 +1312,29 @@ Route::get('surveillance/scNumbers/{siaNum}/{findingNum}',function(){
 });
 
 
+//Help And FAQ
+
+Route::group(array('prefix'=>'helpFaq','before'=>'auth'),function(){
+	Route::get('main','helpFaqController@main');
+	Route::get('askQuestion','helpFaqController@askQuestion');
+	Route::get('singleQuestionAnsware/{id}','helpFaqController@singleQuestionAnsware');
+	Route::get('answaredQuestionList','helpFaqController@answaredQuestionList');
+	Route::get('pendingQuestionList','helpFaqController@pendingQuestionList');
+	Route::get('report','helpFaqController@report');
+	});
+
+//Voluntary Reporting
+
+Route::group(array('prefix'=>'voluntary','before'=>'auth'),function(){
+	Route::get('main','voluntaryReportingController@main');
+	Route::get('voluntaryReportingList','voluntaryReportingController@voluntaryReportingList');
+	Route::get('singleReport/{id}','voluntaryReportingController@singleReport');
+	});
+
+
+
+
+
 
 
 

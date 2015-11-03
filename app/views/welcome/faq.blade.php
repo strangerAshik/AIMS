@@ -1,30 +1,5 @@
 @include('welcome/header')
 @yield('header')
-<div class="panel-group" id="accordion" style="min-hight:700px;">
-<button class="btn btn-primary ">Ask a Question</button><span>Before Asking Qustion Please Search The Solution</span></br></br>
-
-<table class="search-faq">
-      <thead>
-        <tr>
-          <th>Name</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Allen</td>
-          
-        </tr>
-        <tr>
-          <td>James Mark</td>
-          
-        </tr>
-        <tr>
-          <td>Christine Augilera</td>
-          
-        </tr>
-      </tbody>
-</table>
 
  <table  class="table table-bordered table-striped search-faq">
                     <thead>

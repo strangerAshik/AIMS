@@ -349,7 +349,7 @@
                             </div>
                         </div><!-- ./col -->
                         @endif
-                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                    @if('true'==CommonFunction::hasPermission('help_faq',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
@@ -361,13 +361,13 @@
                                 <div class="icon">
                                     <i class="fa fa-question-circle"></i>
                                 </div>
-                                <a class="small-box-footer" href="{{'settings'}}">
+                                <a class="small-box-footer" href="{{'helpFaq/main'}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
                     @endif
-                    @if('true'==CommonFunction::hasPermission('settings',Auth::user()->emp_id(),'access'))
+                    @if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
@@ -379,7 +379,7 @@
                                 <div class="icon">
                                     <i class="fa fa-users"></i>
                                 </div>
-                                <a class="small-box-footer" href="{{'settings'}}">
+                                <a class="small-box-footer" href="{{'voluntary/main'}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

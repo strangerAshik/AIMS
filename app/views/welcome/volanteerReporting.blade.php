@@ -2,31 +2,44 @@
 @yield('header')
 
     <div class="container ">
-        <div class="page-header">
-  <h1 class="text-center">Volantary Reporting</h1>
-</div>
-        <div class="row">
+    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-10">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h4 class="box-title text-center">Voluntary Reporting</h4>
+                                </div><!-- /.box-header -->
+                                <!-- form start -->
+                                <form role="form">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="email" class="form-control" id="voluntary_email" placeholder="Enter email (Optional)">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Title</label>
+                                            <input type="email" class="form-control" id="voluntary_email" placeholder="Title Of Report ">
+                                        </div>
+                                       <div class="form-group">
+                                            <label>Reporting Details</label>
+                                            <textarea class="form-control" rows="3" placeholder=""></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">File input</label>
+                                            <input type="file" name="reporting_details"id="exampleInputFile">
+                                        </div>
+                                       
+                                    </div><!-- /.box-body -->
 
-            
-            <p class="text-center col-md-6">
-                <button class="btn btn-primary btn-block "  data-toggle="modal" data-target="#EmploymentDetails">ATC</button>
-                </p>
-            <p class="text-center col-md-6">
-                <button class="btn btn-primary btn-block "  data-toggle="modal" data-target="#EmploymentDetails">CABIN</button>
-                </p>
-            <p class="text-center col-md-6">
-                <button class="btn btn-primary btn-block "  data-toggle="modal" data-target="#EmploymentDetails">GENERAL</button>
-                </p>
-            <p class="text-center col-md-6">
-                <button class="btn btn-primary btn-block "  data-toggle="modal" data-target="#EmploymentDetails">MAINTENANCE</button>
-                </p>
-            <p class="text-center col-md-12">
-                <button class="btn btn-primary btn-block " data-toggle="modal" data-target="#EmploymentDetails">Other</button>
-                </p>
-        </div>
-        
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.box -->
+                        </div>
+                      
     </div>
-
 
 
 
