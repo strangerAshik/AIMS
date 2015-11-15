@@ -40,7 +40,7 @@ aircraft landing page,
                             </div>
                         </div><!-- ./col -->
                         @endif
-                        @if('true'==CommonFunction::hasPermission('aircraft_report',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'report'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua " >

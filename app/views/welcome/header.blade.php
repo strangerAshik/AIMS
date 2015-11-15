@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-<title>AIMS</title>
+<title>ASRTM</title>
 <!--Favicon-->
  <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" >
 
@@ -92,7 +92,7 @@
 	<!--{{HTML::image('img/logo.png','User',array('class'=>'img-circle  pull-right','id'=>'logo-main','width'=>'80'))}}	-->
 	</div>
 	<div class='col-md-9' >
-	<h3 class='title'>Aviation Integrated Management System - Oversight</h3>
+	<h3 class='title'>Aviation Safety Reporting Tracking Management</h3>
 	</div>
   </div>
   
@@ -103,7 +103,7 @@
 <!-- Sample menu definition -->
 <nav  class="navbar navbar-default">
 <ul id="main-menu" class="sm sm-blue">
-  <li><a href="{{URL::to('/')}}">AIMS</a></li>
+  <li><a href="{{URL::to('/')}}">ASRTM</a></li>
   <li><a href="{{URL::to('about')}}">About</a></li>
   <li><a href="{{URL::to('faq')}}">Help & FAQ</a></li>
   <li><a href="{{URL::to('contact')}}">Contact</a></li>

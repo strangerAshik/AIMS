@@ -137,6 +137,25 @@
                             </div>
                         </div><!-- ./col -->
 						@endif
+                        @if('true'==CommonFunction::hasPermission('its ',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
+                            <!-- small box -->
+                            <div class="small-box bg-blue  height">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                       ITS
+                                    </h4>
+                                   
+                                </div>
+                                <div class="icon">
+                                   <a href="{{URL::to('itsOjt/main');}}"> <i class="icon ion-person-stalker"></i></a>
+                                </div>
+                                <a class="small-box-footer" href="{{URL::to('itsOjt/main');}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                        @endif
                     
 					@if('true'==CommonFunction::hasPermission('ans_aga_aerodrome_inspection ',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
@@ -289,7 +308,7 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
-                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
+                                <a class="small-box-footer" href="{{'usoap/main'}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

@@ -100,7 +100,21 @@
         
         <script src="{{URL::asset('js/AdminLTE/app.js')}}" type="text/javascript"></script>
        
-        
+<!--table toggle-->
+<style type="text/css">
+    .man{font-size: 40px;color:#367FA9;margin-right:60px;}
+    .table_toggle{cursor: pointer;}
+</style>
+
+<script type="text/javascript">
+//table toggle
+ $('.table_toggle').click(function(){
+      $(this).find('.man').text(function(_, value){return value=='-'?'+':'-'});
+    $(this).nextUntil('tr.header').slideToggle(500, function(){
+    });
+});
+// end table toggle
+</script>
         <!-- page script -->
         <script type="text/javascript">
             $(function() {

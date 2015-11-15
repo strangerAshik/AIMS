@@ -70,9 +70,26 @@
 			content: ')';
 		}
 		</style>
-  <script type="text/javascript">
-  
-  </script>
+ <!--Text Area Customaize
+ <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script> 
+      <script type="text/javascript">
+    //<![CDATA[
+            bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+      //]]>
+      </script>-->
+
+        <script type="text/javascript">
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
 
     </head>
     <body class="skin-blue">

@@ -484,8 +484,72 @@ static function userPhotoById($id){
   }
   return 'anonymous.png';
 }
+//***************************itsOjt*************************
+//
+static function formalCourseStatus($its_course_number,$emp_tracker){
+ return $statue=DB::table('itsojt_formal_ojt_course_status')
+                ->where('itscn',$its_course_number)
+                //->where('job_task_no',$ojt_task_no)
+                ->where('emp_tracker',$emp_tracker)
+                ->where('level','formal')
+                ->where('completion_status','yes')->orderBy('id','desc')->limit(1)->get();
+}
+static function ojtCourseStatus($its_course_number,$ojt_task_no,$emp_tracker,$level){
+ return $statue=DB::table('itsojt_formal_ojt_course_status')
+                ->where('itscn',$its_course_number)
+                ->where('ojt_task_no',$ojt_task_no)               
+                ->where('emp_tracker',$emp_tracker)
+                ->where('level',$level)
+                ->where('completion_status','yes')->orderBy('id','desc')->limit(1)->get();
+}
+// get tarinee name ----- Depricated
+static function TraineName($emp_tracker){
+ return $statue=DB::table('itsojt_trainee')
+                ->where('emp_tracker',$emp_tracker)
+                ->pluck('employee_name');
+}
 
 
+// get OJT Title 
+static function  getOjtTitle ($job_task_no){
+ return $statue=DB::table('itsojt_course_ojt')
+                ->where('its_job_task_no',$job_task_no)
+                ->pluck('title');
+}
+// get ITSCN Title 
+static function  getFormalCourseTitle ($its_course_number){
+ return $statue=DB::table('itsojt_course_formal')
+                ->where('its_course_number',$its_course_number)
+                ->pluck('its_course_title');
+}
+
+//get all the OJt Tasks 
+static function  getOjtTask ($its_course_number){
+ return $ojtTasks=DB::table('itsojt_course_ojt')
+                ->where('its_course_number',$its_course_number)
+                ->get();
+}
+//get tainee name form itsojt_trainee using emp_tracker
+
+static function  getEmployeeName ($emp_tracker){
+ return $emp_name=DB::table('itsojt_trainee')
+                ->where('emp_tracker',$emp_tracker)
+                ->pluck('employee_name');
+}
+
+//get assigned course of particular employee
+static function assingedFormalCourses($emp_tracker){
+ return $assingedFormalCourses= DB::table('itsojt_course_formal')->orderBy('its_course_number')
+        ->join('itsojt_assign_course_ojt', function($join) use ($emp_tracker)
+        {
+            $join->on('itsojt_course_formal.its_course_number', '=', 'itsojt_assign_course_ojt.itscn')
+                 ->where('itsojt_assign_course_ojt.emp_tracker', '=', $emp_tracker)
+                 ->where('itsojt_assign_course_ojt.job_task_no', '=', '0')
+
+                 ;
+        })
+        ->get();
+}
 
 
 

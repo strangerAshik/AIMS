@@ -21,7 +21,20 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <!--Datepicker-->		
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
+  <style type="text/css">
+  #example thead th{font-weight: normal!important;}
+  #example thead th input{
+                        border-radius: 5px;
+                        font-weight: normal !important;
+                        text-align: center;
+                        width: 100px;
+                      }
+  #example_filter input{
+    border-radius: 5px;
+font-weight: normal;
+text-align: center;
+  }
+  </style>
   
   <script>
   $(function() {
@@ -129,7 +142,7 @@ $(document).ready(function() {
     // Setup - add a text input to each footer cell
     $('#example thead th').each( function () {
         var title = $('#example thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html( '<input type="text" placeholder="'+title+'" />' );
     } );
  
     // DataTable

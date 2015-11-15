@@ -43,6 +43,11 @@ max-width: 1040px;
   margin-top: 11px;
 }
 /*End search custom*/
+/*ITSOJT*/
+.trainee{color:red;}
+  .inspector{color:#87C540;}
+  .due{color:#E7701F;}
+  
 .search-form .form-group {
   float: right !important;
   transition: all 0.35s, border-radius 0s;

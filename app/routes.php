@@ -1331,6 +1331,42 @@ Route::group(array('prefix'=>'voluntary','before'=>'auth'),function(){
 	Route::get('singleReport/{id}','voluntaryReportingController@singleReport');
 	});
 
+//ITS OJT
+
+Route::group(array('prefix'=>'itsOjt','before'=>'auth'),function(){
+	Route::get('main','itsOjtController@main');
+	Route::get('addCourse','itsOjtController@addCourse');
+	Route::post('addFormalCourse','itsOjtController@addFormalCourse');
+	Route::post('editFormalCourse/{id}','itsOjtController@editFormalCourse');
+	Route::post('addOjtCourse','itsOjtController@addOjtCourse');
+	Route::post('editOjtCourse/{id}','itsOjtController@editOjtCourse');
+
+	Route::get('courseList','itsOjtController@courseList');
+	Route::get('assignCourseAndOjt','itsOjtController@assignCourseAndOjt');
+	Route::post('saveAssignCourseAndojt','itsOjtController@saveAssignCourseAndojt');
+
+	Route::get('singleFormalCourse/{its_course_number}','itsOjtController@singleFormalCourse');
+	Route::get('singleOjtCourse/{its_job_task_no}','itsOjtController@singleOjtCourse');
+
+
+	Route::get('addTrainee','itsOjtController@addTrainee');
+	Route::post('saveTrainee','itsOjtController@saveTrainee');
+
+	Route::get('addTrainingOjt','itsOjtController@addTrainingOjt');
+	Route::get('individualTrainingOjt/{emp_tracker}','itsOjtController@individualTrainingOjt');
+
+	Route::get('singleTrainingOjt/{course_num}/{emp_tracker}','itsOjtController@singleTrainingOjt');
+
+	Route::post('updateFormalOjtStatus','itsOjtController@updateFormalOjtStatus');
+	Route::post('editUpdateFormalOjtStatus','itsOjtController@editUpdateFormalOjtStatus');
+
+	Route::get('traineeSingleOjtCourse/{course_num}/{ojt_no}/{emp_tracker}/{ojtd}','itsOjtController@trineeSingleOjtCourse');
+
+	
+	Route::get('centralSearch','itsOjtController@centralSearch');
+	
+	});
+
 
 
 

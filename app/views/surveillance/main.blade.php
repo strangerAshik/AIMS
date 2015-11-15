@@ -117,7 +117,8 @@ Action Entry landing page,
 
                      
 
-                        @if('true'==CommonFunction::hasPermission('sia_report',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('
+surveillance_inspection_audit',Auth::user()->emp_id(),'report'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua" >
