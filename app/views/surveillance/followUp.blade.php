@@ -5,9 +5,11 @@
                             <div class="box box-success">
                                 <div class="box-header">
                                     <i class="fa fa-comments-o"></i>
-                                    <h3 class="box-title">Follow Up</h3>
+                                    <h3 class="box-title">Follow Up</h3>                                  
                                    
                                 </div>
+                                @include('common')
+                                    @yield('print')
                                 <div class="box-body chat" >
                                     <!-- chat item -->
 									@foreach($folloUpInfos as $followUp)
@@ -37,7 +39,9 @@
 										@endif
                                     </div><!-- /.item -->
 									@endforeach
-                                  
+
+
+             
                                 <div class="box-footer">
 								{{Form::open(array('url' => 'surveillance/saveFollowUp', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>true))}}
 									{{ Form::hidden('sia_number',$sia_number) }}
@@ -52,6 +56,7 @@
                                 </div>
                             </div><!-- /.box (chat box) -->
 
+                     
                           
                         </section><!-- /.Left col -->
 @stop

@@ -10,7 +10,7 @@
 <a href="#" class="list-group-item active widget">
    Publicly Accessible Area 
 </a>
-<a href="http://arcg.is/1ORgGoB" target="_blink" class="list-group-item ">Automated Height Certification</a>
+<!-- <a href="http://arcg.is/1ORgGoB" target="_blink" class="list-group-item ">Automated Height Certification</a> -->
 <a href="{{URL::to('libraryPublicView')}}" class="list-group-item" target='_blink'>E-library</a>
 <a href="{{URL::to('volanteerReporting')}}" class="list-group-item ">Voluntary Reporting</a>
 <a href="#" class="list-group-item disNon">Wild Life Strike Reporting</a>
@@ -22,7 +22,8 @@ Notice Board
 </a>
 <!-- <marquee style="border:1px dotted #DDD"  scrollamount='2' behavior=ALTERNATE height='300' direction=up> -->
 
-<a href="#" class="list-group-item">Update Surveillance Program</a>
+<a href="#" class="list-group-item">No Notice Available</a>
+<!--
 <a href="#" class="list-group-item">Update Aircraft Information</a>
 <a href="#" class="list-group-item">Safety Concern Module Released</a>
 <a href="#" class="list-group-item">Supporting Document Now Publicly Accessable</a>
@@ -69,10 +70,7 @@ Notice Board
 <iframe width="263" height="134" frameborder="0" allowfullscreen="" src="https://www.youtube.com/embed/s63WTfyPUWw">
 </iframe>
 </a>
-<a href="#">
-<iframe width="263" height="134" frameborder="0" allowfullscreen="" src="https://www.youtube.com/embed/X1M0pbxNUF8">
-</iframe>
-</a>
+
 </div>
 
 </div>
@@ -102,11 +100,11 @@ Notice Board
                aria-hidden="true">×
             </button>
             <h4 class="modal-title" id="myModalLabel">
-               ASRTM Is On Test Phase
+               AIMS Is On Test Phase
             </h4>
          </div>
          <div class="modal-body">
-           <h4>Welcome To ASRTM Database</h4>
+           <h4>Welcome To AIMS Database</h4>
 		   <p>We Are In Test Phase And Will Be Operational Soon.</br> Thanks</p>
          </div>
          <div class="modal-footer">

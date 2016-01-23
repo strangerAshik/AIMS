@@ -3,7 +3,7 @@
 class SafetyConcernsController extends \BaseController {
 
 	
-		public function main(){
+	public function main(){
 		//return "Hello";
 		return View::make('safetyConcerns/main')
 		->with('PageName','Safety Concerns')
@@ -49,7 +49,7 @@ class SafetyConcernsController extends \BaseController {
 		/*$displayQuery=DB::table('sc_safety_concern')
 					->orderBy('id', 'desc')
                     ->get();*/
-		$displayQuery=DB::table('sc_safety_concern')->get();
+		$displayQuery=DB::table('sc_safety_concern')->where('soft_delete','<>','1')->get();
 		//print_r($query);
 		return View::make('safetyConcerns/issuedList')
 		->with('PageName','Safety Concerns List')
@@ -102,7 +102,6 @@ class SafetyConcernsController extends \BaseController {
 		->with('organizations',$organizations)
 		;
 		
-
 	}
 	public function singleInspection($ins_num){
 		$select=array(''=>'--Select--');
@@ -117,6 +116,7 @@ class SafetyConcernsController extends \BaseController {
 		->where('inspection_number','=',$ins_num)
 		->get();
 		$safety_concerns=DB::table('sc_safety_concern')
+		
 		->where('inspection_number','=',$ins_num)
 		->get();
 		
@@ -188,6 +188,7 @@ class SafetyConcernsController extends \BaseController {
 		->with('airMSMs',$airMSMs)
 		->with('designations',$designations)
 		->with('finalization',$finalization)
+		->with('sc_number',$sc_num)
 		;
 	}
 	public function followUp($sc_num){
@@ -229,8 +230,6 @@ class SafetyConcernsController extends \BaseController {
 		$ins_num=Input::get('inspection_number');
 		return Redirect::to('safety/singleInspection/'.$ins_num)->with('message', 'Successfully Saved Inspection Primary Data!!');
 		
-		
-		
 	}
 	public function updatePrimaryInspection(){
 		$id= Input::get('id');
@@ -256,6 +255,7 @@ class SafetyConcernsController extends \BaseController {
 				return Redirect::back()->with('message', 'Not Updated!!');
 	}
 	public function saveSafetyConcern(){
+		//return 'hello';
 		//$eir_file=parent::fileUpload('eir_file','sc_eir_file');
 		$upload_evidence=parent::fileUpload('upload_evidence','safety_consern');
 		$upload_checklist=parent::fileUpload('upload_checklist','safety_consern');
@@ -268,53 +268,58 @@ class SafetyConcernsController extends \BaseController {
 		$timestamp = strtotime($issue_finding_date);
 		$issue_finding_date =date('Y-m-d', $timestamp);
 
+		$sc_critical_element=serialize(Input::get('sc_critical_element'));
+		$sc_area=serialize(Input::get('sc_area'));
 		
 		DB::table('sc_safety_concern')->insert(array(
-			'safety_issue_number'=>Input::get('safety_issue_number'),
-			'sia_number'=>Input::get('sia_number'),
-			'finding_number'=>Input::get('finding_number'),
-			'inspector_observation'=>Input::get('inspector_observation'),
-			'safety_concern'=>Input::get('safety_concern'),
-			'sc_critical_element'=>Input::get('sc_critical_element'),
-			'sc_area'=>Input::get('sc_area'),
-			'witness_statement'=>Input::get('witness_statement'),
+			'safety_issue_number'=>Input::get('safety_issue_number',' '),
+			'title'=>Input::get('title',' '),
+			'sia_number'=>Input::get('sia_number',' '),
+			'finding_number'=>Input::get('finding_number',' '),
+			'inspector_observation'=>Input::get('inspector_observation',' '),
+			'safety_concern'=>Input::get('safety_concern',' '),
+
+			'sc_critical_element'=>$sc_critical_element,
+			'sc_area'=>$sc_area,
+
+			'witness_statement'=>Input::get('witness_statement',' '),
 			'upload_evidence'=>$upload_evidence,
 			'upload_checklist'=>$upload_checklist,
-			'question'=>Input::get('question'),
-			'answer'=>Input::get('answer'),
-			'type_of_concern'=>Input::get('type_of_concern'),
-			'type_of_issue'=>Input::get('type_of_issue'),
-			'best_practice'=>Input::get('best_practice'),
-			'poi_or_responsible'=>Input::get('poi_or_responsible'),
-			'assigned_inspector'=>Input::get('assigned_inspector'),
+			'question'=>Input::get('question',' '),
+			'answer'=>Input::get('answer',' '),
+			'type_of_concern'=>Input::get('type_of_concern',' '),
+			'type_of_issue'=>Input::get('type_of_issue',' '),
+			'best_practice'=>Input::get('best_practice',' '),
+			'poi_or_responsible'=>Input::get('poi_or_responsible',' '),
+			'assigned_inspector'=>Input::get('assigned_inspector',' '),
 			'issue_finding_date'=>$issue_finding_date,
-			'issue_finding_local_time'=>Input::get('issue_finding_local_time'),
-			'place_or_airport'=>Input::get('place_or_airport'),
-			'responsible_pels'=>Input::get('responsible_pels'),
-			'aircraft_msn'=>Input::get('aircraft_msn'),
-			'aircraft_rgistration_number'=>Input::get('aircraft_rgistration_number'),
-			'corrective_priority'=>Input::get('corrective_priority'),
+			'issue_finding_local_time'=>Input::get('issue_finding_local_time',' '),
+			'place_or_airport'=>Input::get('place_or_airport',' '),
+			'responsible_pels'=>Input::get('responsible_pels',' '),
+			'aircraft_msn'=>Input::get('aircraft_msn',' '),
+			'aircraft_rgistration_number'=>Input::get('aircraft_rgistration_number',' '),
+			'corrective_priority'=>Input::get('corrective_priority',' '),
 			'target_date'=>$target_date,
-			'risk_statement'=>Input::get('risk_statement'),
-			'risk_Probability'=>Input::get('risk_Probability'),
-			'risk_severity'=>Input::get('risk_severity'),
-			'cvr_statement'=>Input::get('cvr_statement'),
-			'risk_assesment_from_matrix'=>Input::get('risk_assesment_from_matrix'),
-			'risk_action'=>Input::get('risk_action'),
-			'risk_management'=>Input::get('risk_management'),
+			'risk_statement'=>Input::get('risk_statement',' '),
+			'risk_Probability'=>Input::get('risk_Probability',' '),
+			'risk_severity'=>Input::get('risk_severity',' '),
+			'cvr_statement'=>Input::get('cvr_statement',' '),
+			'risk_assesment_from_matrix'=>Input::get('risk_assesment_from_matrix',' '),
+			'risk_action'=>Input::get('risk_action',' '),
+			'risk_management'=>Input::get('risk_management',' '),
 
 			'row_creator'=>Auth::user()->getName(),
 			'row_updator'=>Auth::user()->getName(),
 			'soft_delete'=>'0',
+			'approve'=>'1',
 			'created_at'=>date('Y-m-d H:i:s'),
 			'updated_at'=>date('Y-m-d H:i:s')
 			));
-		return Redirect::back()->withInput()->with('message', 'Successfully Saved safety Concern!!');
-		
-		
+		//return Redirect::back()->with('message', 'Successfully Saved safety Concern!!');
+		return Redirect::to(URL::previous() . "#SafetyConcern")->with('message', 'Successfully Saved safety Concern!!');
 		
 	}
-       	public function updateSafetyConcern(){
+    public function updateSafetyConcern(){
 
 		$upload_evidence=parent::updateFileUpload('old_upload_evidence','upload_evidence','safety_consern');
 		$upload_checklist=parent::updateFileUpload('old_upload_checklist','upload_checklist','safety_consern');
@@ -328,18 +333,24 @@ class SafetyConcernsController extends \BaseController {
 		$issue_finding_date =date('Y-m-d', $timestamp);
 
 		
+		$sc_critical_element=serialize(Input::get('sc_critical_element'));
+		$sc_area=serialize(Input::get('sc_area'));
+
 		$id= Input::get('id');
 			DB::table('sc_safety_concern')
             ->where('id','=',$id)
             ->update(array(
 				
 			//'safety_issue_number'=>Input::get('safety_issue_number'),
-			'sia_number'=>Input::get('sia_number'),
+			//'sia_number'=>Input::get('sia_number'),
+            'title'=>Input::get('title'),
 			'finding_number'=>Input::get('finding_number'),
 			'inspector_observation'=>Input::get('inspector_observation'),
 			'safety_concern'=>Input::get('safety_concern'),
-			'sc_critical_element'=>Input::get('sc_critical_element'),
-			'sc_area'=>Input::get('sc_area'),
+
+			'sc_critical_element'=>$sc_critical_element,
+			'sc_area'=>$sc_area,
+
 			'witness_statement'=>Input::get('witness_statement'),
 			'upload_evidence'=>$upload_evidence,
 			'upload_checklist'=>$upload_checklist,
@@ -372,7 +383,8 @@ class SafetyConcernsController extends \BaseController {
 			
 			'updated_at'=>date('Y-m-d H:i:s')
 			));
-		return Redirect::back()->with('message', 'Successfully Updated!!');
+		//return Redirect::back()->with('message', 'Successfully Updated!!');
+		return Redirect::to(URL::previous() . "#scDescription")->with('message', 'Successfully Updated!!');
 		
 	}
 	public function saveCorrectiveAction(){
@@ -380,26 +392,27 @@ class SafetyConcernsController extends \BaseController {
 		
 		$sc=new SCCorrectiveAction;		
 		
-		$sc->safety_issue_number=Input::get('safety_issue_number');
-		$sc->currective_action=Input::get('currective_action');
-		$sc->revived_date=Input::get('revived_date');
-		$sc->revived_month=Input::get('revived_month');
-		$sc->revived_year=Input::get('revived_year');
-		$sc->concern_authority_officer=Input::get('concern_authority_officer');
-		$sc->regulation_mitigation=Input::get('regulation_mitigation');
-		$sc->regulation_mitigation_date=Input::get('regulation_mitigation_date');
-		$sc->regulation_mitigation_month=Input::get('regulation_mitigation_month');
-		$sc->regulation_mitigation_year=Input::get('regulation_mitigation_year');
+		$sc->safety_issue_number=Input::get('safety_issue_number',' ');
+		$sc->currective_action=Input::get('currective_action',' ');
+		$sc->revived_date=Input::get('revived_date',' ');
+		$sc->revived_month=Input::get('revived_month',' ');
+		$sc->revived_year=Input::get('revived_year',' ');
+		$sc->concern_authority_officer=Input::get('concern_authority_officer',' ');
+		$sc->regulation_mitigation=Input::get('regulation_mitigation',' ');
+		$sc->regulation_mitigation_date=Input::get('regulation_mitigation_date',' ');
+		$sc->regulation_mitigation_month=Input::get('regulation_mitigation_month',' ');
+		$sc->regulation_mitigation_year=Input::get('regulation_mitigation_year',' ');
 		$sc->corrective_action_file=$corrective_action_file;
 		
 		$sc->row_creator=Auth::user()->getName();
 		$sc->row_updator=Auth::user()->getName();
-		$sc->approve=0;
+		$sc->approve=1;
 		$sc->warning=0;
 		$sc->soft_delete=0;
 		$sc->save();
 		
-		return Redirect::back()->with('message', 'Successfully Saved Corrective Action!!');
+		//return Redirect::back()->with('message', 'Successfully Saved Corrective Action!!');
+		return Redirect::to(URL::previous() . "#correctiveAction")->with('message', 'Successfully Saved Corrective Action!!');
 		
 	}
 	public function updateCorrectiveAction(){
@@ -423,8 +436,10 @@ class SafetyConcernsController extends \BaseController {
 				'updated_at' =>time()	
 			));
 			if($update)
-				return Redirect::back()->with('message', 'Successfully Updated!!');
-				return Redirect::back()->with('message', 'Not Updated!!');
+				//return Redirect::back()->with('message', 'Successfully Updated!!');
+				return Redirect::to(URL::previous() . "#correctiveAction")->with('message', 'Successfully Updated!!');
+				//return Redirect::back()->with('message', 'Not Updated!!');
+				return Redirect::to(URL::previous() . "#correctiveAction")->with('message', 'Not Updated!!');
 	}
 	
 	public function saveFollowUp(){
@@ -432,11 +447,11 @@ class SafetyConcernsController extends \BaseController {
 		
 		$sc=new SCFollowUp;		
 		
-		$sc->safety_issue_number=Input::get('sc_num');
+		$sc->safety_issue_number=Input::get('sc_num',' ');
 		
 		$sc->user_name=Auth::User()->getName();
 		$sc->user_id=Auth::User()->emp_id();
-		$sc->follow_up=Input::get('follow_up');
+		$sc->follow_up=Input::get('follow_up',' ');
 		$sc->follow_up_file=$follow_up_file;
 		$sc->chat_time=time('A');	
 	
@@ -446,7 +461,8 @@ class SafetyConcernsController extends \BaseController {
 		$sc->soft_delete=0;
 		$sc->save();
 		
-		return Redirect::back()->with('message', '');
+		return Redirect::to(URL::previous() . "#approval")->with('message', 'SC Approved!!');
+		//return Redirect::back()->with('message', '');
 		
 	}
 	public function saveApprovalForm(){
@@ -454,13 +470,13 @@ class SafetyConcernsController extends \BaseController {
 		
 		$sc=new SCApprovalInfo;		
 		
-		$sc->safety_issue_number=Input::get('safety_issue_number');
-		$sc->approved_by=Input::get('approved_by');
-		$sc->designation=Input::get('designation');
-		$sc->approval_date=Input::get('approval_date');
-		$sc->approval_month=Input::get('approval_month');
-		$sc->approval_year=Input::get('approval_year');
-		$sc->approval_note=Input::get('approval_note');
+		$sc->safety_issue_number=Input::get('safety_issue_number',' ');
+		$sc->approved_by=Input::get('approved_by',' ');
+		$sc->designation=Input::get('designation',' ');
+		$sc->approval_date=Input::get('approval_date',' ');
+		$sc->approval_month=Input::get('approval_month',' ');
+		$sc->approval_year=Input::get('approval_year',' ');
+		$sc->approval_note=Input::get('approval_note',' ');
 		
 		
 		
@@ -471,8 +487,8 @@ class SafetyConcernsController extends \BaseController {
 	
 		$sc->soft_delete=0;
 		$sc->save();
-		
-		return Redirect::back()->with('message', 'Approved!!');
+		return Redirect::to(URL::previous() . "#approval")->with('message', 'Approval Info Updated!!');
+		//return Redirect::back()->with('message', 'Approved!!');
 		
 	}
 	public function updateApprovalForm(){		
@@ -493,7 +509,7 @@ class SafetyConcernsController extends \BaseController {
 				'updated_at' =>time()	
 			));
 			if($update)
-				return Redirect::back()->with('message', 'Successfully Updated!!');
+				return Redirect::to(URL::previous() . "#approval")->with('message', 'Approval Info Updated!!');
 				return Redirect::back()->with('message', 'Not Updated!!');
 	}
 	public function saveForwardingInfo(){
@@ -501,11 +517,11 @@ class SafetyConcernsController extends \BaseController {
 		
 		$sc=new SCForwarding;		
 		
-		$sc->safety_issue_number=Input::get('safety_issue_number');
+		$sc->safety_issue_number=Input::get('safety_issue_number',' ');
 		
-		$sc->forwarding_to=Input::get('forwarding_to');
-		$sc->designation=Input::get('designation');
-		$sc->forwarding_note=Input::get('forwarding_note');	
+		$sc->forwarding_to=Input::get('forwarding_to',' ');
+		$sc->designation=Input::get('designation',' ');
+		$sc->forwarding_note=Input::get('forwarding_note',' ');	
 		$sc->forwarding_date=date('d F Y');	
 		
 		$sc->row_creator=Auth::user()->getName();
@@ -538,9 +554,9 @@ class SafetyConcernsController extends \BaseController {
 	public function saveLegalOpinion(){
 		$sc=new SCLegalOpenion;		
 		
-		$sc->safety_issue_number=Input::get('safety_issue_number');
+		$sc->safety_issue_number=Input::get('safety_issue_number',' ');
 		
-		$sc->legal_openion=Input::get('legal_openion');
+		$sc->legal_openion=Input::get('legal_openion',' ');
 		
 		$sc->row_creator=Auth::user()->getName();
 		$sc->creator_emp_id=Auth::user()->emp_id();
@@ -568,54 +584,57 @@ class SafetyConcernsController extends \BaseController {
 				return Redirect::back()->with('message', 'Successfully Updated!!');
 				return Redirect::back()->with('message', 'Not Updated!!');
 	}
-public function saveFinzalization(){
-	$final_resolution_date=Input::get('final_resolution_date').' '.Input::get('final_resolution_month').' '.Input::get('final_resolution_year');
-		$timestamp = strtotime($final_resolution_date);
-		$final_resolution_date =date('Y-m-d', $timestamp);
+    public function saveFinzalization(){
+		$final_resolution_date=Input::get('final_resolution_date').' '.Input::get('final_resolution_month').' '.Input::get('final_resolution_year');
+			$timestamp = strtotime($final_resolution_date);
+			$final_resolution_date =date('Y-m-d', $timestamp);
 
-	DB::table('sc_finalization')->insert(array(
-			'safety_issue_number'=>Input::get('safety_issue_number'),
-			'final_resolution_date'=>$final_resolution_date,
-			'final_inspector'=>Input::get('final_inspector'),
-			'final_method'=>Input::get('final_method'),
-			'residual_risk'=>Input::get('residual_risk'),
-			'status_result'=>Input::get('status_result'),
-			'edp_number'=>Input::get('edp_number'),
-			'closing_note'=>Input::get('closing_note'),
+		DB::table('sc_finalization')->insert(array(
+				'safety_issue_number'=>Input::get('safety_issue_number',' '),
+				'final_resolution_date'=>$final_resolution_date,
+				'final_inspector'=>Input::get('final_inspector',' '),
+				'final_method'=>Input::get('final_method',' '),
+				'residual_risk'=>Input::get('residual_risk',' '),
+				'status_result'=>Input::get('status_result',' '),
+				'edp_number'=>Input::get('edp_number',' '),
+				'closing_note'=>Input::get('closing_note',' '),
 
-			'row_creator'=>Auth::user()->getName(),
-			'row_updator'=>Auth::user()->getName(),
-			'soft_delete'=>'0',
-			'created_at'=>date('Y-m-d H:i:s'),
-			'updated_at'=>date('Y-m-d H:i:s')
-		));
-	return Redirect::back()->with('message', 'Successfully Saved!!');
-}
+				'row_creator'=>Auth::user()->getName(),
+				'row_updator'=>Auth::user()->getName(),
+				'soft_delete'=>'0',
+				'approve'=>'1',
+				'created_at'=>date('Y-m-d H:i:s'),
+				'updated_at'=>date('Y-m-d H:i:s')
+			));
+	//	return Redirect::back()->with('message', 'Successfully Saved!!');
+		return Redirect::to(URL::previous() . "#finalization")->with('message', 'Successfully Saved!!');
+   }
 
-public function updatefinzalization(){
+	public function updatefinzalization(){
 
-	$id=Input::get('id');
-	$final_resolution_date=Input::get('final_resolution_date').' '.Input::get('final_resolution_month').' '.Input::get('final_resolution_year');
-		$timestamp = strtotime($final_resolution_date);
-		$final_resolution_date =date('Y-m-d', $timestamp);
+		$id=Input::get('id');
+		$final_resolution_date=Input::get('final_resolution_date').' '.Input::get('final_resolution_month').' '.Input::get('final_resolution_year');
+			$timestamp = strtotime($final_resolution_date);
+			$final_resolution_date =date('Y-m-d', $timestamp);
 
-	DB::table('sc_finalization')->where('id',$id)->update(array(
+		DB::table('sc_finalization')->where('id',$id)->update(array(
 
-			'final_resolution_date'=>$final_resolution_date,
-			'final_inspector'=>Input::get('final_inspector'),
-			'final_method'=>Input::get('final_method'),
-			'residual_risk'=>Input::get('residual_risk'),
-			'status_result'=>Input::get('status_result'),
-			'edp_number'=>Input::get('edp_number'),
-			'closing_note'=>Input::get('closing_note'),
-
-
-			'row_updator'=>Auth::user()->getName(),
+				'final_resolution_date'=>$final_resolution_date,
+				'final_inspector'=>Input::get('final_inspector'),
+				'final_method'=>Input::get('final_method'),
+				'residual_risk'=>Input::get('residual_risk'),
+				'status_result'=>Input::get('status_result'),
+				'edp_number'=>Input::get('edp_number'),
+				'closing_note'=>Input::get('closing_note'),
 
 
-			'updated_at'=>date('Y-m-d H:i:s')
-		));
-	return Redirect::back()->with('message', 'Successfully Updated!!');
-}
+				'row_updator'=>Auth::user()->getName(),
+
+
+				'updated_at'=>date('Y-m-d H:i:s')
+			));
+		//return Redirect::back()->with('message', 'Successfully Updated!!');
+		return Redirect::to(URL::previous() . "#finalization")->with('message', 'Successfully Updated!!');
+	}
 
 }

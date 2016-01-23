@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
  
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth" >
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -17,7 +17,7 @@
 						{{Employee::notApproved($info)}}	
                             <tr>
                                 <th colspan='2' >Reference  #{{++$a_sl}}
-                                    <a href="{{'deleteReference/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteReference/'.$info->id}}" style='color:red;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                     <a data-toggle="modal" data-target="#{{'R'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -97,12 +97,12 @@
 											{{Form::text('name','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('designation', ' Designation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('designation','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('designation','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
@@ -113,37 +113,37 @@
 											{{Form::textarea('address','', array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 								</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('telephone', 'Telephone', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('telephone','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('telephone','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('years_acquainted', '  Years acquainted', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('years_acquainted','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('years_acquainted','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('email_address', 'E-mail address', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('email_address','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('email_address','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('may_we_request', ' May we request a reference?', array('class' => 'col-xs-4 control-label'))}}
 											
                             <div class="col-xs-6">
-											{{Form::select('may_we_request', array('' => '--Select--', 'Yes' => 'Yes','No'=>'No'), null,array('class'=>'form-control','id'=>'','required'=>''))}}
+											{{Form::select('may_we_request', array('' => '--Select--', 'Yes' => 'Yes','No'=>'No'), null,array('class'=>'form-control','id'=>''))}}
 							</div>
                         </div>
 					
@@ -157,8 +157,8 @@
             </div>
         </div>
     </div>
-	<!-----------Update Pop up start------------------>
-	@foreach($infos as $info)
+<!-----------Update Pop up start------------------>
+@foreach($infos as $info)
 	<div class="modal fade" id="{{'R'.$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -186,12 +186,12 @@
 											{{Form::text('name',$info->name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('designation', ' Designation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('designation', $info->designation , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('designation', $info->designation , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
@@ -202,37 +202,37 @@
 											{{Form::textarea('address', $info->address , array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 								</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group">
                                            
 											{{Form::label('telephone', 'Telephone', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('telephone', $info->telephone , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('telephone', $info->telephone , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('years_acquainted', '  Years acquainted', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('years_acquainted',$info->years_acquainted, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('years_acquainted',$info->years_acquainted, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('email_address', 'E-mail address', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('email_address', $info->email_address, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('email_address', $info->email_address, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('may_we_request', ' May we request a reference?', array('class' => 'col-xs-4 control-label'))}}
 											
                             <div class="col-xs-6">
-											{{Form::select('may_we_request', array('' => '--Select--', 'Yes' => 'Yes','No'=>'No'), $info->may_we_request ,array('class'=>'form-control','id'=>'','required'=>''))}}
+											{{Form::select('may_we_request', array('' => '--Select--', 'Yes' => 'Yes','No'=>'No'), $info->may_we_request ,array('class'=>'form-control','id'=>''))}}
 							</div>
                         </div>
 					

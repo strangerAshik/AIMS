@@ -22,10 +22,10 @@
 											
 								<span class='hidden-print'>
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'par_delete'))	
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_accademy',$acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_accademy',$acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_accademy',$acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_accademy',$acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
 									
@@ -234,10 +234,10 @@
                                             <th colspan='2'>Thesis/Project/Internship/Dissertation    #{{++$num}}
 											<span class='hidden-print'>
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'par_delete'))	
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_acca_thesis',$thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_acca_thesis',$thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_acca_thesis',$thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_acca_thesis',$thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
 									

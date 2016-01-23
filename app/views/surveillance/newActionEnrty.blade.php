@@ -94,7 +94,7 @@
 														<span style="color:red">Open</span>
 													@endif
 												</td>
-												<td><a target="_blink" href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}">Details</a></td>
+												<td><a  href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}">Details</a></td>
 											</tr>
 											@endif
 

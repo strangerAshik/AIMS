@@ -1,9 +1,29 @@
 @extends('layout')
+@section('menue')
 
+							&nbsp &nbsp <a  class="hidden-print" href="#formal" style="color:green" >[ Formal Course ] </a>
+
+							&nbsp &nbsp <a  class="hidden-print" href="#L1" style="color:green" >[ OJT Level-1 ] </a>
+
+							&nbsp &nbsp <a  class="hidden-print" href="#L2" style="color:green" >[ OJT Level-2 ] </a> 
+
+							&nbsp &nbsp <a  class="hidden-print" href="#L3" style="color:green" >[ OJT Level-3 ] </a>
+
+
+							&nbsp &nbsp <a  class="hidden-print"href="#" style="" data-toggle="modal" data-target="#updateFormalCourse">[ Update Formal Course ]</a>  
+
+							&nbsp &nbsp <a  class="hidden-print"href="#" style="" data-toggle="modal" data-target="#updateLevel1">[ Update Level-1 ]</a>  
+							
+							&nbsp &nbsp <a  class="hidden-print"href="#" style="" data-toggle="modal" data-target="#updateLevel2">[ Update Level-2 ]</a>  
+
+							&nbsp &nbsp <a  class="hidden-print"href="#" style="" data-toggle="modal" data-target="#updateLevel3">[ Update Level-3 ]</a>  
+					
+@stop
 @section('content')
 <section class="content contentWidth">
 <!--Formal Course description-->
 	<div class="row" >
+
                       
 		
                         <div class="col-md-12">
@@ -17,7 +37,7 @@
 				<h4 >{{$its_job_task_no}}: {{$getOjtTitle}}  </h4>
 
 				<h4> <i>Employee Name : {{CommonFunction::getEmployeeName($emp_tracker)}} </i> </h4
-				</span>
+		 		</span>
 									
 							  </div>
 
@@ -25,30 +45,15 @@
                 <!-- /.box-header -->
 				
 					<div class="box-body">
+				
 					
                     <table class="table table-bordered">
                         <tbody>
-                        
-                          <tr >
-                        	<th>Designation on This OJT</th>
-                        	<?php $ojtL3=CommonFunction::ojtCourseStatus($its_course_number,$its_job_task_no,$emp_tracker,'L3');?>
-                    			<?php $formalStatus=CommonFunction::formalCourseStatus($its_course_number,$emp_tracker);?>
-							<td>
-                        	@if($ojtd=='i')
-                        		 <span class="inspector">Inspector</span>
-                            @elseif($ojtd=='ii')
-                            	 <span class="due">Refresher Due</span>
-							@elseif($ojtd=='ii')
-							      <span class="trainee">Trainee</span>
-
-                        	@endif
-                        	</td>
-                        </tr>
-
-                      
-
-                        
-                            <!--Level 1-->
+                     <!--Menue-->
+                    <tr id='formal'>
+                    	<td colspan="2">@yield('menue')</td>
+                    </tr>
+                       
                       @if($formal)
                       <?php $num=0;?>
                       @foreach($formal as $info)
@@ -59,26 +64,26 @@
 
 							<span class='hidden-print'>
 							  
-							    @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							    @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'par_delete'))
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
-							  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							  @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'sof_delete'))
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Soft Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'approve'))
                                   
-									{{ HTML::linkAction('AircraftController@approve', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;','title'=>'Approval')) }}
 								
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;','title'=>'Disapproval')) }}
 								@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'worning'))
+									{{ HTML::linkAction('BaseController@removeWarning', '',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;','title'=>'Warning')) }}
+									{{ HTML::linkAction('BaseController@warning', '',array('itsojt_formal_ojt_course_status',$info->id,"formal$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;','title'=>'Remove Warning')) }}
 							@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
-									 <a data-toggle="modal" data-target="#editFormal{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'update'))
+									 <a title='Edit' data-toggle="modal" data-target="#editFormal{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -126,13 +131,14 @@
 								</th>
                                 <td>{{$info->completion_date}}</td>
                             </tr>
-                            
+                            @if($info->completion_status=='Yes')
                             <tr>
                                 <th class="col-md-3">									
 									Validity
 								</th>
                                 <td>{{$info->validity_date}}</td>
                             </tr>
+                            @endif
                             <tr>
                                 <th class="col-md-3">									
 									Completion Status
@@ -156,7 +162,15 @@
 								</th>
                                 <td>{{nl2br($info->notes)}}</td>
                             </tr>
-
+							<tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
                             @endforeach
                             @else 
                             <tr><td colspan="2"></td></tr>
@@ -171,6 +185,18 @@
                             @endif
                       
                             <!--Level 1-->
+                        <!--Menue-->
+                        <tr id='L1'>
+                        	<td colspan="2">@yield('menue')</td>
+                        </tr>
+                        <tr>
+                        	<td colspan="2">
+                        	
+                 
+					
+
+                        	</td>
+                        </tr>
                       @if($level1)
                       <?php $num=0;?>
                       @foreach($level1 as $info)
@@ -180,27 +206,27 @@
 									Level-1 Details #{{++$num}}
 
 							<span class='hidden-print'>
-							  
-							    @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+
+							    @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'par_delete'))
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
-							  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							  @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'sof_delete'))
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Soft Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'approve'))
                                   
-									{{ HTML::linkAction('AircraftController@approve', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;','title'=>'Approval')) }}
 								
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;','title'=>'Disapproval')) }}
 								@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'worning'))
+									{{ HTML::linkAction('BaseController@removeWarning', '',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;','title'=>'Warning')) }}
+									{{ HTML::linkAction('BaseController@warning', '',array('itsojt_formal_ojt_course_status',$info->id,"L1$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;','title'=>'Remove Warning')) }}
 							@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
-									 <a data-toggle="modal" data-target="#editLevel1{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'update'))
+									 <a title='Edit' data-toggle="modal" data-target="#editLevel1{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -242,19 +268,22 @@
 								</th>
                                 <td>{{$info->start_date}}</td>
                             </tr>
+                            
                             <tr>
                                 <th class="col-md-3">									
 									Completion Date
 								</th>
                                 <td>{{$info->completion_date}}</td>
                             </tr>
-                            
+                           
+                             @if($info->completion_status=='Yes')
                             <tr>
                                 <th class="col-md-3">									
 									Validity
 								</th>
                                 <td>{{$info->validity_date}}</td>
                             </tr>
+                            @endif
                             <tr>
                                 <th class="col-md-3">									
 									Completion Status
@@ -278,6 +307,15 @@
 								</th>
                                 <td>{{nl2br($info->notes)}}</td>
                             </tr>
+                            <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
 
                             @endforeach
                             @else 
@@ -292,36 +330,42 @@
                             <tr><td colspan="2"></td></tr>
                             @endif
                       <!--Level 2-->
+                       <!--Menue-->
+                        <tr id='L2'>
+                        	<td colspan="2">@yield('menue')</td>
+                        </tr>
+                       
                       @if($level2)
                        <?php $num=0;?>
                       @foreach($level2 as $info)
                         
-                            <tr id="L2{{$info->id}}>
+                            <tr id="L2{{$info->id}}">
                                 <th class="col-md-12" colspan="2" style="background:#ddd">									
 									Level-2 Details #{{++$num}}
 
+							
 							<span class='hidden-print'>
 							  
-							   @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							   @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'par_delete'))
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glBaseControlleryphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
-							  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							  @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'sof_delete'))
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Soft Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'approve'))
                                   
-									{{ HTML::linkAction('AircraftController@approve', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;','title'=>'Approval')) }}
 								
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;','title'=>'Disapproval')) }}
 								@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'worning'))
+									{{ HTML::linkAction('BaseController@removeWarning', '',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;','title'=>'Warning')) }}
+									{{ HTML::linkAction('BaseController@warning', '',array('itsojt_formal_ojt_course_status',$info->id,"L2$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;','title'=>'Remove Warning')) }}
 							@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
-									 <a data-toggle="modal" data-target="#editLevel2{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'update'))
+									 <a title='Edit' data-toggle="modal" data-target="#editLevel2{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -364,12 +408,14 @@
 								</th>
                                 <td>{{$info->start_date}}</td>
                             </tr>
+                           
                             <tr>
                                 <th class="col-md-3">									
 									Completion Date
 								</th>
                                 <td>{{$info->completion_date}}</td>
                             </tr>
+                              @if($info->completion_status=='Yes')
                             
                             <tr>
                                 <th class="col-md-3">									
@@ -377,6 +423,7 @@
 								</th>
                                 <td>{{$info->validity_date}}</td>
                             </tr>
+                            @endif
                             <tr>
                                 <th class="col-md-3">									
 									Completion Status
@@ -400,6 +447,15 @@
 								</th>
                                 <td>{{nl2br($info->notes)}}</td>
                             </tr>
+                            <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
                             @endforeach
                             @else 
 								<tr style="background:#ddd">
@@ -412,6 +468,12 @@
                             <tr><td colspan="2"></td></tr>
                             @endif
                       <!--Level 3-->
+
+					 <!--Menue-->
+                        <tr id='L3'>
+                        	<td colspan="2">@yield('menue')</td>
+                        </tr>
+                        
                       @if($level3)
                         <?php $num=0;?>
                       @foreach($level3 as $info)
@@ -422,26 +484,26 @@
 
 							<span class='hidden-print'>
 							  
-							    @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							    @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'par_delete'))
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
-							  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+							  @if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'sof_delete'))
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','title'=>'Soft Delete','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'approve'))
                                   
-									{{ HTML::linkAction('AircraftController@approve', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;','title'=>'Approval')) }}
 								
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;','title'=>'Disapproval')) }}
 								@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('Itsojt_formal_ojt_course_status',$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'worning'))
+									{{ HTML::linkAction('BaseController@removeWarning', '',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;','title'=>'Warning')) }}
+									{{ HTML::linkAction('BaseController@warning', '',array('itsojt_formal_ojt_course_status',$info->id,"L3$info->id"), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;','title'=>'Remove Warning')) }}
 							@endif
-							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
-									 <a data-toggle="modal" data-target="#editLevel3{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
+							@if('true'==CommonFunction::hasPermission('its_review_update_tasks_and_course',Auth::user()->emp_id(),'update'))
+									 <a title='Edit' data-toggle="modal" data-target="#editLevel3{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -483,19 +545,23 @@
 								</th>
                                 <td>{{$info->start_date}}</td>
                             </tr>
+                           
                             <tr>
+
                                 <th class="col-md-3">									
 									Completion Date
 								</th>
                                 <td>{{$info->completion_date}}</td>
                             </tr>
-                            
+
+                             @if($info->completion_status=='Yes') 
                             <tr>
                                 <th class="col-md-3">									
 									Validity
 								</th>
                                 <td>{{$info->validity_date}}</td>
                             </tr>
+                            @endif
                             <tr>
                                 <th class="col-md-3">									
 									Completion Status
@@ -519,18 +585,40 @@
 								</th>
                                 <td>{{nl2br($info->notes)}}</td>
                             </tr>
+                            <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
                             @endforeach
                             @else 
-								<tr style="background:#ddd">
+							<tr style="background:#ddd">
                                 <th class="col-md-3" >									
 									OJT Level #3 Status
 								</th>
-								<td>Not Done</td>
-                                
+								<td>Not Done</td>                                
                             </tr>
                             <tr><td colspan="2"></td></tr>
                             @endif
-                           
+                            <tr style=" font-weight: bold">
+	                        	<th>Designation on This OJT</th>
+	                        	<?php $ojtL3=CommonFunction::ojtCourseStatus($its_course_number,$its_job_task_no,$emp_tracker,'L3');?>
+	                    			<?php $formalStatus=CommonFunction::formalCourseStatus($its_course_number,$emp_tracker);?>
+								<td>
+	                        	@if($ojtd=='i')
+	                        		 <span class="inspector">Inspector</span>
+	                            @elseif($ojtd=='ii')
+	                            	 <span class="due">Refresher Due</span>
+								@elseif($ojtd=='iii')
+								      <span class="trainee">Trainee</span>
+
+	                        	@endif
+	                        	</td>
+                       		</tr>
                         
                         </tbody>
                     </table>
@@ -542,9 +630,1010 @@
 </div>
 		
 
-
+@include('common')
+@yield('print')
 </div>
 </section>
+
+
 @include('itsOjt/editForm')
 @yield('updateCourseUpdate')
+<!--Update FormalCourse-->
+<div class="modal fade" id="updateFormalCourse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Update Formal Course Status</h4>
+            </div>
+
+            <div class="modal-body"> 
+                              
+				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
+				{{Form::hidden('emp_tracker',$emp_tracker)}}
+				{{Form::hidden('itscn',$its_course_number)}}
+				{{Form::hidden('level','formal')}}
+				  <div class="form-group required">
+                                           
+											{{Form::label('instructor', 'Instructor', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											</div>
+											
+                    </div>
+                     <div class="form-group required">
+                                           
+											{{Form::label('supervisor', 'Supervisor', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('supervisor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											</div>
+											
+                    </div>
+                   				
+                     <div class="form-group required">
+                                           
+											{{Form::label('manager', 'Manager', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('manager','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											</div>
+											
+                    </div>
+                    <div class="form-group required">
+	                                           
+												{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}
+												
+														<div class="row">
+															<div class="col-xs-2">
+															{{Form::select('start_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+															</div>
+															<div class="col-xs-3">
+															{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+												
+																
+															</div>
+															<div class="col-xs-2">
+																{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+															</div>
+														</div>
+												
+	                </div>	
+                    <div class="form-group required">
+	                                           
+												{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+												
+														<div class="row">
+															<div class="col-xs-2">
+															{{Form::select('completion_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+															</div>
+															<div class="col-xs-3">
+															{{Form::select('completion_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+												
+																
+															</div>
+															<div class="col-xs-2">
+																{{Form::select('completion_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+															</div>
+														</div>
+												
+	                </div>	
+                    <div class="form-group required">
+	                                           
+												{{Form::label('validity_date', 'Validity', array('class' => 'col-xs-4 control-label'))}}
+												
+														<div class="row">
+															<div class="col-xs-2">
+															{{Form::select('validity_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+															</div>
+															<div class="col-xs-3">
+															{{Form::select('validity_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+												
+																
+															</div>
+															<div class="col-xs-2">
+																{{Form::select('validity_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+															</div>
+														</div>
+												
+	                </div>	
+	                 <div class="form-group required">
+                                           
+											{{Form::label(' completion_status', ' Completion Status', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											<div class="radio">									 
+											  <label> {{ Form::radio('completion_status', 'Yes',true) }} &nbsp  Passed</label>
+											 <label> {{ Form::radio('completion_status', 'No') }} &nbsp  Failed</label>
+										</div>
+											</div>
+											
+                    </div>		
+                    <div class="form-group ">
+                                           
+											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+											</div>
+											
+                    </div>
+                    <div class="form-group ">
+                                           
+											{{Form::label('comment', 'Comment', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('notes','',array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+											</div>
+											
+                    </div>
+                   
+                   
+                   
+					 
+						
+					
+					<div class="form-group">
+                       
+                            <button type="submit"  value='' class="btn btn-primary btn-lg btn-block">Save</button>
+                       
+                    </div>
+					</div>
+					{{Form::close()}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Update Level-->
+
+<div class="modal fade" id="updateLevel1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <h4 class="modal-title">Update Level-1 Status</h4>
+
+            </div>
+
+
+
+            <div class="modal-body"> 
+
+                              
+
+				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
+
+				{{Form::hidden('emp_tracker',$emp_tracker)}}
+
+				{{Form::hidden('itscn',$its_course_number)}}
+
+				{{Form::hidden('ojt_task_no',$its_job_task_no)}}
+
+				{{Form::hidden('level','L1')}}
+
+				  <div class="form-group required">
+
+                                           
+
+											{{Form::label('instructor', 'Instructor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('supervisor', 'Supervisor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('supervisor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   				
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('manager', 'Manager', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('manager','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('start_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('completion_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('completion_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('completion_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('validity_date', 'Validity', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('validity_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('validity_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('validity_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+	                 <div class="form-group required">
+
+                                           
+
+											{{Form::label(' completion_status', ' Completion Status', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											<div class="radio">									 
+
+											  <label> {{Form::radio('completion_status', 'Yes',true)}} &nbsp  Passed</label>
+
+											 <label> {{Form::radio('completion_status', 'No')}} &nbsp  Failed</label>
+
+										</div>
+
+											</div>
+
+											
+
+                    </div>		
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('comment', 'Comment', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::textarea('notes','',array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   
+
+                   
+
+                   
+
+					 
+
+						
+
+					
+
+					<div class="form-group">
+
+                       
+
+                            <button type="submit"  value='' class="btn btn-primary btn-lg btn-block">Save</button>
+
+                       
+
+                    </div>
+
+					</div>
+
+					{{Form::close()}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--Level2-->
+
+<div class="modal fade" id="updateLevel2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <h4 class="modal-title">Update Level 2 Status</h4>
+
+            </div>
+
+
+
+            <div class="modal-body"> 
+
+                              
+
+				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
+
+				{{Form::hidden('emp_tracker',$emp_tracker)}}
+
+				{{Form::hidden('itscn',$its_course_number)}}
+
+				{{Form::hidden('ojt_task_no',$its_job_task_no)}}
+
+				{{Form::hidden('level','L2')}}
+
+				  <div class="form-group required">
+
+                                           
+
+											{{Form::label('instructor', 'Instructor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('supervisor', 'Supervisor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('supervisor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   				
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('manager', 'Manager', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('manager','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('start_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('completion_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('completion_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('completion_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('validity_date', 'Validity', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('validity_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('validity_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('validity_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+	                 <div class="form-group required">
+
+                                           
+
+											{{Form::label(' completion_status', ' Completion Status', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											<div class="radio">									 
+
+											  <label> {{Form::radio('completion_status', 'Yes',true)}} &nbsp  Passed</label>
+
+											 <label> {{Form::radio('completion_status', 'No')}} &nbsp  Failed</label>
+
+										</div>
+
+											</div>
+
+											
+
+                    </div>		
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('comment', 'Comment', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::textarea('notes','',array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   
+
+                   
+
+                   
+
+					 
+
+						
+
+					
+
+					<div class="form-group">
+
+                       
+
+                            <button type="submit"  value='' class="btn btn-primary btn-lg btn-block">Save</button>
+
+                       
+
+                    </div>
+
+					</div>
+
+					{{Form::close()}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!--Level 3-->
+
+<div class="modal fade" id="updateLevel3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <h4 class="modal-title">Update Level 3 Status</h4>
+
+            </div>
+
+
+
+            <div class="modal-body"> 
+
+                              
+
+				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
+
+				{{Form::hidden('emp_tracker',$emp_tracker)}}
+
+				{{Form::hidden('itscn',$its_course_number)}}
+
+				{{Form::hidden('ojt_task_no',$its_job_task_no)}}
+
+				{{Form::hidden('level','L3')}}
+
+				  <div class="form-group required">
+
+                                           
+
+											{{Form::label('instructor', 'Instructor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('supervisor', 'Supervisor', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('supervisor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   				
+
+                     <div class="form-group required">
+
+                                           
+
+											{{Form::label('manager', 'Manager', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::text('manager','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('start_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('completion_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('completion_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('completion_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+                    <div class="form-group required">
+
+	                                           
+
+												{{Form::label('validity_date', 'Validity', array('class' => 'col-xs-4 control-label'))}}
+
+												
+
+														<div class="row">
+
+															<div class="col-xs-2">
+
+															{{Form::select('validity_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+															<div class="col-xs-3">
+
+															{{Form::select('validity_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+
+												
+
+																
+
+															</div>
+
+															<div class="col-xs-2">
+
+																{{Form::select('validity_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+
+															</div>
+
+														</div>
+
+												
+
+	                </div>	
+
+	                 <div class="form-group required">
+
+                                           
+
+											{{Form::label(' completion_status', ' Completion Status', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											<div class="radio">									 
+
+											  <label> {{ Form::radio('completion_status', 'Yes',true) }} &nbsp  Passed</label>
+
+											 <label> {{ Form::radio('completion_status', 'No') }} &nbsp  Failed</label>
+
+										</div>
+
+											</div>
+
+											
+
+                    </div>		
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                    <div class="form-group ">
+
+                                           
+
+											{{Form::label('comment', 'Comment', array('class' => 'col-xs-4 control-label'))}}
+
+											<div class="col-xs-6">
+
+											{{Form::textarea('notes','',array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+
+											</div>
+
+											
+
+                    </div>
+
+                   
+
+                   
+
+                   
+
+					 
+
+						
+
+					
+
+					<div class="form-group">
+
+                       
+
+                            <button type="submit"  value='' class="btn btn-primary btn-lg btn-block">Save</button>
+
+                       
+
+                    </div>
+
+					</div>
+
+					{{Form::close()}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 @stop
+

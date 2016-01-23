@@ -3,7 +3,7 @@
 @section('content')
 <section class="content contentWidth">
 <div class="row">
-@if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'access'))
+@if('true'==CommonFunction::hasPermission('voluntary_reporting_list',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
 						<div class="small-box bg-aqua " >
@@ -16,7 +16,7 @@
 							</a>
 						</div>
                         </div><!-- ./col -->
-                        @endif
+ @endif
 	
 </div>
 	

@@ -2,553 +2,576 @@
 
 class SettingsController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /settings
-	 *
-	 * @return Response
-	 */
-	public function roles(){
-		//$roles=DB::table('roles');
-		$roles = Role::lists('role_name', 'role_name');
+/*
+*This class is for settings.
+*/
 
-		return $roles;
+/*Using this method all the privillage of a roll can be updated*/ 
+	public function permissionUpdate(){
+		$n=0;
+		$role='Employee';
+		$emp_ids=DB::table('users')->where('role',$role)->lists('emp_id');
+		$moduleArray=array(
+		    	//setting
+						'add_user',
+						'all_user',
+						'dropdown_management',
+						//'module',
+						'settings',
+				//Aircraft
+						'aircraft',
+						'aircraft_add_new_aircraft',
+						'airaft_admin_list',
+						'aircraft_my_list',
+						//'aircraft_report',
+				//library
+						'e_library',
+						'library_add_new_supporitng_docs',
+						//'library_report',
+						'library_supporting_docs',
+
+
+				//EDP
+						'edp',
+						'edp_approval',
+						'edp_legal_opinion',
+
+				//Employee
+						'employee',
+						'emp_admin_list',
+						//'employee_report',
+
+				//SIA
+						'sia',
+						'sia_board',
+						'my_sia',
+						'sia_program',
+						'sia_program_list',
+						'sia_inspector_associate_sia',				
+						'sia_action',
+						'sia_approval',
+						'sia_central_search',
+						'sia_corrective_action',
+						'sia_followup',
+						'execute_sia_program',
+						'executed_sia_programs',
+						'sia_today_task',
+						'sia_sms',
+						'sia_add_finding',
+						//'sia_report',
+				//Help And FAQ		
+						'help_faq',
+						'help_faq_answer',
+						'help_faq_ask_question',
+						'help_faq_bank',
+						//'help_faq_report',
+
+				//ITS
+						'its',
+						'its_my_its_records',
+						'its_add_trainee',
+						'its_assign_course_and_ojt',
+						'its_central_search',
+						'its_course_ojt_list',
+						'its_formal_course_and_job_task',
+						'its_review_update_tasks_and_course',				
+						//'its_report',
+						
+				//Notification		
+						'notifications',
+				//Safety Concern
+						'safety_concern',
+						'sc_approval',
+						'sc_corrective_action',
+						'sc_finalization',
+						'sc_followup',
+						//'sc_forwarding',
+						'sc_issue_safety_concern',
+						//'sc_new_inspection',
+						'sc_safety_concerns_list',				
+						//'sc_report',
+				//Voluntary Reporitng
+						'voluntary_reporting',
+						'voluntary_reporting_action_details',
+						'voluntary_reporting_approval',
+						'voluntary_reporting_list',
+						);
+
+		
+		foreach ($emp_ids as $emp_id) {
+			//Deleting Previous data
+				DB::table('module_user_permission')->where('user_id',$emp_id)->delete();
+			//Initializing Privillage
+				foreach ($moduleArray as $moduleName) {
+							DB::table('module_user_permission')
+									->insert(array(
+										'user_id'=>$emp_id,
+										'module_name'=>$moduleName,
+										'access'=>'false',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false',
+									));
+						}
+			//giving role privillage 
+					
+				
+				//setting 
+					$settings=array(
+								//'add_user',
+								//'all_user',
+								//'dropdown_management',
+								//'module',
+								'settings',
+						);
+					foreach ($settings as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//aircraft
+					$aircrafts=array(
+								//'aircraft',
+								//'aircraft_add_new_aircraft',
+								//'airaft_admin_list',
+								//'aircraft_my_list',
+								//'aircraft_report',
+						); 
+					foreach ($aircrafts as $aircraft) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$aircraft)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//libraries
+					$libraries=array(
+								'e_library',
+								'library_add_new_supporitng_docs',
+								//'library_report',
+								'library_supporting_docs',				
+								);
+					foreach ($libraries as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//edps
+					$edps=[
+					'edp',
+					//'edp_approval',
+					//'edp_legal_opinion'
+					];
+					foreach ($edps as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//employees
+					$employees=array(
+								'employee',
+								//'emp_admin_list',
+								//'employee_report',		
+						);
+					foreach ($employees as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}	
+				//sia
+					$sia=array(
+								'sia',
+								//'sia_board',
+								//'my_sia',//----[Note:service Provider]
+								//'sia_program',
+								//'sia_program_list',
+								'sia_inspector_associate_sia',				
+								'sia_action',
+								//'sia_approval',
+								//'sia_central_search',
+								//'sia_corrective_action',
+								'sia_followup',
+								//'execute_sia_program',
+								//'executed_sia_programs',
+								'sia_today_task',
+								//'sia_sms',
+								'sia_add_finding',
+								//'sia_report',	
+						);
+					foreach ($sia as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//faqs	
+					$faqs=array(
+								'help_faq',
+								'help_faq_answer',
+								'help_faq_ask_question',
+								'help_faq_bank',
+								//'help_faq_report',
+						);
+					foreach ($faqs as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'false',
+									'approve'=>'false',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}	
+				//its
+					$its=array(
+								'its',
+								'its_my_its_records',
+								// 'its_add_trainee',
+								// 'its_assign_course_and_ojt',
+								// 'its_central_search',
+								// 'its_course_ojt_list',
+								// 'its_formal_course_and_job_task',
+								// 'its_review_update_tasks_and_course',				
+								//'its_report',
+						);
+					foreach ($its as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'true',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//notifications
+					$notifications=array(
+							//'notifications',		
+						);
+					foreach ($notifications as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'true',
+									'worning'=>'true',
+									'sof_delete'=>'true',
+									'par_delete'=>'true',
+									'report'=>'false'
+								));
+					}
+				//safeties
+					$safeties=array(
+								'safety_concern',
+								//'sc_approval',
+								//'sc_corrective_action',
+								'sc_finalization',
+								//'sc_followup',
+								//'sc_forwarding',
+								'sc_issue_safety_concern',
+								//'sc_new_inspection',
+								//'sc_safety_concerns_list',				
+								//'sc_report',		
+						);
+					foreach ($safeties as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'true',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+				//voluntary reporting
+					$voluntaryReportings=array(
+								// 'voluntary_reporting',
+								// 'voluntary_reporting_action_details',
+								// 'voluntary_reporting_approval',
+								// 'voluntary_reporting_list'								
+								);
+					foreach ($voluntaryReportings as $moduleName) {
+						DB::table('module_user_permission')
+								->where('user_id',$emp_id)
+								->where('module_name',$moduleName)
+								->update(array(
+									'access'=>'true',
+									'entry'=>'true',
+									'update'=>'true',
+									'approve'=>'true',
+									'worning'=>'false',
+									'sof_delete'=>'false',
+									'par_delete'=>'false',
+									'report'=>'false'
+								));
+					}
+			
+			$n++;	
+		}
+		return $n.' People Updated As '.$role;
+		
+		
 	}
-	public function permission(){
-
-		//aircraft module update
-		$i='10000';
+/*Using this method all the pass try to change but failed*/
+	public function changeAllPassword(){
+		//$userIdArray=[]
 		
-	
-			DB::table('module_user_permission')
-			->where('user_id','0'.$i)
-			->where('module_name','aircraft')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'false',
-					'update'=>'false',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'false',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','organization')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'false',
-					'update'=>'false',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'false',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','safety_concern')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','employee')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','e_library')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','settings')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','sc_new_inspection')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','sc_issue_safety_concern')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','sc_safety_concerns_list')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'true',
-					'update'=>'true',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'true',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','airaft_list')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'false',
-					'update'=>'false',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'false',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','airaft_admin_list')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'false',
-					'update'=>'false',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'false',
-					'par_delete'=>'false'
-					));	
-			DB::table('module_user_permission')
-			->where('user_id',$i)
-			->where('module_name','org_admin_list')
-			->update(array(
-					'access'=>'true',
-					'entry'=>'false',
-					'update'=>'false',
-					'approve'=>'false',
-					'worning'=>'false',
-					'sof_delete'=>'false',
-					'par_delete'=>'false'
-					));	
-		
-
-	//this is for updateing existing user permission entry to module_user_permission
-		$i=0;
-		$j=-1;
-	for($i;$i<=$j;$i++){
-			$userId=$i;
-			DB::table('module_user_permission')
-			->insert(array(
-				array(
-							'user_id'=>$userId,
-							'module_name'=>'aircraft',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'organization',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'surveillance_inspection_audit',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'safety_concern',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'personnel_licensing',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'admin_tracking',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'document_control',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'employee',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'emp_admin_list',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'ans_aga_aerodrome_inspection',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'report',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'wild_life_strike',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'accident_&_incident_investigation',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'e_library',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'volunteer_reporting',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'notifications',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'settings',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'add_user',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'all_user',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'module',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'sc_new_inspection',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'sc_issue_safety_concern',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'sc_safety_concerns_list',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-						),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'sc_report',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'aircraft_add_new_aircraft',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'airaft_list',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'aircraft_report',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'airaft_admin_list',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'org_add_new',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'org_admin_list',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'org_my_org',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					array(
-							'user_id'=>$userId,
-							'module_name'=>'org_report',
-							'access'=>'false',
-							'entry'=>'false',
-							'update'=>'false',
-							'approve'=>'false',
-							'worning'=>'false',
-							'sof_delete'=>'false',
-							'par_delete'=>'false'
-							),
-					
-					
+		$password='123';
+		$userIdArray=DB::table('users')->lists('emp_id');
+		$num=0;
+		foreach ($userIdArray as $emp_id) {
+			//echo $info;
+			$password=Hash::make($password);
+			//$success = User::where('emp_id', '=', $emp_id)->update(array('password' =>$password,'pass_change'=>0));
+			 $suss=DB::table('users')
+			 ->where('emp_id',$emp_id)
+			 ->update(array(
+					'password'=>$password,
+					'pass_change'=>'1'
 				));
+			
+			$num++;
+		}
+		return $num. " All Password is Changed to ".$password;
+		
 	}
+/*Using this method privillage of a prticular id holder can be updated*/
+   public function permission($emp_id){
+	//delete prev access info
+	 DB::table('module_user_permission')->where('user_id',$emp_id)->delete();
+	//installing new module 
+	 $mainModuleArray=array(
+	           //setting
+						'add_user',
+						'all_user',
+						'dropdown_management',
+						//'module',
+						'settings',
+				//Aircraft
+						'aircraft',
+						'aircraft_add_new_aircraft',
+						'airaft_admin_list',
+						'aircraft_my_list',
+						//'aircraft_report',
+				//library
+						'e_library',
+						'library_add_new_supporitng_docs',
+						//'library_report',
+						'library_supporting_docs',
+				//Employee
+						'employee',
+						'emp_admin_list',
+						//'employee_report',
+				
+
+				//EDP
+						'edp',
+						'edp_approval',
+						'edp_legal_opinion',
+
+				//SIA
+						'sia',
+						'my_sia',
+						'sia_board',
+						'sia_program',
+						'sia_program_list',
+						'sia_inspector_associate_sia',				
+						'sia_action',
+						'sia_approval',
+						'sia_central_search',
+						'sia_corrective_action',
+						'sia_followup',
+						'execute_sia_program',
+						'executed_sia_programs',
+						'sia_today_task',
+						'sia_sms',
+						'sia_add_finding',
+						//'sia_report',
+				//Help And FAQ		
+						'help_faq',
+						'help_faq_answer',
+						'help_faq_ask_question',
+						'help_faq_bank',
+						//'help_faq_report',
+
+				//ITS
+						'its',
+						'its_my_its_records',
+						'its_add_trainee',
+						'its_assign_course_and_ojt',
+						'its_central_search',
+						'its_course_ojt_list',
+						'its_formal_course_and_job_task',
+						'its_review_update_tasks_and_course',				
+						//'its_report',
+						
+				//Notification		
+						'notifications',
+				//Safety Concern
+						'safety_concern',
+						'sc_approval',
+						'sc_corrective_action',
+						'sc_finalization',
+						'sc_followup',
+						//'sc_forwarding',
+						'sc_issue_safety_concern',
+						//'sc_new_inspection',
+						'sc_safety_concerns_list',				
+						//'sc_report',
+				//Voluntary Reporitng
+						'voluntary_reporting',
+						'voluntary_reporting_action_details',
+						'voluntary_reporting_approval',
+						'voluntary_reporting_list',
+				//ANS AGA
+					'ans_aga_aerodrome_inspection',
+				//Report
+					'report',
+				//Wild life
+					'wild_life_strike',
+				//Environment 
+					'environment',
+				//Accident & Incident 
+					'accident_&_incident_investigation',
+				//organization
+					'organization',
+					'org_admin_list',
+					'org_my_org',
+					'org_add_new',
+					'org_report',
+					
+				//pel
+					'personnel_licensing',
+					'pel_list',
+					'pel_flying_details',
+					'pel_simulator',
+					'pel_ame_log_details',
+					'pel_atc_log_details',
+
+	);
+	
+	//Giving Privillage 
+	foreach ($mainModuleArray as $moduleName) {
+				DB::table('module_user_permission')
+						->where('user_id',$emp_id)
+						->where('module_name',$moduleName)
+						->update(array(
+							'access'=>'true',
+							'entry'=>'true',
+							'update'=>'true',
+							'approve'=>'false',
+							'worning'=>'false',
+							'sof_delete'=>'false',
+							'par_delete'=>'false',
+							'report'=>'false'
+						));
+			}
+		return'Emp Id '.$emp_id.' holder is Now Getting Privilege of '.$role;
+
 	}
-	public function organizations(){
+/* Return the organization list of user listed*/
+ public function organizations(){
 		//$roles=DB::table('roles');
 		$organizations =DB::table('users')->lists('organization');
 
 		return $organizations;
 	}
-	public function index()
+
+ public function index()
 	{
-		$modules =DB::table('module_names')->orderBy('module_name')->lists('module_name');
+		$modules =DB::table('module_names')->where('soft_delete','<>','1')->orderBy('module_name')->lists('module_name');
 		return View::make('settings/index')
 		->with('PageName','Settings')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
 		->with('year',parent::years_from())
-		->with('roles',$this->roles())
+		//->with('roles',$this->roles())
 		->with('organizations',$this->organizations())
 		->with('personnel',parent::getPersonnelInfo())
 		->with('modules',$modules)
 		;
 	}
-	public function myProfile(){
+ public function myProfile(){
 		$userInfos=DB::table('users')
 		->where('id',Auth::user()->getId())->get();
 		return View::make('settings/myProfile')
@@ -556,24 +579,24 @@ class SettingsController extends \BaseController {
 					->with('userInfos',$userInfos)
 					;
 	}
-	public function login(){
-	//dd(Input::all());
-	$validation=Validator::make(Input::all(),User::$auth_rules);
-	if($validation->fails()){
-		return Redirect::to('/')->with('Warning', 'Email/Password is wrong!!');
-	}
-	$email=Input::get('email');
-	$password=Input::get('password');
-	if (Auth::attempt(array('email' => $email, 'password' => $password)))
-		{
-			return Redirect::to('dashboard');
+ public function login(){
+		//dd(Input::all());
+		$validation=Validator::make(Input::all(),User::$auth_rules);
+		if($validation->fails()){
+			return Redirect::to('/')->with('Warning', 'Email/Password is wrong!!');
 		}
+		$email=Input::get('email');
+		$password=Input::get('password');
+		if (Auth::attempt(array('email' => $email, 'password' => $password)))
+			{
+				return Redirect::to('dashboard');
+			}
+		
+		return Redirect::to('/')->with('Warning', 'Email/Password is wrong!!');
+		
+   }
 	
-	return Redirect::to('/')->with('Warning', 'Email/Password is wrong!!');
-	
-}
-	
-	public function logout(){
+ public function logout(){
 		session_unset();
 		if (ini_get("session.use_cookies")) {
 		$params = session_get_cookie_params();
@@ -589,20 +612,14 @@ class SettingsController extends \BaseController {
 	return Redirect::to('/')->with('message', 'Successfully Log Out!!');
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /settings/create
-	 *
-	 * @return Response
-	 */
-	public function viewUsers()
-	{
+	
+ public function viewUsers(){
 		
-		$users = DB::table('users')->orderBy('role')->get();
-		$modules=DB::table('module_user_permission')->orderBy('module_name')->get();	
+		$users = DB::table('users')->orderBy('emp_id')->get();
+		$modules=DB::table('module_user_permission')->where('soft_delete','<>','1')->orderBy('module_name')->get();	
 		
 		$select['']='Select Module';
-		$moduleNames =DB::table('module_names')->orderBy('module_name')->lists('module_name');
+		$moduleNames =DB::table('module_names')->where('soft_delete','<>','1')->orderBy('module_name')->lists('module_name');
 		$moduleNames =array_merge($select,$moduleNames);
 
 		return View::make('settings/viewUsers')
@@ -612,57 +629,3113 @@ class SettingsController extends \BaseController {
 		->with('months',parent::months())
 		->with('year',parent::years_from())
 		->with('personnel',parent::getPersonnelInfo())
-		->with('roles',$this->roles())
+		//->with('roles',$this->roles())
 		->with('organizations',$this->organizations())
 		->with('users',$users)
 		->with('modules',$modules)
 		->with('moduleNames',$moduleNames)
 		;
 	}
-
-	public function saveUser()
-	{
-		//return 'Hello ';
+/* SAve User For CAAB*/
+ public function saveUser(){
+		
 		$validator = Validator::make(Input::all(), User::$rules_user_registration);
- 
+
 		if ($validator->passes()) {
-			$user=new User;
-			$user->name= Input::get('name');
-			$user->emp_id= Input::get('emp_id');
-			$user->email= Input::get('email');
-			$user->role= Input::get('designation');
-			$user->organization= Input::get('organization');
-			$user->password= Hash::make(Input::get('password'));
-			 
-			$user->save();
-	/*Permission */
-	$userId=Input::get('emp_id');
-	$getModules=DB::table('module_names')->lists('module_name');
-	foreach($getModules as $module){
-		DB::table('module_user_permission')->insert(array(
-							'user_id'=>$userId,
-							'module_name'=>$module,
-							'access'=>Input::get($module.'_access'),
-							'entry'=>Input::get($module.'_entry'),
-							'update'=>Input::get($module.'_update'),
-							'approve'=>Input::get($module.'_approve'),
-							'worning'=>Input::get($module.'_worning'),
-							'sof_delete'=>Input::get($module.'_sof_delete'),
-							'par_delete'=>Input::get($module.'_par_delete'),
-							'report'=>Input::get($module.'_report')
-			));
-	}
+		$user=new User;
+		$user->name= Input::get('name');
+		$user->emp_id= Input::get('emp_id');
+		$user->email= Input::get('email');
+		$user->role= Input::get('designation');
+		$user->organization= Input::get('organization');
+		$user->password= Hash::make(Input::get('password'));
+		 
+		$user->save();
+
+		$name=Input::get('name');
+		$emp_id=Input::get('emp_id');
+		$role=Input::get('designation');
+		//User Initialization 
+			$moduleArray=array(
+			    	//setting
+							'add_user',
+							'all_user',
+							'dropdown_management',
+							//'module',
+							'settings',
+					//Aircraft
+							'aircraft',
+							'aircraft_add_new_aircraft',
+							'airaft_admin_list',
+							'aircraft_my_list',
+							//'aircraft_report',
+					//library
+							'e_library',
+							'library_add_new_supporitng_docs',
+							//'library_report',
+							'library_supporting_docs',
+
+
+					//EDP
+							'edp',
+							'edp_approval',
+							'edp_legal_opinion',
+
+					//Employee
+							'employee',
+							'emp_admin_list',
+							//'employee_report',
+
+					//SIA
+							'sia',
+							'my_sia',
+							'sia_board',
+							'sia_program',
+							'sia_program_list',
+							'sia_inspector_associate_sia',				
+							'sia_action',
+							'sia_approval',
+							'sia_central_search',
+							'sia_corrective_action',
+							'sia_followup',
+							'execute_sia_program',
+							'executed_sia_programs',
+							'sia_today_task',
+							'sia_sms',
+							'sia_add_finding',
+							//'sia_report',
+					//Help And FAQ		
+							'help_faq',
+							'help_faq_answer',
+							'help_faq_ask_question',
+							'help_faq_bank',
+							//'help_faq_report',
+
+					//ITS
+							'its',
+							'its_my_its_records',
+							'its_add_trainee',
+							'its_assign_course_and_ojt',
+							'its_central_search',
+							'its_course_ojt_list',
+							'its_formal_course_and_job_task',
+							'its_review_update_tasks_and_course',				
+							//'its_report',
+							
+					//Notification		
+							'notifications',
+					//Safety Concern
+							'safety_concern',
+							'sc_approval',
+							'sc_corrective_action',
+							'sc_finalization',
+							'sc_followup',
+							//'sc_forwarding',
+							'sc_issue_safety_concern',
+							//'sc_new_inspection',
+							'sc_safety_concerns_list',				
+							//'sc_report',
+					//Voluntary Reporitng
+							'voluntary_reporting',
+							'voluntary_reporting_action_details',
+							'voluntary_reporting_approval',
+							'voluntary_reporting_list',
+							);
+
+			foreach ($moduleArray as $moduleName) {
+							DB::table('module_user_permission')
+									->insert(array(
+										'user_id'=>$emp_id,
+										'module_name'=>$moduleName,
+										'access'=>'false',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false',
+									));
+						}
+
+		//giving Privilage 
+				$dbAdmin='DB Admin';
+				$chiefAdmin='Chief Admin';
+				$inspectorOpsAirworthiness='Inspector OPS,Airworthiness';
+				$inspectorAnsAga='Inspector ANS-AGA';
+				$inspectorLegal='Inspector Legal';
+				$itsManager='ITS Manager';
+				$programeManager='Program Manager';
+				$voluntaryReportingManager='Voluntary Reporting Manager';
+				$serviceProviderAoc='Service Provider-AOC';
+				$serviceProviderAirport='Service Provider-Airport';
+				$employee='Employee';
+
+				if ($role==$employee) 
+				{
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//'my_sia',//----[Note:service Provider]
+									//'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				
+				}
+				elseif ($role==$dbAdmin) 
+				{
+					//setting 
+						$settings=array(
+									'add_user',
+									'all_user',
+									'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									'aircraft',
+									'aircraft_add_new_aircraft',
+									'airaft_admin_list',
+									'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									' ',
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									' '
+							);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=['edp','edp_approval','edp_legal_opinion'];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									'my_sia',//Note:service Provider
+									'sia_program',
+									'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									'sia_approval',
+									'sia_central_search',
+									'sia_corrective_action',
+									'sia_followup',
+									'execute_sia_program',
+									'executed_sia_programs',
+									'sia_today_task',
+									'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									'its_add_trainee',
+									'its_assign_course_and_ojt',
+									'its_central_search',
+									'its_course_ojt_list',
+									'its_formal_course_and_job_task',
+									'its_review_update_tasks_and_course',				
+									'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									'sc_approval',
+									'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+
+									'voluntary_reporting',
+									'voluntary_reporting_action_details',
+									'voluntary_reporting_approval',
+									'voluntary_reporting_list'
+									
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$chiefAdmin) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									'aircraft',
+									//'aircraft_add_new_aircraft',
+									'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//Note:service Provider
+									//'my_sia',
+									'sia_program',
+									'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									'sia_approval',
+									'sia_central_search',
+									'sia_corrective_action',
+									'sia_followup',
+									'execute_sia_program',
+									'executed_sia_programs',
+									'sia_today_task',
+									'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									'its_add_trainee',
+									'its_assign_course_and_ojt',
+									'its_central_search',
+									'its_course_ojt_list',
+									'its_formal_course_and_job_task',
+									'its_review_update_tasks_and_course',				
+									'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									'sc_approval',
+									'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									'voluntary_reporting',
+									'voluntary_reporting_action_details',
+									'voluntary_reporting_approval',
+									'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$inspectorOpsAirworthiness) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									'aircraft',
+									//'aircraft_add_new_aircraft',
+									'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//Note:service Provider
+									//'my_sia',
+									'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									//'its_add_trainee',
+									//'its_assign_course_and_ojt',
+									//'its_central_search',
+									//'its_course_ojt_list',
+									//'its_formal_course_and_job_task',
+									//'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									//'voluntary_reporting',
+									//'voluntary_reporting_action_details',
+									//'voluntary_reporting_approval',
+									//'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$inspectorAnsAga) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									'sia_board',
+									//Note:service Provider
+									//'my_sia',
+									'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									//'its_add_trainee',
+									//'its_assign_course_and_ojt',
+									//'its_central_search',
+									//'its_course_ojt_list',
+									//'its_formal_course_and_job_task',
+									//'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									//'voluntary_reporting',
+									//'voluntary_reporting_action_details',
+									//'voluntary_reporting_approval',
+									//'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$inspectorLegal) 
+				{
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//'my_sia',//----[Note:service Provider]
+									//'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				
+				}
+				elseif ($role==$itsManager) 
+				{
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//'my_sia',//----[Note:service Provider]
+									//'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									 'its',
+									 'its_my_its_records',
+									 'its_add_trainee',
+									 'its_assign_course_and_ojt',
+									 'its_central_search',
+									 'its_course_ojt_list',
+									 'its_formal_course_and_job_task',
+									 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$programeManager) 
+				{
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//'my_sia',//----[Note:service Provider]
+									'sia_program',
+									'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				
+				}
+				elseif ($role==$voluntaryReportingManager) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//'my_sia',//----[Note:service Provider]
+									//'sia_program',
+									//'sia_program_list',
+									'sia_inspector_associate_sia',				
+									'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									//'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									'sia_today_task',
+									//'sia_sms',
+									'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									'its',
+									'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									'safety_concern',
+									//'sc_approval',
+									//'sc_corrective_action',
+									'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+										'voluntary_reporting',
+										'voluntary_reporting_action_details',
+										//'voluntary_reporting_approval',
+										'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$serviceProviderAoc) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									'aircraft',
+									'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									//'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									//'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//Note:service Provider
+									'my_sia',
+									//'sia_program',
+									//'sia_program_list',
+									//'sia_inspector_associate_sia',				
+									//'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									//'sia_today_task',
+									'sia_sms',
+									//'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									//'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									// 'its',
+									// 'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									//'safety_concern',
+									//'sc_approval',
+									'sc_corrective_action',
+									//'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									//'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				elseif ($role==$serviceProviderAirport) 
+				{
+
+					//setting 
+						$settings=array(
+									//'add_user',
+									//'all_user',
+									//'dropdown_management',
+									//'module',
+									'settings',
+							);
+						foreach ($settings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//aircraft
+						$aircrafts=array(
+									//'aircraft',
+									//'aircraft_add_new_aircraft',
+									//'airaft_admin_list',
+									//'aircraft_my_list',
+									//'aircraft_report',
+							); 
+						foreach ($aircrafts as $aircraft) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$aircraft)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//libraries
+						$libraries=array(
+									'e_library',
+									//'library_add_new_supporitng_docs',
+									//'library_report',
+									'library_supporting_docs',				
+									);
+						foreach ($libraries as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//edps
+						$edps=[
+						'edp',
+						//'edp_approval',
+						//'edp_legal_opinion'
+						];
+						foreach ($edps as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//employees
+						$employees=array(
+									//'employee',
+									//'emp_admin_list',
+									//'employee_report',		
+							);
+						foreach ($employees as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//sia
+						$sia=array(
+									'sia',
+									//'sia_board',
+									//[Note:service Provider]
+									'my_sia',
+									//'sia_program',
+									//'sia_program_list',
+									//'sia_inspector_associate_sia',				
+									//'sia_action',
+									//'sia_approval',
+									//'sia_central_search',
+									'sia_corrective_action',
+									'sia_followup',
+									//'execute_sia_program',
+									//'executed_sia_programs',
+									//'sia_today_task',
+									'sia_sms',
+									//'sia_add_finding',
+									//'sia_report',	
+							);
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//faqs	
+						$faqs=array(
+									'help_faq',
+									//'help_faq_answer',
+									'help_faq_ask_question',
+									'help_faq_bank',
+									//'help_faq_report',
+							);
+						foreach ($faqs as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'false',
+										'approve'=>'false',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}	
+					//its
+						$its=array(
+									// 'its',
+									// 'its_my_its_records',
+									// 'its_add_trainee',
+									// 'its_assign_course_and_ojt',
+									// 'its_central_search',
+									// 'its_course_ojt_list',
+									// 'its_formal_course_and_job_task',
+									// 'its_review_update_tasks_and_course',				
+									//'its_report',
+							);
+						foreach ($its as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//notifications
+						$notifications=array(
+								//'notifications',		
+							);
+						foreach ($notifications as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'true',
+										'sof_delete'=>'true',
+										'par_delete'=>'true',
+										'report'=>'false'
+									));
+						}
+					//safeties
+						$safeties=array(
+									//'safety_concern',
+									//'sc_approval',
+									'sc_corrective_action',
+									//'sc_finalization',
+									//'sc_followup',
+									//'sc_forwarding',
+									//'sc_issue_safety_concern',
+									//'sc_new_inspection',
+									//'sc_safety_concerns_list',				
+									//'sc_report',		
+							);
+						foreach ($safeties as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//voluntary reporting
+						$voluntaryReportings=array(
+									// 'voluntary_reporting',
+									// 'voluntary_reporting_action_details',
+									// 'voluntary_reporting_approval',
+									// 'voluntary_reporting_list'								
+									);
+						foreach ($voluntaryReportings as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'true',
+										'update'=>'true',
+										'approve'=>'true',
+										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+				}
+				
+
+				//end of privilage	
+					return Redirect::to('settings')->with('message',"Emp Id <a href=singleUser/".$emp_id.">".$emp_id."( ".$name." )</a> holder is Now Getting Privilege of ".$role);
+				}
+				else {
+					return Redirect::to('settings')->with('error', 'The following errors occurred')->withErrors($validator)->withInput();
+				}
 			
 			
-			return Redirect::to('settings')->with('message','New User Added!');
-		} else {
-			 return Redirect::to('settings')->with('error', 'The following errors occurred')->withErrors($validator)->withInput();
-		}
-		
-		
-		
+			
 	}
-	public function newModulePermissionupdate(){
+ public function newModulePermissionupdate(){
+		//return Input::get('entry');
 		if(Input::get('module_name')!='Select Module'){
 		DB::table('module_user_permission')->insert(
 				array(
@@ -678,14 +3751,16 @@ class SettingsController extends \BaseController {
 					)
 			);
 		return Redirect::back()->with('message','Permission Added');
-	}
-	else return Redirect::back()->with('error','Select Module!!!');
+		}
+		else return Redirect::back()->with('error','Select Module!!!');
 	}
 	public function updateUserPermission(){
 		//Module update start from here
-	$empId=Input::get('emp_id');
-	$getModules=DB::table('module_names')->lists('module_name');
-	foreach($getModules as $module){
+	 $empId=Input::get('emp_id');
+	// return Input::get('admin_tracking_access');
+	 $module=Input::get('module_name');
+	//$getModules=DB::table('module_names')->lists('module_name');
+	//foreach($getModules as $module){
 		DB::table('module_user_permission')
 			->where('user_id',$empId)
 			->where('module_name',$module)
@@ -700,11 +3775,13 @@ class SettingsController extends \BaseController {
 							'par_delete'=>Input::get($module.'_par_delete'),
 							'report'=>Input::get($module.'_report')
 			));
-			}
-		return Redirect::back()->with('message','Permission Updated.');
+		//	}
+			return Redirect::to(URL::previous() . "#$module")->with('message', 'Permission Updated!!');
+		//return Redirect::to()->with('message','Permission Updated.');
 	
-}
-	public function update()
+ }
+/*Update user information form Admin*/
+ public function update()
 	{
 		
 		$validator = Validator::make(Input::all(), User::$rules_user_update);
@@ -755,6 +3832,23 @@ class SettingsController extends \BaseController {
 		
 	}
 
+/*Change the password of individual id holder*/
+ public function changePasswordIndividual($userId)
+	{
+		$validator = Validator::make(Input::all(), User::$rule_changePass);
+ 
+		if ($validator->passes()) {		
+			$id = $userId;
+			$password=Hash::make(Input::get('password'));
+			$success = User::where('emp_id', '=', $id)->update(array('password' =>$password,'pass_change'=>1));
+			if($success)
+				return Redirect::back()->with('message','Password Changed!');
+			return Redirect::back()->with('message','Password Not Changed!');
+			
+		} else {
+			 return Redirect::back()->with('error', 'The following errors occurred')->withErrors($validator)->withInput();
+		}
+	}
 
 	public function changePassword()
 	{
@@ -817,6 +3911,7 @@ class SettingsController extends \BaseController {
 	}
 	public function saveModule(){
 		$module= new Module;
+		$module->label=Input::get('label');
 		$module->module_name=Input::get('module_name');
 		$module->save();
 		return Redirect::back()->with('message','Module Saved!');
@@ -825,6 +3920,7 @@ class SettingsController extends \BaseController {
 		DB::table('module_names')
 		->where('id',Input::get('id'))
 		->update(array(
+			'label'=>Input::get('label'),
 			'module_name'=>Input::get('module_name')
 			));
 		DB::table('module_user_permission')
@@ -869,17 +3965,9 @@ class SettingsController extends \BaseController {
 					->orderBy('module_name')
 					->get();	
 
-/*
-		$query="SELECT module_names.module_name FROM `module_names` LEFT JOIN module_user_permission ON module_names.module_name = module_user_permission.module_name AND module_user_permission.user_id=$emp_id WHERE module_user_permission.module_name IS NULL ";*/
-		/* $moduleNames =DB::table('module_names')
-		->select('module_names.module_name')
-        ->leftJoin('module_user_permission', 'module_names.module_name', '=', 'module_user_permission.module_name','module_user_permission.user_id','=',$emp_id)
-        ->where('module_user_permission.user_id','Null')
-        ->get();*/
-
 
 		$select['']='Select Module';
-		$moduleNames =DB::table('module_names')->orderBy('module_name')->lists('module_name');
+		$moduleNames =DB::table('module_names')->where('soft_delete','<>','1')->orderBy('module_name')->lists('module_name');
 		$moduleNames =array_merge($select,$moduleNames);
 		$roles=DB::table('users')->orderBy('role')->lists('role');
 		$organizations=DB::table('users')->orderBy('organization')->lists('organization');
@@ -961,7 +4049,8 @@ class SettingsController extends \BaseController {
 			);
 		return Redirect::back()->with('message','Option Updated!!');
 	}
-public function checkListManagement(){
+/*Depricated Pass change function*/
+ public function checkListManagement(){
 		$checklists=DB::table('sia_checklists')
 				->select('checklist_name','checklist_type')
 				->where('soft_delete','<>','1')
@@ -973,7 +4062,9 @@ public function checkListManagement(){
 			->with('checklists',$checklists)
 			;
 	}
-public function saveChecklistQuestion(){
+
+/*This three function of bellow is for checklist.*/
+ public function saveChecklistQuestion(){
 		$checklist_name=Input::get('checklist_name');
 		$checklist_type=Input::get('checklist_type');
 		$section=Input::get('section');
@@ -999,7 +4090,7 @@ public function saveChecklistQuestion(){
 		}
 		return Redirect::back()->with('message','Inserted!!');
 	}
-	public function singleChecklist($name,$type){
+ public function singleChecklist($name,$type){
 		$questions=DB::table('sia_checklists')
 					//->select('id','question','')
 					->where('soft_delete','<>','1')
@@ -1016,7 +4107,7 @@ public function saveChecklistQuestion(){
 				;
 	}
 
-	public function saveQuestion(){
+ public function saveQuestion(){
 		$checklist_name=Input::get('checklist_name');
 		$checklist_type=Input::get('checklist_type');
 		$section=Input::get('section');

@@ -11,6 +11,9 @@
 ----------------------------
 */
 /*Custom*/
+.smsBackground{background: #D0F4B3!important;}
+.red{color:red;}
+.green{color:green;}
 /*metro menu*/
 .height{height:120px;}
 .title{font-weight:bold;}
@@ -1419,10 +1422,10 @@ body > .header .logo .icon {
 .small-box .icon {
   position: absolute;
   top: auto;
-  bottom: 5px;
-  right: 5px;
+  bottom: 2px;
+  right: 7px;
   z-index: 0;
-  font-size: 90px;
+  font-size: 75px;
   color: rgba(0, 0, 0, 0.15);
 }
 .small-box:hover {
@@ -1448,10 +1451,10 @@ body > .header .logo .icon {
 }
 @keyframes tansformAnimation {
   from {
-    font-size: 90px;
+    font-size: 75px;
   }
   to {
-    font-size: 100px;
+    font-size: 87px;
   }
 }
 @-webkit-keyframes tansformAnimation {

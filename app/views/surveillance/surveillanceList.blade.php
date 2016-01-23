@@ -1,4 +1,4 @@
-@extends('layoutTable')
+@extends('layoutMT')
 @section('content')
   <!-- Right side column. Contains the navbar and content of the page -->
   
@@ -44,8 +44,8 @@
 </div>
 </div>
                             <div class="box-body table-responsive">
-                               <h4 class="text-center text-success"> Recor Shown From <b class="text-primary">{{$from}}</b> To <b class="text-primary">{{$to}}</b></h4>
-                                    <table id="example1" class="table table-bordered table-striped">
+                               <h4 class="text-center text-success"> Record Shown From <b class="text-primary">{{$from}}</b> To <b class="text-primary">{{$to}}</b></h4>
+                                    <table id="example" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -99,7 +99,7 @@
                                                         <span style="color:red">Open</span>
                                                     @endif
                                                 </td>
-                                                <td><a target="_blink" href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}">Details</a></td>
+                                                <td><a  href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}">Details</a></td>
                                             </tr>
                                             @endif
 

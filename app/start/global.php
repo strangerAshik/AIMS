@@ -49,8 +49,9 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
-	//return Response::make("Page not found", 404);
+	// return Response::view('error.404', array('PageName'=>'404'), 404);
 });
+
 
 /*
 |--------------------------------------------------------------------------

@@ -17,10 +17,11 @@ class SiaFindings extends Migration {
 			$table->increments('id');
 			
 			$table->string('finding_number');
+			$table->string('title');
 			$table->string('sia_number');
-			$table->string('finding',2000);
+			$table->lognText('finding');
 			$table->string('target_date');
-			$table->string('corrective_action_plan',2000);
+			$table->lognText('corrective_action_plan');
 			$table->string('upload_file');
 
 			

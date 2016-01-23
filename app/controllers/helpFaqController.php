@@ -22,9 +22,11 @@ class helpFaqController extends \BaseController {
 	 */
 	public function askQuestion()
 	{
-		//return "hello";
+		$recentQuestion=DB::table('help_faq_question')->orderBy('id','desc')->limit(5)->get();
 		return View::make('helpFaq.addQuestion')
-		->with('PageName','Ask Question');
+		->with('PageName','Ask Question')
+		->with('recentQuestion',$recentQuestion)
+		;
 	}
 
 
@@ -34,32 +36,31 @@ class helpFaqController extends \BaseController {
 	 * @return Response
 	 */
 	public function singleQuestionAnsware($id)
+	
 	{
+		$question=DB::table('help_faq_question')->where('id',$id)->where('soft_delete','<>','1')->get();
+		$ans=DB::table('help_faq_ans')->where('question_id',$id)->where('soft_delete','<>','1')->get();
 		return View::make('helpFaq.singleQuestion')
 		->with('PageName','Single Question')
-		->with('id',$id)
+		->with('question',$question)
+		->with('ans',$ans)
 		;
 	}
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function answaredQuestionList()
+	public function faqBank()
 	{
-		return View::make('helpFaq.questionAnswerList')
-		->with('PageName','Answered Question List')
-		
-		;
-		
-	}
-	public function pendingQuestionList()
-	{
-		return View::make('helpFaq.pendingQuestionList')
-		->with('PageName','Pending Question List')
+		//$question=DB::table('help_faq_question')->orderBy('category')->get();
+		$question=DB::table('help_faq_question')
+        ->leftJoin('help_faq_ans', 'help_faq_question.id', '=', 'help_faq_ans.question_id')
+        ->where('help_faq_question.soft_delete','<>','1')
+        ->select('help_faq_question.row_creator','help_faq_question.id', 'help_faq_question.question', 'help_faq_question.created_at', 'help_faq_question.category', 'help_faq_ans.ans')
+       // ->where('soft_delete','<>','1')
+        ->get();
+
+		return View::make('helpFaq.faqBank')
+		->with('PageName','Question Bank')
+		->with('question',$question)
 		
 		;
 		
@@ -84,9 +85,62 @@ class helpFaqController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function saveQuestion()
 	{
-		//
+		//Multiple selection update
+		$category =Input::get('categories');
+		$category= serialize($category);
+		//$cat=parent::getMultipleOptionList('lib_suporting_docs','doc_authors');
+
+
+		$file=parent::fileUpload('file','helpFaq');
+
+		DB::table('help_faq_question')->insert(
+			array(
+							'category'=>$category,
+							'question'=>Input::get('question'),
+							'file'=>$file,							
+
+							'row_creator'=>Auth::user()->getName(),
+							'row_updator'=>Auth::user()->getName(),
+							'soft_delete'=>'0',
+							'approve'=>'0',
+							'warning'=>'0',
+							'soft_delete'=>'0',
+							'created_at'=>date('Y-m-d H:i:s'),
+							'updated_at'=>date('Y-m-d H:i:s')
+						)
+				);
+		return Redirect::back()->with('message','Question Submitted');
+		//$doc_upload=parent::updateFileUpload('old_doc_upload','doc_upload','lib_supporting_docs');
+	}
+	public function updateQuestion()
+	{
+		$id=Input::get('id');
+		//Multiple selection update
+		$category =Input::get('categories');
+		 $category= serialize($category);
+		
+
+
+		
+		$file=parent::updateFileUpload('old_file','file','helpFaq');
+	
+
+		DB::table('help_faq_question')->where('id',$id)->update(
+			array(
+							'category'=>$category,
+							'question'=>Input::get('question'),
+							'file'=>$file,							
+
+							
+							'row_updator'=>Auth::user()->getName(),
+							
+							'updated_at'=>date('Y-m-d H:i:s')
+						)
+				);
+		return Redirect::back()->with('message','Question Updated');
+		//$doc_upload=parent::updateFileUpload('old_doc_upload','doc_upload','lib_supporting_docs');
 	}
 
 
@@ -96,9 +150,45 @@ class helpFaqController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function saveAnswre()
 	{
-		//
+		$file=parent::fileUpload('file','helpFaq');
+
+		DB::table('help_faq_ans')->insert(
+			array(
+							'question_id'=>Input::get('question_id'),
+							'ans'=>Input::get('ans'),
+							'file'=>$file,							
+
+							'row_creator'=>Auth::user()->getName(),
+							'row_updator'=>Auth::user()->getName(),
+							'soft_delete'=>'0',
+							'approve'=>'0',
+							'warning'=>'0',
+							'soft_delete'=>'0',
+							'created_at'=>date('Y-m-d H:i:s'),
+							'updated_at'=>date('Y-m-d H:i:s')
+						)
+				);
+		return Redirect::back()->with('message','Answer Saved');
+	}
+	public function updateAnswre()
+	{
+		$id=Input::get('id');
+		$file=parent::updateFileUpload('old_file','file','helpFaq');
+
+		DB::table('help_faq_ans')->where('id',$id)->update(
+			array(
+							
+							'ans'=>Input::get('ans'),
+							'file'=>$file,							
+
+							
+							'row_updator'=>Auth::user()->getName(),							
+							'updated_at'=>date('Y-m-d H:i:s')
+						)
+				);
+		return Redirect::back()->with('message','Answer Updated');
 	}
 	public function hello($id)
 	{

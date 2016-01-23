@@ -28,11 +28,11 @@
         						@include('reportBank.statusOfSurveillanceProgram')
                       			@yield('statusOfSurveillanceProgram')
 
-        						@include('reportBank.typeofEnforcement')
-                      			@yield('typeofEnforcement')
+        						{{--@include('reportBank.typeofEnforcement')
+                      			@yield('typeofEnforcement')--}}
 
-        						@include('reportBank.surveillanceByCriticalArea')
-                      			@yield('surveillanceByCriticalArea')
+        						{{--@include('reportBank.surveillanceByCriticalArea')
+                      			@yield('surveillanceByCriticalArea')--}}
 
         						@include('reportBank.siaExecutedRisk')
                       			@yield('siaExecutedRisk')

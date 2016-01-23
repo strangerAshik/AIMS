@@ -47,8 +47,8 @@ class QualificationController extends \BaseController {
 	{	
 		$years=parent::years();
 		$id = Auth::user()->emp_id();
-		$query1=DB::table('qualification_edu_accademic')->where('emp_id', '=', $id)->get();
-		$query2=DB::table('qualification_edu_thesis')->where('emp_id', '=', $id)->get();
+		$query1=DB::table('qualification_edu_accademic')->where('emp_id', '=', $id)->orderBy('pussing_year','desc')->get();
+		$query2=DB::table('qualification_edu_thesis')->where('emp_id', '=', $id)->orderBy('id','desc')->get();
 		return View::make('qualification/education')
 		->with('PageName','Education')
 		->with('personnel',parent::getPersonnelInfo())
@@ -99,6 +99,9 @@ class QualificationController extends \BaseController {
 		->with('PageName','Training/ Workshop/ OJT')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
+		->with('dates',parent::dates())
+		->with('months',parent::months())
+		->with('years',parent::years())
 		->with('infos',$query)		
 		;
 	}
@@ -200,7 +203,7 @@ class QualificationController extends \BaseController {
 	{
 	    //$id = Auth::user()->emp_id();		
 		$query1=DB::table('qualification_personal')->where('emp_id', '=', $id )->get();
-		$query2=DB::table('qualification_edu_accademic')->where('emp_id', '=', $id)->get();
+		$query2=DB::table('qualification_edu_accademic')->where('emp_id', '=', $id)->orderBy('pussing_year','desc')->get();
 		$query3=DB::table('qualification_edu_thesis')->where('emp_id', '=', $id)->get();
 		$query4=DB::table('qualification_emplyment')->where('emp_id', '=', $id)->get();
 		$query5=DB::table('qualification_pro_degree')->where('emp_id', '=', $id)->get();
@@ -326,27 +329,29 @@ class QualificationController extends \BaseController {
 		
 		DB::table('qualification_personal')->insert(array(
 		'emp_id' => Auth::user()->emp_id(),
-		'title' => Input::get('title'),
-		'first_name' => Input::get('first_name'),
-		'middle_name' =>Input::get('middle_name') ,
-		'last_name' => Input::get('last_name'),
-		'mother_name' => Input::get('mother_name'),
-		'father_name' => Input::get('father_name'),
-		'mailing_address' => Input::get('mailing_address'),
-		'parmanent_address' => Input::get('parmanent_address'),
-		'telephone_work' => Input::get('telephone_work'),
-		'telephone_residence' => Input::get('telephone_residence'),
-		'mobile_no' => Input::get('mobile_no'),
-		'nationality' => Input::get('nationality'),
-		'national_id' => Input::get('national_id'),
-		'sex' => Input::get('sex'),
-		'blood_group' => Input::get('blood_group'),
-		'date_of_birth' => Input::get('date_of_birth'),
-		'month_of_birth' => Input::get('month_of_birth'),
-		'year_of_birth' => Input::get('year_of_birth'),
+		'caa_id' => Input::get('caa_id',' '),
+		'title' => Input::get('title',' '),
+		'first_name' => Input::get('first_name',' '),
+		'middle_name' =>Input::get('middle_name',' ') ,
+		'last_name' => Input::get('last_name',' '),
+		'mother_name' => Input::get('mother_name',' '),
+		'father_name' => Input::get('father_name',' '),
+		'mailing_address' => Input::get('mailing_address',' '),
+		'parmanent_address' => Input::get('parmanent_address',' '),
+		'telephone_work' => Input::get('telephone_work',' '),
+		'telephone_residence' => Input::get('telephone_residence',' '),
+		'mobile_no' => Input::get('mobile_no',' '),
+		'nationality' => Input::get('nationality',' '),
+		'national_id' => Input::get('national_id',' '),
+		'sex' => Input::get('sex',' '),
+		'blood_group' => Input::get('blood_group',' '),
+		'date_of_birth' => Input::get('date_of_birth',' '),
+		'month_of_birth' => Input::get('month_of_birth',' '),
+		'year_of_birth' => Input::get('year_of_birth',' '),
 		'photo' =>$filename,
-		'created_at' => time(),
-		'updated_at' =>time()		
+		'verify' =>'1',
+		'created_at' =>date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')		
 		));
 			
 		return Redirect::to('qualification/personnel')->with('message', 'Successfully Saved!!');
@@ -374,27 +379,28 @@ class QualificationController extends \BaseController {
             ->where('id', $id)
             ->update(array(
 			
-		'title' => Input::get('title'),
-		'first_name' => Input::get('first_name'),
-		'middle_name' =>Input::get('middle_name') ,
-		'last_name' => Input::get('last_name'),
-		'mother_name' => Input::get('mother_name'),
-		'father_name' => Input::get('father_name'),
-		'mailing_address' => Input::get('mailing_address'),
-		'parmanent_address' => Input::get('parmanent_address'),
-		'telephone_work' => Input::get('telephone_work'),
-		'telephone_residence' => Input::get('telephone_residence'),
-		'mobile_no' => Input::get('mobile_no'),
-		'nationality' => Input::get('nationality'),
-		'national_id' => Input::get('national_id'),
-		'sex' => Input::get('sex'),
-		'blood_group' => Input::get('blood_group'),
-		'date_of_birth' => Input::get('date_of_birth'),
-		'month_of_birth' => Input::get('month_of_birth'),
-		'year_of_birth' => Input::get('year_of_birth'),
+		'caa_id' => Input::get('caa_id',' '),
+		'title' => Input::get('title',' '),
+		'first_name' => Input::get('first_name',' '),
+		'middle_name' =>Input::get('middle_name',' ') ,
+		'last_name' => Input::get('last_name',' '),
+		'mother_name' => Input::get('mother_name',' '),
+		'father_name' => Input::get('father_name',' '),
+		'mailing_address' => Input::get('mailing_address',' '),
+		'parmanent_address' => Input::get('parmanent_address',' '),
+		'telephone_work' => Input::get('telephone_work',' '),
+		'telephone_residence' => Input::get('telephone_residence',' '),
+		'mobile_no' => Input::get('mobile_no',' '),
+		'nationality' => Input::get('nationality',' '),
+		'national_id' => Input::get('national_id',' '),
+		'sex' => Input::get('sex',' '),
+		'blood_group' => Input::get('blood_group',' '),
+		'date_of_birth' => Input::get('date_of_birth',' '),
+		'month_of_birth' => Input::get('month_of_birth',' '),
+		'year_of_birth' => Input::get('year_of_birth',' '),
 		'photo' =>$filename,
 		
-		'updated_at' =>time()	
+		'updated_at' =>date('Y-m-d H:i:s')
 			
 			
 			));
@@ -403,17 +409,22 @@ class QualificationController extends \BaseController {
 	}
 
 	public function saveAccademic(){
+		$certificate=parent::fileUpload('certificate','employee');
 		DB::table('qualification_edu_accademic')->insert(array(
 		'emp_id' => Auth::user()->emp_id(),
-		'level' => Input::get('level'),
-		'name_of_degree' => Input::get('name_of_degree'),
-		'discipline' =>Input::get('discipline') ,
-		'specialization' => Input::get('specialization'),
-		'institute' => Input::get('institute'),
-		'pussing_year' => Input::get('pussing_year'),
-		'standard' => Input::get('standard'),
-		'grade_division' => Input::get('grade_division'),
+		'level' => Input::get('level',' '),
+		'name_of_degree' => Input::get('name_of_degree',' '),
+		'discipline' =>Input::get('discipline',' ') ,
+		'specialization' => Input::get('specialization',' '),
+		'institute' => Input::get('institute',' '),
+		'pussing_year' => Input::get('pussing_year',' '),
+		'standard' => Input::get('standard',' '),
+		'grade_division' => Input::get('grade_division',' '),
+		'certificate' => $certificate,
 		'out_of' => Input::get('out_of',false),		
+		'verify' =>'1',		
+		'created_at' =>date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')	
 			
 		));
 			
@@ -423,34 +434,35 @@ class QualificationController extends \BaseController {
 		
 		DB::table('qualification_edu_thesis')->insert(array(
 		'emp_id' => Auth::user()->emp_id(),
-		'level' => Input::get('level'),
-		'type' => Input::get('type'),
-		'title' => Input::get('title'),
-		'institute' =>Input::get('institute') ,
-		'duration' => Input::get('duration'),	
-		'created_at' => time(),
-		'updated_at' =>time()		
+		'level' => Input::get('level',' '),
+		'type' => Input::get('type',' '),
+		'title' => Input::get('title',' '),
+		'institute' =>Input::get('institute',' ') ,
+		'duration' => Input::get('duration',' '),	
+		'verify' =>'1',
+		'created_at' =>date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')	
 		));
 		return Redirect::to('qualification/education')->with('message', 'Successfully Saved!!');
 	}
 	public function saveEmploymentHistory(){		
 		DB::table('qualification_emplyment')->insert(array(
 		'emp_id' => Auth::user()->emp_id(),
-		'organisation_name' => Input::get('organisation_name'),
-		'organisation_type' => Input::get('organisation_type'),
+		'organisation_name' => Input::get('organisation_name',' '),
+		'organisation_type' => Input::get('organisation_type',' '),
 		'organisation_address' => Input::get('organisation_address','Not Provided'),
-		'designation' =>Input::get('designation') ,
-		'responsibility' => Input::get('responsibility'),	
-		'start_date' => Input::get('start_date'),	
-		'start_month' => Input::get('start_month'),	
-		'start_year' => Input::get('start_year'),
+		'designation' =>Input::get('designation',' ') ,
+		'responsibility' => Input::get('responsibility',' '),	
+		'start_date' => Input::get('start_date',' '),	
+		'start_month' => Input::get('start_month',' '),	
+		'start_year' => Input::get('start_year',' '),
 		'end_date' => Input::get('end_date',' '),	
 		'end_month' => Input::get('end_month',' '),	
 		'end_year' => Input::get('end_year',' '),	
 		'supervisor_name' => Input::get('supervisor_name',' '),	
 		'supervisor_phone' => Input::get('supervisor_phone',' '),	
-		'created_at' => time(),
-		'updated_at' =>time()	
+		'created_at' => date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')
 		));
 		return Redirect::to('qualification/employment')->with('message', 'Successfully Saved!!');
 	}
@@ -465,13 +477,22 @@ class QualificationController extends \BaseController {
 		'pro_degree_major_area' => Input::get('pro_degree_major_area',' '),	
 		
 		'pro_degree_year' => Input::get('pro_degree_year',' '),	
-		'created_at' => time(),
-		'updated_at' =>time()		
+		'verify' =>'1',
+		'created_at' =>date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')	
 		));
 	   return Redirect::to('qualification/pro_degree')->with('message', 'Successfully Saved!!');
    }
    
    public function saveTrainingWorkOJT(){
+
+   		$start_date=Input::get('start_date').' '.Input::get('start_month').' '.Input::get('start_year');
+		$timestamp = strtotime($start_date);
+		$start_date =date('Y-m-d', $timestamp);
+
+		$end_date=Input::get('end_date').' '.Input::get('end_month').' '.Input::get('end_year');
+		$timestamp = strtotime($end_date);
+		$end_date =date('Y-m-d', $timestamp);
 	   //pdf upload
 		if($file = Input::file('pdf')){
 		$destinationPath = 'files/TrainingWorkshopOJT';
@@ -485,26 +506,29 @@ class QualificationController extends \BaseController {
 		//pdf upload end  
 		DB::table('qualification_training_ojt')->insert(array(
 		'emp_id' => Auth::user()->emp_id(),
-		'category' => Input::get('category'),
+		'category' => Input::get('category',' '),
 		//training
-		'type_of_training' => Input::get('type_of_training'),
-		'training_course' => Input::get('training_course'),
-		'subject' => Input::get('subject'),
+		'type_of_training' => Input::get('type_of_training',' '),
+		'training_course' => Input::get('training_course',' '),
+		'subject' => Input::get('subject',' '),
 		//ojt
-		'training_task' => Input::get('training_task'),
+		'training_task' => Input::get('training_task',' '),
 		//workshop
-		'topic' => Input::get('topic'),		
+		'topic' => Input::get('topic',' '),		
 		
-		'major_area' => Input::get('major_area'),
-		'instructor' => Input::get('instructor'),
-		'institute' =>Input::get('institute') ,
-		'location' => Input::get('location'),			
-		'proof' => Input::get('proof'),	
-		'certification' => Input::get('certification'),	
+		'major_area' => Input::get('major_area',' '),
+		'instructor' => Input::get('instructor',' '),
+		'institute' =>Input::get('institute',' ') ,
+		'location' => Input::get('location',' '),			
+		'proof' => Input::get('proof',' '),	
+		'certification' => Input::get('certification',' '),	
+		'start_date' => $start_date,	
+		'end_date' => $end_date,
 		'pdf' => $filename,	
-		'duration' => Input::get('duration'),			
-		'created_at' => time(),
-		'updated_at' =>time()		
+		'verify' =>'1',
+		//'duration' => Input::get('duration',' '),			
+		'created_at' =>date('Y-m-d H:i:s'),
+		'updated_at' =>date('Y-m-d H:i:s')	
 		));
 	    return Redirect::to('qualification/taining_work_ojt')->with('message', 'Successfully Saved!!');
    }
@@ -512,13 +536,14 @@ class QualificationController extends \BaseController {
 	   DB::table('qualification_language')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
 	  // 'mother_tounge' =>Input::get('mother_tounge'),
-	   'language' =>Input::get('language'),
-	   'lang_speak' =>Input::get('lang_speak'),
-	   'lang_understanding' =>Input::get('lang_understanding'),
-	   'lang_reading' =>Input::get('lang_reading'),
-	   'lang_writing' =>Input::get('lang_writing'),	   
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'language' =>Input::get('language',' '),
+	   'lang_speak' =>Input::get('lang_speak',' '),
+	   'lang_understanding' =>Input::get('lang_understanding',' '),
+	   'lang_reading' =>Input::get('lang_reading',' '),
+	   'lang_writing' =>Input::get('lang_writing',' '),	  
+	   'verify' =>'1', 
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')
 	   ));
 	   return Redirect::to('qualification/language')->with('message', 'Successfully Saved!!');
    }
@@ -526,18 +551,19 @@ class QualificationController extends \BaseController {
 	 
 	   DB::table('qualification_technical_licence')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
-	   'active' =>Input::get('active'),
-	   'licence_no' =>Input::get('licence_no'),
-	   'licence_type' =>Input::get('licence_type'),
-	   'issue_date' =>Input::get('issue_date'),
-	   'issue_month' =>Input::get('issue_month'),
-	   'issue_year' =>Input::get('issue_year'),
-	   'expiration_date' =>Input::get('expiration_date',''),	   
-	   'expiration_month' =>Input::get('expiration_month',''),	   
-	   'expiration_year' =>Input::get('expiration_year',''),	   
-	   'rating' =>Input::get('rating',''),	   
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'active' =>Input::get('active',' '),
+	   'licence_no' =>Input::get('licence_no',' '),
+	   'licence_type' =>Input::get('licence_type',' '),
+	   'issue_date' =>Input::get('issue_date',' '),
+	   'issue_month' =>Input::get('issue_month',' '),
+	   'issue_year' =>Input::get('issue_year',' '),
+	   'expiration_date' =>Input::get('expiration_date',' '),	   
+	   'expiration_month' =>Input::get('expiration_month',' '),	   
+	   'expiration_year' =>Input::get('expiration_year',' '),	   
+	   'rating' =>Input::get('rating',' '),	   
+	   'verify' =>'1',
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
 	   return Redirect::to('qualification/technical_licence')->with('message', 'Successfully Saved!!');
    }
@@ -557,21 +583,22 @@ class QualificationController extends \BaseController {
 		DB::table('qualification_aircraft')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
 	   'active' =>Input::get('active'),
-	   'qualification_type' =>Input::get('qualification_type'),
-	   'total_hours' =>Input::get('total_hours'),
-	   'aircraft_mm' =>Input::get('aircraft_mm'),
-	   'aircraft_msm' =>Input::get('aircraft_msm'),
-	   'completion_date' =>Input::get('completion_date'),
-	   'completion_month' =>Input::get('completion_month'),	   
-	   'completion_year' =>Input::get('completion_year'),	   
-	   'status' =>Input::get('status'),	   
-	   'institute' =>Input::get('institute'),	  
-	   'instructor' =>Input::get('instructor'),	  
-	   'proof' =>Input::get('proof'),	  
+	   'qualification_type' =>Input::get('qualification_type',' '),
+	   'total_hours' =>Input::get('total_hours',' '),
+	   'aircraft_mm' =>Input::get('aircraft_mm',' '),
+	   'aircraft_msm' =>Input::get('aircraft_msm',' '),
+	   'completion_date' =>Input::get('completion_date',' '),
+	   'completion_month' =>Input::get('completion_month',' '),	   
+	   'completion_year' =>Input::get('completion_year',' '),	   
+	   //'status' =>Input::get('status',' '),	   
+	   'institute' =>Input::get('institute',' '),	  
+	   'instructor' =>Input::get('instructor',' '),	  
+	   'proof' =>Input::get('proof',' '),	  
 	   'pdf' =>$filename,	  
-	   'certification' =>Input::get('certification'),	  
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'verify' =>'1',
+	  // 'certification' =>Input::get('certification',' '),	  
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
 	   return Redirect::to('qualification/aircraft_qualification')->with('message', 'Successfully Saved!!');
    }
@@ -579,66 +606,70 @@ class QualificationController extends \BaseController {
 	  
 	   DB::table('qualification_reference')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
-	   'referee_type' =>Input::get('referee_type'),
-	   'name' =>Input::get('name'),
-	   'designation' =>Input::get('designation'),
-	   'address' =>Input::get('address'),
-	   'telephone' =>Input::get('telephone'),
-	   'years_acquainted' =>Input::get('years_acquainted'),
-	   'email_address' =>Input::get('email_address'),	   
+	   'referee_type' =>Input::get('referee_type',' '),
+	   'name' =>Input::get('name',' '),
+	   'designation' =>Input::get('designation',' '),
+	   'address' =>Input::get('address',' '),
+	   'telephone' =>Input::get('telephone',' '),
+	   'years_acquainted' =>Input::get('years_acquainted',' '),
+	   'email_address' =>Input::get('email_address',' '),	   
 	   //'completion_year' =>Input::get('completion_year'),	   
-	   'may_we_request' =>Input::get('may_we_request'), 
+	   'may_we_request' =>Input::get('may_we_request',' '), 
+	   'verify' =>'1',
 	   //'certification' =>Input::get('certification'),	  
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')
 	   ));
-	   return Redirect::to('qualification/reference')->with('message', 'Successfully Saved!!');
+	   return Redirect::back()->with('message', 'Successfully Saved!!');
    }
    public function EmpVerification(){
 	  
 	    DB::table('qualification_employee_verification')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
-	   'name' =>Input::get('name'),
-	   'entry_date' =>Input::get('entry_date'),
-	   'entry_month' =>Input::get('entry_month'),
-	   'entry_year' =>Input::get('entry_year'),
-	   'active' =>Input::get('active'),
-	   'termination_date' =>Input::get('termination_date'),
-	   'termination_month' =>Input::get('termination_month'),
-	   'termination_year' =>Input::get('termination_year'),
-	   'position' =>Input::get('position'),
-	   'assigned_task' =>Input::get('assigned_task'),	     
-	   'assigned_by' =>Input::get('assigned_by'),	     
-	   'note' =>Input::get('note'),	     
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'name' =>Input::get('name',' '),
+	   'entry_date' =>Input::get('entry_date',' '),
+	   'entry_month' =>Input::get('entry_month',' '),
+	   'entry_year' =>Input::get('entry_year',' '),
+	   'active' =>Input::get('active',' '),
+	   'termination_date' =>Input::get('termination_date',' '),
+	   'termination_month' =>Input::get('termination_month',' '),
+	   'termination_year' =>Input::get('termination_year',' '),
+	   'position' =>Input::get('position',' '),
+	   'assigned_task' =>Input::get('assigned_task',' '),	     
+	   'assigned_by' =>Input::get('assigned_by',' '),	     
+	   'note' =>Input::get('note',' '),	  
+	   'verify' =>'1',   
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')
 	   ));
 	  return Redirect::to('qualification/emp_verification')->with('message', 'Successfully Saved!!');
    }
    public function savePublication(){
 	   DB::table('qualification_others_publication')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
-	   'title' =>Input::get('title'),
-	   'description' =>Input::get('description'),     
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'title' =>Input::get('title',' '),
+	   'description' =>Input::get('description',' '),  
+	   'verify' =>'1',   
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
 	  return Redirect::to('qualification/other')->with('message', 'Successfully Saved!!');
    } 
    public function saveMembership(){
 	   DB::table('qualification_others_membership')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
-	   'title' =>Input::get('title'),
-	   'description' =>Input::get('description'),     
-	   'created_at' => time(),
-	   'updated_at' =>time()	
+	   'title' =>Input::get('title',' '),
+	   'description' =>Input::get('description',' '),   
+	   'verify' =>'1',  
+	   'created_at' =>date('Y-m-d H:i:s'),
+	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
 	  return Redirect::to('qualification/other')->with('message', 'Successfully Saved!!');
    }
    /******************Start Update Area **********************/
    public function updateAccademic(){
 	   $id= Input::get('id');
-		
+		$certificate=parent::updateFileUpload('old_certificate','certificate','employee');	
 		DB::table('qualification_edu_accademic')
             ->where('id', $id)
             ->update(array(
@@ -650,8 +681,9 @@ class QualificationController extends \BaseController {
 				'pussing_year' => Input::get('pussing_year'),
 				'standard' => Input::get('standard'),
 				'grade_division' => Input::get('grade_division'),
+				'certificate' =>$certificate,
 				'out_of' => Input::get('out_of',false),		
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 			
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -667,7 +699,7 @@ class QualificationController extends \BaseController {
 				'title' => Input::get('title'),
 				'institute' =>Input::get('institute') ,
 				'duration' => Input::get('duration'),
-				'updated_at' =>time()
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 			
  	return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -690,7 +722,7 @@ class QualificationController extends \BaseController {
 				'end_year' => Input::get('end_year'),	
 				'supervisor_name' => Input::get('supervisor_name'),	
 				'supervisor_phone' => Input::get('supervisor_phone'),	
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
    }
@@ -705,12 +737,21 @@ class QualificationController extends \BaseController {
 				'pro_degree_grade' =>Input::get('pro_degree_grade') ,
 				'pro_degree_major_area' => Input::get('pro_degree_major_area'),
 				'pro_degree_year' => Input::get('pro_degree_year'),	
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
    }
   public function updateTrainingWorkOJT(){
 		
+		$start_date=Input::get('start_date').' '.Input::get('start_month').' '.Input::get('start_year');
+		$timestamp = strtotime($start_date);
+		$start_date =date('Y-m-d', $timestamp);
+
+		$end_date=Input::get('end_date').' '.Input::get('end_month').' '.Input::get('end_year');
+		$timestamp = strtotime($end_date);
+		$end_date =date('Y-m-d', $timestamp);
+
+
 	   //pdf upload
 		$old_file=Input::get('old_file');
 		if($file = Input::file('pdf')){
@@ -744,9 +785,11 @@ class QualificationController extends \BaseController {
 				'location' => Input::get('location'),			
 				'proof' => Input::get('proof'),	
 				'certification' => Input::get('certification'),	
+				'start_date' => $start_date,	
+				'end_date' => $end_date,	
 				'pdf' => $filename,	
-				'duration' => Input::get('duration'),
-				'updated_at' =>time()	
+				//'duration' => Input::get('duration'),
+				'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
   }
@@ -760,7 +803,7 @@ class QualificationController extends \BaseController {
 			   'lang_understanding' =>Input::get('lang_understanding'),
 			   'lang_reading' =>Input::get('lang_reading'),
 			   'lang_writing' =>Input::get('lang_writing'),	
-			   'updated_at' =>time()	
+			   'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -780,7 +823,7 @@ class QualificationController extends \BaseController {
 			   'expiration_month' =>Input::get('expiration_month'),	   
 			   'expiration_year' =>Input::get('expiration_year'),	   
 			   'rating' =>Input::get('rating'),	
-			   'updated_at' =>time()	
+			   'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -812,13 +855,13 @@ class QualificationController extends \BaseController {
 			   'completion_date' =>Input::get('completion_date'),
 			   'completion_month' =>Input::get('completion_month'),	   
 			   'completion_year' =>Input::get('completion_year'),	   
-			   'status' =>Input::get('status'),	   
+			   //'status' =>Input::get('status'),	   
 			   'institute' =>Input::get('institute'),	  
 			   'instructor' =>Input::get('instructor'),	  
 			   'proof' =>Input::get('proof'),	  
 			   'pdf' =>$filename,	  
-			   'certification' =>Input::get('certification'),	
-			   'updated_at' =>time()	
+			  // 'certification' =>Input::get('certification'),	
+			   'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -836,7 +879,7 @@ class QualificationController extends \BaseController {
 			   'years_acquainted' =>Input::get('years_acquainted'),
 			   'email_address' =>Input::get('email_address'),	    
 			   'may_we_request' =>Input::get('may_we_request'), 
-			   'updated_at' =>time()	
+			   'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -858,7 +901,7 @@ class QualificationController extends \BaseController {
 			   'assigned_task' =>Input::get('assigned_task'),
 			   'assigned_by' =>Input::get('assigned_by'),
 			   'note' =>Input::get('note'),	
-			   'updated_at' =>time()	
+			   'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -870,7 +913,7 @@ class QualificationController extends \BaseController {
             ->update(array(
 			  'title' =>Input::get('title'),
 			  'description' =>Input::get('description'), 
-			  'updated_at' =>time()	
+			  'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -882,7 +925,7 @@ class QualificationController extends \BaseController {
             ->update(array(
 			  'title' =>Input::get('title'),
 			  'description' =>Input::get('description'), 
-			  'updated_at' =>time()	
+			  'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 	  
@@ -956,14 +999,27 @@ class QualificationController extends \BaseController {
 		}
    /******************End Delete Area **********************/
    /******************Approve data **********************/
-   public function approve($table,$id){
+   public function approve($table,$id,$pageId=''){
+   	$pageId=$id;
 	     DB::table($table)
             ->where('id',$id)
             ->update(array(
 			   'verify' =>'1',
-			   'updated_at' =>time()	
+			   'updated_at'=>date('Y-m-d H:i:s')
 			));
-	   return Redirect::back()->with('message', 'Data Approved !!');
+	  // return Redirect::back()->with('message', 'Data Approved !!');
+	    return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Approval Info Updated!!');
+   } 
+   public function notApprove($table,$id,$pageId=''){
+   	$pageId=$id;
+	     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+			   'verify' =>'0',
+			   'updated_at'=>date('Y-m-d H:i:s')
+			));
+	   //return Redirect::back()->with('message', 'Data Approved !!');
+	    return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Approval Info Updated!!');
    }
    /******************End Approve data **********************/
 	

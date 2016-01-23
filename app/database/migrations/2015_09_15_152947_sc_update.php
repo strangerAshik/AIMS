@@ -18,22 +18,23 @@ class ScUpdate extends Migration {
 			
 			
 			$table->string('safety_issue_number');
+			$table->string('title');
 			$table->string('sia_number');
 			
 			
 			$table->string('finding_number');
-			$table->string('inspector_observation',2000);
-			$table->string('safety_concern',2000);
+			$table->longText('inspector_observation',2000);
+			$table->longText('safety_concern',2000);
 			$table->string('sc_critical_element');
 			$table->string('sc_area');
-			$table->string('witness_statement',2000);
+			$table->longText('witness_statement',2000);
 			$table->string('upload_evidence');
 			$table->string('upload_checklist');
-			$table->string('question',2000);
-			$table->string('answer',2000);
+			$table->longText('question',2000);
+			$table->longText('answer',2000);
 			$table->string('type_of_concern');
 			$table->string('type_of_issue');
-			$table->string('best_practice',2000);
+			$table->longText('best_practice',2000);
 			$table->string('poi_or_responsible');
 			$table->string('assigned_inspector');
 			$table->string('issue_finding_date');
@@ -44,7 +45,7 @@ class ScUpdate extends Migration {
 			$table->string('aircraft_rgistration_number');
 			$table->string('corrective_priority');
 			$table->string('target_date');
-			$table->string('risk_statement',2000);
+			$table->longText('risk_statement',2000);
 			$table->string('risk_Probability');
 			$table->string('risk_severity');
 			$table->string('cvr_statement');

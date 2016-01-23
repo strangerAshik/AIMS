@@ -8,6 +8,8 @@
                                     <h3 class="box-title">Follow Up</h3>
                                    
                                 </div>
+                                 @include('common')
+                                    @yield('print')     
                                 <div class="box-body chat" >
                                     <!-- chat item -->
 									@foreach($folloUpInfos as $followUp)

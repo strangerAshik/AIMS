@@ -9,7 +9,35 @@ Action Entry landing page,
 
 
 						<div class="row">
-                         @if('true'==CommonFunction::hasPermission('sia_my',Auth::user()->emp_id(),'access'))
+                         @if('true'==CommonFunction::hasPermission('sia_board',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
+                            <!-- small box -->
+                        <div class="small-box bg-aqua " >
+                            <div class="inner">
+                                <h4 style='font-weight:bold;'>SIA Board</h4>
+                            </div>
+                            
+                            <a class="small-box-footer" href="{{URL::to('surveillance/siaBoard');}}">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                        </div>
+                        @endif
+                         @if('true'==CommonFunction::hasPermission('my_sia',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
+                            <!-- small box -->
+                        <div class="small-box bg-aqua " >
+                            <div class="inner">
+                                <h4 style='font-weight:bold;'>Service Provider SIA</h4>
+                            </div>
+                            
+                            <a class="small-box-footer" href="{{URL::to('surveillance/mySia');}}">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                        </div>
+                        @endif
+                         @if('true'==CommonFunction::hasPermission('sia_inspector_associate_sia',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
@@ -17,7 +45,7 @@ Action Entry landing page,
                                 <h4 style='font-weight:bold;'>My SIA</h4>
                             </div>
                             
-                            <a class="small-box-footer" href="{{URL::to('surveillance/mySia');}}">
+                            <a class="small-box-footer" href="{{URL::to('surveillance/singleInspectorSia');}}">
                                 More info <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>
@@ -53,7 +81,7 @@ Action Entry landing page,
                         </div> 
                         @endif
 
-                         @if('true'==CommonFunction::hasPermission('sia_action',Auth::user()->emp_id(),'access'))
+                         @if('true'==CommonFunction::hasPermission('execute_sia_program',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
@@ -85,7 +113,7 @@ Action Entry landing page,
 
                        
 
-                        @if('true'==CommonFunction::hasPermission('sia_action_list',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('executed_sia_programs',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
@@ -99,8 +127,24 @@ Action Entry landing page,
                         </div>
                         </div><!-- ./col -->
                         @endif
+                        @if('true'==CommonFunction::hasPermission('sc_safety_concerns_list',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua " >
+                                <div class="inner">
+                                    <h4 style='font-weight:bold;'> Safety Concerns List</h4>
+                                    
+                                </div>
+                              
+                                <a class="small-box-footer" href="{{URL::to('safety/issuedList')}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                        @endif
+            
 
-                        @if('true'==CommonFunction::hasPermission('sia_action_list',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('sia_central_search',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
 						<div class="small-box bg-aqua " >
@@ -117,8 +161,7 @@ Action Entry landing page,
 
                      
 
-                        @if('true'==CommonFunction::hasPermission('
-surveillance_inspection_audit',Auth::user()->emp_id(),'report'))
+                     @if('true'==CommonFunction::hasPermission('sia_report',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-12 col-md-3 col-sm-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua" >
@@ -132,7 +175,8 @@ surveillance_inspection_audit',Auth::user()->emp_id(),'report'))
                                 </a>
                             </div>
                         </div><!-- ./col -->
-                        @endif
+                     @endif
+                      
                        
                     </div>
                     <div>

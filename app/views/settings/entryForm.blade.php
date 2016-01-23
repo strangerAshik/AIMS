@@ -13,11 +13,20 @@
 				{{Form::open(array('url'=>'saveModule','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 
 				
+                    <div class="form-group required">
+                                           
+                                            {{Form::label('label','Label', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-7">
+                                            {{Form::text('label','', array('class' => 'form-control','placeholder'=>'Module Name: Label','required'=>''))}}
+                                            </div>
+                                            
+                    </div>
+                    
 					<div class="form-group required">
                                            
 											{{Form::label('module_name','Module Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-7">
-											{{Form::text('module_name','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('module_name','', array('class' => 'form-control','placeholder'=>'use _ among the words','required'=>''))}}
 											</div>
 											
                     </div>
@@ -88,14 +97,22 @@
                                         
                                             {{Form::label('designation', 'Designation', array('class' => 'col-xs-4 control-label'))}}
                                             <div class="col-xs-6">
-                                             <?php $roles=CommonFunction::listsOfColumn('users','role'); ?>
-                                            <select id="designation" name='designation' class="demo-default" placeholder="Select  Designation...">
-                                                <option value="">Select  Designation...</option>
-                                                @foreach($roles as $role)
-                                                <option value="{{$role}}">{{$role}}</option>
-                                                @endforeach
-                                            </select>
-                                            
+                                            <?php $options=array(
+                                                ''=>'--Select Role For This System--',
+
+                                                'DB Admin'=>'DB Admin',
+                                                'Chief Admin'=>'Chief Admin',
+                                                'Inspector OPS,Airworthiness'=>'Inspector OPS,Airworthiness',
+                                                'Inspector ANS-AGA'=>'Inspector ANS-AGA',
+                                                'Inspector Legal'=>'Inspector Legal',
+                                                'ITS Manager'=>'ITS Manager',                                                
+                                                'Voluntary Reporting Manager'=>'Voluntary Reporting Manager',
+                                                'Program Manager'=>'Program Manager',
+                                                'Service Provider-AOC'=>'Service Provider-AOC',
+                                                'Service Provider-Airport'=>'Service Provider-Airport',
+                                                'Employee'=>'Employee',
+                                            );?>
+                                            {{Form::select('designation', $options ,' ' ,array('class'=>'form-control'))}}
                                             </div>
                                             
                     </div>
@@ -105,10 +122,10 @@
                                         
                                             {{Form::label('organization', 'Organization', array('class' => 'col-xs-4 control-label'))}}
                                         <div class="col-xs-6">
-                                            
+                                            <?php $options=CommonFunction::getOptions('organization_all');?>
                                             <select id="organization" name='organization' class="demo-default" placeholder="Select  Organization...">
                                                 <option value="">Select  Organization...</option>
-                                                @foreach($organizations as $organization)
+                                                @foreach($options as $organization)
                                                 <option value="{{$organization}}">{{$organization}}</option>
                                                 @endforeach
                                             </select>
@@ -117,31 +134,7 @@
                                             
                                     
                                             
-                    </div>
-                <div style="display: none">  {{$num=0;}}</div>
-                    @foreach ($modules as $module) 
-                    <div class='form-group'>
-                    {{Form::label('module',++$num.' ) '.$module, array('class' => 'col-xs-4 control-label'))}}
-                    <div class="col-xs-8">                    
-                    {{Form::hidden($module.'_'.'access', 'false')}}
-                    {{Form::checkbox($module.'_'.'access', 'true', false)}}Access</br>
-                    {{Form::hidden($module.'_'.'entry', 'false')}}
-                    {{Form::checkbox($module.'_'.'entry', 'true', false)}}Entry</br>
-                    {{Form::hidden($module.'_'.'update', 'false')}}
-                    {{Form::checkbox($module.'_'.'update', 'true', false)}}Edit</br>
-                    {{Form::hidden($module.'_'.'approve', 'false')}}
-                    {{Form::checkbox($module.'_'.'approve', 'true', false)}}Approve</br>
-                    {{Form::hidden($module.'_'.'worning', 'false')}}
-                    {{Form::checkbox($module.'_'.'worning', 'true', false)}}Worning</br>
-                    {{Form::hidden($module.'_'.'sof_delete', 'false')}}
-                    {{Form::checkbox($module.'_'.'sof_delete', 'true', false)}}S.D</br>
-                    {{Form::hidden($module.'_'.'par_delete', 'false')}}
-                    {{Form::checkbox($module.'_'.'par_delete', 'true', false)}}P.D</br>
-                    {{Form::hidden($module.'_'.'report', 'false')}}
-                    {{Form::checkbox($module.'_'.'report', 'true', false)}}Report</br>
-                    </div>
-                    </div>
-                    @endforeach
+                    </div>               
                     
                 
                     <div class="form-group required">
@@ -178,16 +171,18 @@
 $(document).ready(function(){
 //$('#organization').selectize();
 $('#organization').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
-$('#designation').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+//$('#designation').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 //$('#').selectize();
     
 });
 </script>
 @endif
 @stop
-@section('changePass')
 
+@if($PageName=='My Profile'||$PageName=='Single User')
+@section('changePass')
 <!-- User Settings-->
+@foreach($userInfos as $info)
 <div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -203,7 +198,7 @@ $('#designation').selectize({ create: true, sortField: {field: 'text',direction:
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
                
-                {{Form::open(array('url' => 'changePassword', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+                {{Form::open(array('url' => 'changePasswordIndividual/'.$info->emp_id, 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
                         
                     
                     <div class="form-group required">
@@ -235,5 +230,7 @@ $('#designation').selectize({ create: true, sortField: {field: 'text',direction:
     </div>
     </div>
     </div>
+    @endforeach
 <!--End User Settings-->
 @stop
+@endif

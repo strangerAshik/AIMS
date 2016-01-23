@@ -2,7 +2,7 @@
 
 @section('content')
 
- <section class="content" style="max-width:760px;margin:0 auto;">
+ <section class="content contentWidth">
 
                     <div class="row">
 
@@ -30,7 +30,7 @@
 
                                             <th colspan='2'>Previous Employment #{{++$a_sl}}
 
-											<a href="{{'deleteEmployment/'.$info->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
+											<a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteEmployment/'.$info->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
 
 											
 
@@ -192,7 +192,7 @@
 
                                             <td>
 
-												Date of Terminating:
+												Date of posting/ release:
 
 											</td>
 
@@ -414,7 +414,7 @@
 
 												
 
-													{{Form::label('end_date', 'End Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('end_date', 'Date of posting / Release', array('class' => 'col-xs-4 control-label'))}}
 
 												
 
@@ -680,7 +680,7 @@
 
 												
 
-													{{Form::label('end_date', 'End Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('end_date', 'Date of posting / Release', array('class' => 'col-xs-4 control-label'))}}
 
 												
 

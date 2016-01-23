@@ -30,291 +30,9 @@ Route::get('layoutTable',function(){
 
 });
 
-Route::get('test', function()
 
-{
+Route::get('permission/{emp_id}','SettingsController@permission');
 
-    $role = Auth::user()->Role();
-
-	return View::make('test')
-
-			->with('role',$role)
-
-			
-
-	;
-
- 
-
-    
-
-});
-
-Route::get('permission','SettingsController@permission');
-
-Route::get('roleInit', function()
-
-{
-
-//ROll define   
-
-    $cAdmin = new Role();
-
-    $cAdmin->role_name = 'Chief Admin';
-
-    $cAdmin->save();
-
- 
-
-    $admin = new Role();
-
-    $admin->role_name = 'Admin';
-
-    $admin->save();
-
-	
-
-	$dAdmin=new Role();
-
-	$dAdmin->role_name='Deputy Admin';
-
-	$dAdmin->save();
-
-	
-
-	$inspector=new Role();
-
-	$inspector->role_name='Inspector';
-
-	$inspector->save();
-
-	
-
-	$org=new Role();
-
-	$org->role_name='Organization';
-
-	$org->save();
-
-	
-
-	$executive=new Role();
-
-	$executive->role_name='Executive';
-
-	$executive->save();
-
-	
-
-	$user=new Role();
-
-	$user->role_name='User';
-
-	$user->save();
-
-	
-
-	$visitor=new Role();
-
-	$visitor->role_name='visitor';
-
-	$visitor->save();
-
-//End Roll Define
-
-
-
-//Permission define
-
- 
-
-    $read = new Permission();
-
-    $read->name = 'can_read';
-
-    $read->display_name = 'Can Read ';
-
-    $read->save();
-
-	
-
-	$write = new Permission();
-
-    $write->name = 'can_write';
-
-    $write->display_name = 'Can write';
-
-    $write->save();
-
- 
-
-    $edit = new Permission();
-
-    $edit->name = 'can_edit';
-
-    $edit->display_name = 'Can Update';
-
-    $edit->save();
-
-	
-
-	$softDelete = new Permission();
-
-    $softDelete->name = 'can_soft_delete';
-
-    $softDelete->display_name = 'Can Soft Delete';
-
-    $softDelete->save();
-
-	
-
-	$delete = new Permission();
-
-    $delete->name = 'can_delete';
-
-    $delete->display_name = 'Can Delete';
-
-    $delete->save();
-
- //End Permission 
-
- //chief Admin power
-
-    $cAdmin->attachPermission($read);
-
-    $cAdmin->attachPermission($write);
-
-    $cAdmin->attachPermission($edit);
-
-    $cAdmin->attachPermission($softDelete);
-
-    $cAdmin->attachPermission($delete);
-
-//End chief Admin Power
-
-// Admin power
-
-    $admin->attachPermission($read);
-
-    $admin->attachPermission($write);
-
-    $admin->attachPermission($edit);
-
-    $admin->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End  Admin Power
-
-//Deputy Admin power
-
-    $dAdmin->attachPermission($read);
-
-    $dAdmin->attachPermission($write);
-
-    $dAdmin->attachPermission($edit);
-
-    $dAdmin->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End  Deputy Admin Power
-
-//Inspector power
-
-    $inspector->attachPermission($read);
-
-    $inspector->attachPermission($write);
-
-    //$inspector->attachPermission($edit);
-
-   // $inspector->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End Inspector Power
-
-//ORG power
-
-    $org->attachPermission($read);
-
-    $org->attachPermission($write);
-
-    $org->attachPermission($edit);
-
-   // $inspector->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End ORG Power
-
-//executive power
-
-    $executive->attachPermission($read);
-
-    //$executive->attachPermission($write);
-
-   // $executive->attachPermission($edit);
-
-   // $inspector->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End executive Power
-
-	
-
-//User power
-
-    $user->attachPermission($read);
-
-    //$executive->attachPermission($write);
-
-   // $executive->attachPermission($edit);
-
-   // $inspector->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End User Power
-
-//Visitor power
-
-    $user->attachPermission($read);
-
-    //$executive->attachPermission($write);
-
-   // $executive->attachPermission($edit);
-
-   // $inspector->attachPermission($softDelete);
-
-   // $cAdmin->attachPermission($delete);
-
-//End Visitor Power
-
-	
-
-  
-
- 
-
-    $user1 = User::find(1);
-
-    //$user2 = User::find(2);
-
- 
-
-    $user1->attachRole($cAdmin);
-
-   // $user2->attachRole($admin);
-
- 
-
-    return 'Woohoo!';
-
-});
-
-//End Role Initialization 
 
 Route::get('login',function(){
 
@@ -390,7 +108,7 @@ Route::group(array('before'=>'auth'),function(){
 
 	Route::post('user/delete','SettingsController@delete');
 
-	Route::post('changePassword','SettingsController@changePassword');
+	
 
 	Route::get('myProfile','SettingsController@myProfile');
 
@@ -416,6 +134,37 @@ Route::group(array('before'=>'auth'),function(){
 
 	Route::post('saveQuestion','SettingsController@saveQuestion');
 
+	//not in use
+	Route::post('changePassword','SettingsController@changePassword');
+	//in use
+	Route::get('changeAllPassword','SettingsController@changeAllPassword');
+	Route::post('changePasswordIndividual/{id}','SettingsController@changePasswordIndividual');
+	
+	Route::get('permissionUpdate','SettingsController@permissionUpdate');
+
+});
+Route::group(array('before'=>'auth'),function(){
+//approve
+
+	Route::get('approve/{table}/{id}/{pageId}','BaseController@approve');
+
+	Route::get('notApprove/{table}/{id}/{pageId}','BaseController@notApprove');
+
+	//warning
+
+	Route::get('warning/{table}/{id}/{pageId}','BaseController@warning');
+
+	Route::get('removeWarning/{table}/{id}/{pageId}','BaseController@removeWarning');
+
+	//soft delete
+
+	Route::get('softDelete/{table}/{id}/{pageId}','BaseController@softDelete');
+
+	Route::get('undoSoftDelete/{table}/{id}/{pageId}','BaseController@undoSoftDelete');
+
+	//permanent delete 
+
+	Route::get('permanentDelete/{table}/{id}/{pageId}','BaseController@permanentDelete');
 });
 
 Route::group(array('prefix' => 'aircraft','before'=>'auth'),function(){
@@ -475,6 +224,7 @@ Route::group(array('prefix' => 'aircraft','before'=>'auth'),function(){
 	Route::get('new_aircraft','AircraftController@addNewAircraft');
 
 	Route::get('aircraftList','AircraftController@aircraftList');
+	Route::get('myAircraftList','AircraftController@myAircraftList');
 
 	//approve
 
@@ -509,8 +259,6 @@ Route::group(array('prefix' => 'aircraft','before'=>'auth'),function(){
 Route::group(array('prefix' => 'qualification','before'=>'auth'), function()
 
 {
-
-	
 
 	Route::get('employees','QualificationController@employees'); 
 
@@ -631,20 +379,11 @@ Route::group(array('prefix' => 'qualification','before'=>'auth'), function()
 	//Approve Data
 
 	Route::get('approve/{table}/{id}','QualificationController@approve');
+	Route::get('notApprove/{table}/{id}','QualificationController@notApprove');
 
 	//report
 	Route::get('report','QualificationController@report');
 	Route::get('reportByDateToDate','QualificationController@reportByDateToDate');
-
-
-	
-
-	
-
-
-
-	
-
 
 
 });
@@ -943,13 +682,16 @@ Route::group(array('prefix'=>'organization','before'=>'auth'),function(){
 	Route::post('saveOrgDocument','organizationController@saveOrgDocument');
 
 
+});
+/*Certification ogr routes*/
+Route::group(array('prefix'=>'certification','before'=>'auth'),function(){
 
-	
-
-
-
-	
-
+	Route::get('certificationMain','CertificationController@certificationMain');
+	Route::get('mycertification','CertificationController@mycertification');
+	Route::get('singleCertification/{cerNo}','CertificationController@singleCertification');
+	Route::get('singleDocs/{docNo}','CertificationController@singleDocs');
+	Route::get('singleFinding/{FN}','CertificationController@singleFinding');
+	Route::get('followup/{cerNo}','CertificationController@followup');
 });
 
 /*Action Entry */
@@ -978,6 +720,9 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 
 	Route::post('updateAction','SurveillanceController@updateAction');
 
+	Route::post('saveSms','SurveillanceController@saveSms');
+	Route::post('updateSms','SurveillanceController@updateSms');
+
 	Route::get('surveillanceList','SurveillanceController@surveillanceList');
 
 	Route::get('actionListDateToDate','SurveillanceController@actionListDateToDate');
@@ -993,7 +738,8 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 
 	Route::get('singleProgram/{sia_number}','SurveillanceController@singleProgram');
 
-	Route::get('correctiveAction/{sia_number}','SurveillanceController@correctiveAction');
+	Route::get('correctiveAction/{sia_number}/{id?}','SurveillanceController@correctiveAction');
+	//Route::get('correctiveAction/{sia_number}/{id}','SurveillanceController@correctiveAction');
 
 	Route::get('followUp/{sia_number}','SurveillanceController@followUp');
 
@@ -1019,8 +765,24 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 
 	Route::get('centralSearch','SurveillanceController@centralSearch');
 	
-	Route::get('mySia','SurveillanceController@mySia');
+	Route::get('mySia','SurveillanceController@mySia');	
 	Route::get('mySiaListDateToDate','SurveillanceController@mySiaListDateToDate');
+
+	Route::get('singleInspectorSia','SurveillanceController@singleInspectorSia');
+	Route::get('singleInspectorSiaDateToDate','SurveillanceController@singleInspectorSiaDateToDate');
+	
+	Route::get('siaBoard','SurveillanceController@siaBoard');
+
+	//notification of sia
+
+	Route::get('executionDateExceed','SurveillanceController@executionDateExceed');
+	Route::get('findingTargetTimeExceed','SurveillanceController@findingTargetTimeExceed');
+	Route::get('scTargetTimeExceed','SurveillanceController@scTargetTimeExceed');
+	Route::get('siaAprovalWaiting','SurveillanceController@siaAprovalWaiting');
+	Route::get('scAprovalWaiting','SurveillanceController@scAprovalWaiting');
+	Route::get('edpAprovalWaiting','SurveillanceController@edpAprovalWaiting');
+
+
 
 	
 
@@ -1046,9 +808,9 @@ Route::group(array('prefix'=>'edp','before'=>'auth'),function(){
 
 	Route::post('updateApproval','edpController@updateApproval');
 
-	
-
 	Route::get('singleEdp/{edpNumber}','edpController@singleEdp');
+
+	Route::get('edpList','edpController@edpList');
 
 	});
 
@@ -1285,7 +1047,7 @@ Route::get('surveillance/findingNumbers/{siaNum}',function(){
 	$siaNum=Input::get('siaNum');
 	if(Request::ajax()){
 	//$select=array('--Select Finding Number--');
-	 $data =['0'=>'--select Finding Number--']+DB::table('sia_findings')->where('sia_number','=',$siaNum)  ->orderBy('finding_number','desc')
+	 $data =DB::table('sia_findings')->where('sia_number','=',$siaNum) 
 	                      ->lists('finding_number','id');
 	 //$data=array_merge($select,$data);
 	 return Response::json($data);
@@ -1299,7 +1061,7 @@ Route::get('surveillance/scNumbers/{siaNum}/{findingNum}',function(){
 	$findingNum=Input::get('findingNum');
 	if(Request::ajax()){
 	//$select=[{"safety_issue_number":"--Select SC number--"}];
-	 $data =['0'=>'--select Safety Concern Number--']+DB::table('sc_safety_concern')
+	 $data =DB::table('sc_safety_concern')
 	                      ->where('sia_number','=',$siaNum)
 	                      ->where('finding_number','=',$findingNum)
 	                      ->orderBy('safety_issue_number','desc')
@@ -1318,18 +1080,31 @@ Route::group(array('prefix'=>'helpFaq','before'=>'auth'),function(){
 	Route::get('main','helpFaqController@main');
 	Route::get('askQuestion','helpFaqController@askQuestion');
 	Route::get('singleQuestionAnsware/{id}','helpFaqController@singleQuestionAnsware');
-	Route::get('answaredQuestionList','helpFaqController@answaredQuestionList');
-	Route::get('pendingQuestionList','helpFaqController@pendingQuestionList');
+	
+	Route::get('faqBank','helpFaqController@faqBank');
 	Route::get('report','helpFaqController@report');
+
+	Route::post('saveQuestion','helpFaqController@saveQuestion');
+	Route::post('updateQuestion','helpFaqController@updateQuestion');
+
+	Route::post('saveAnswre','helpFaqController@saveAnswre');
+	Route::post('updateAnswre','helpFaqController@updateAnswre');
 	});
 
 //Voluntary Reporting
 
 Route::group(array('prefix'=>'voluntary','before'=>'auth'),function(){
 	Route::get('main','voluntaryReportingController@main');
+	
 	Route::get('voluntaryReportingList','voluntaryReportingController@voluntaryReportingList');
 	Route::get('singleReport/{id}','voluntaryReportingController@singleReport');
+	
+	Route::post('saveAction','voluntaryReportingController@saveAction');
+	Route::post('updateAction','voluntaryReportingController@updateAction');
+	Route::post('saveApprovalForm','voluntaryReportingController@saveApprovalForm');
+	Route::post('updateApprovalForm','voluntaryReportingController@updateApprovalForm');
 	});
+Route::post('voluntary/saveReport','voluntaryReportingController@saveReport');
 
 //ITS OJT
 
@@ -1351,6 +1126,9 @@ Route::group(array('prefix'=>'itsOjt','before'=>'auth'),function(){
 
 	Route::get('addTrainee','itsOjtController@addTrainee');
 	Route::post('saveTrainee','itsOjtController@saveTrainee');
+	Route::post('editTrainee','itsOjtController@editTrainee');
+	
+	Route::get('singleTrainee/{emp_tracker}','itsOjtController@singleTrainee');
 
 	Route::get('addTrainingOjt','itsOjtController@addTrainingOjt');
 	Route::get('individualTrainingOjt/{emp_tracker}','itsOjtController@individualTrainingOjt');
@@ -1361,9 +1139,19 @@ Route::group(array('prefix'=>'itsOjt','before'=>'auth'),function(){
 	Route::post('editUpdateFormalOjtStatus','itsOjtController@editUpdateFormalOjtStatus');
 
 	Route::get('traineeSingleOjtCourse/{course_num}/{ojt_no}/{emp_tracker}/{ojtd}','itsOjtController@trineeSingleOjtCourse');
+	Route::get('traineeSingleFormalCourse/{course_num}/{emp_tracker}','itsOjtController@traineeSingleFormalCourse');
 
 	
 	Route::get('centralSearch','itsOjtController@centralSearch');
+
+	Route::get('itsRecords','itsOjtController@itsRecords');
+	
+	});
+
+//Metting router
+
+Route::group(array('prefix'=>'meeting','before'=>'auth'),function(){
+	Route::get('calendar','meetingController@calendar');
 	
 	});
 

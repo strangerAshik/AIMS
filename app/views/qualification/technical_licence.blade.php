@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
  
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -19,7 +19,7 @@
 						{{Employee::notApproved($info)}}	
                             <tr>
                                 <th colspan='2'>LICENSE  #{{++$a_sl}}
-                                    <a href="{{'deleteTechlicence/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteTechlicence/'.$info->id}}" style='color:red;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                     <a data-toggle="modal" data-target="#{{'TL'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>

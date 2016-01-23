@@ -14,6 +14,7 @@
 				{{Form::open(array('url'=>'surveillance/updateProgram','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 				  
 				{{Form::hidden('id',$info->id)}}
+				{{Form::hidden('sia_number',$info->sia_number)}}
 					
                     <div class="form-group required">
                                            
@@ -74,6 +75,28 @@
 														</div>
 												
 	                    </div>	
+					 <div class="form-group required">
+	                                           
+												{{Form::label('date', 'End Date', array('class' => 'col-xs-4 control-label'))}}
+												
+														<div class="row">
+														<?php $date=CommonFunction::date($info->date); ?>
+															<div class="col-xs-2">
+															{{Form::select('end_date', $dates,$date,array('class'=>'form-control','required'=>''))}}
+															</div>
+														<?php $month=CommonFunction::month($info->date); ?>
+															<div class="col-xs-3">
+															{{Form::select('end_month',$months,$month,array('class'=>'form-control','required'=>''))}}
+												
+																
+															</div>
+															<?php $year=CommonFunction::year($info->date); ?>
+															<div class="col-xs-2">
+																{{Form::select('end_year',$years,$year,array('class'=>'form-control','required'=>''))}}
+															</div>
+														</div>
+												
+	                    </div>	
 						
 					<div class="form-group ">
                                            
@@ -83,12 +106,19 @@
 											</div>
 											
                     </div>
-                    
+                    <div class="form-group ">
+                                           
+											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('locationd',$info->location, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                    </div>
                     <div class="form-group ">
                                         
 											{{Form::label('team_members', 'Team Members', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											<?php $inspectors=CommonFunction::InspectorListWithID();?>
+											<?php $inspectors=CommonFunction::getInspectorListWithId();?>
 											
 											<select   id="team_members"  multiple name="team_members[]" class="demo-default" >
 												
@@ -255,6 +285,149 @@ $(document).ready(function(){
 
 
 @if($PageName=='Single Program')	
+@section('sms')
+@foreach($sms as $info)	
+<div class="modal fade" id="updateSms{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">SMS Information Update</h4>
+            </div>
+
+            <div class="modal-body">
+                <!-- The form is placed inside the body of modal -->
+               
+					{{Form::open(array('url' => 'surveillance/updateSms', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>'true'))}}
+					 {{Form::hidden('id',$info->id)}}		
+					
+                    
+
+					<div class="form-group ">
+	                                    
+											{{Form::label('hazard_identification', 'Hazard Identification', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+												{{Form::text('hazard_identification',$info->hazard_identification, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+	                </div>
+                
+	                <div class="form-group ">
+	                                           
+												{{Form::label('initial_risk','Asses Initial risk', array('class' => 'col-xs-4 control-label'))}}
+												<div class="col-xs-6">
+												{{Form::text('initial_risk',$info->initial_risk, array('class' => 'form-control','placeholder'=>''))}}
+												</div>
+												
+	                    </div>
+	           		
+	                	<div class="form-group ">
+	                                           
+												{{Form::label('determine_severity','Determine Severity', array('class' => 'col-xs-4 control-label'))}}
+												<div class="col-xs-6">
+
+												<?php $options=CommonFunction::getOptions('SIA_Determine_Severity','Select Severity');?>
+												{{Form::select('determine_severity', $options ,$info->determine_severity ,array('class'=>'form-control'))}}
+
+												</div>
+												
+	                    </div>
+               			 <div class="form-group ">
+                                           
+											{{Form::label('determine_likelyhood','Determine Likelihood', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											<?php $options=CommonFunction::getOptions('SIA_Likelihood','Select Likelihood');?>
+
+											{{Form::select('determine_likelihood', $options ,$info->determine_likelihood ,array('class'=>'form-control'))}}
+
+											</div>
+											
+                    	</div>
+
+						<div class="form-group ">
+                                       
+										{{Form::label('determine_risk','Determine risk [risk matrix] ', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+										<?php $options=CommonFunction::getOptions('SIA_Risk_Matrix','Select Risk');?>
+
+										{{Form::select('determine_risk', $options ,$info->determine_risk ,array('class'=>'form-control'))}}
+
+										
+										</div>
+										
+                		</div>
+						<div class="form-group ">
+                                    
+										{{Form::label('violation_of_safety_standard', 'Violation Of Safety Standard', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::text('violation_of_safety_standard',$info->violation_of_safety_standard, array('class' => 'form-control','placeholder'=>''))}}
+										</div>
+										
+		                </div>
+						<div class="form-group ">
+                                    
+										{{Form::label('safety_risk_management', 'Safety Risk Management', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::text('safety_risk_management',$info->safety_risk_management, array('class' => 'form-control','placeholder'=>''))}}
+										</div>
+										
+		                </div>
+		                <div class="form-group ">
+                                    
+										{{Form::label('risk_statement ', 'Final Risk Statement', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::textarea('risk_statement',$info->risk_statement, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
+										</div>
+										
+		                </div>
+						<div class="form-group ">
+                                    
+										{{Form::label('safety_performance_indicator ', 'Safety performance indicator(SPI) ', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::text('safety_performance_indicator',$info->safety_performance_indicator, array('class' => 'form-control','placeholder'=>''))}}
+										</div>
+										
+		                </div>
+						
+		                <div class="form-group ">
+                                    
+										{{Form::label('safety_performance_target ', 'Safety performance target (SPT)', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::text('safety_performance_target',$info->safety_performance_target, array('class' => 'form-control','placeholder'=>''))}}
+										</div>
+										
+		                </div>
+		                <div class="form-group ">
+                                    
+										{{Form::label('lack_of_effective_implementation', 'LEI(%)', array('class' => 'col-xs-4 control-label'))}}
+										<div class="col-xs-6">
+											{{Form::text('lack_of_effective_implementation',$info->lack_of_effective_implementation, array('class' => 'form-control','placeholder'=>''))}}
+										</div>
+										
+               			 </div>
+				
+	                  
+				
+                   
+  								
+                    <div class="form-group">
+                      
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
+					</div>
+
+					{{Form::close()}}
+            </div>
+        </div>
+    </div>
+	</div>
+	</div>
+	@endforeach
+	
+@stop
+@endif
+
+
+@if($PageName=='Single Program')	
 @section('updateAction')
 @foreach($actionDetails as $info)	
 <div class="modal fade" id="updateAction{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -270,63 +443,7 @@ $(document).ready(function(){
                
 					{{Form::open(array('url' => 'surveillance/updateAction', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>true))}}
 					 {{Form::hidden('id',$info->id)}}		
-					<div class="form-group ">
-                                        
-											{{Form::label('program_type', 'SIA Type', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											
-												{{Form::select('program_type', array(''=>'--select--','Planned'=>'Planned','Not Planned'=>'Not Planned'),$info->program_type,array('class'=>'form-control'))}}
-
-											</div>
-											
-                    </div>
-					<div class="form-group ">
-                                        
-											{{Form::label('sia_number ', 'SIA/ Tracking Number', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<?php $toDayProgram=CommonFunction::toDayProgram() ;?>
-											<select id="sia_number" onchange='setSiaNumber(this.value)' name='sia_number' class="demo-default" placeholder="Select 70000 if program type is Not Planned...">
-												<option value="{{$info->sia_number}}">{{$info->sia_number}}</option>
-												@foreach($toDayProgram as $option)
-												<option value="{{$option}}">{{$option}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
-                     <div class="form-group ">
-                                        
-											{{Form::label('team_members', 'Team Members', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											
-											<select id="team_members_"  multiple name="team_members[]" class="demo-default" >
-											@if($teamMember=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'team_members'))
-												<option value="">Select Team Lead First...</option>
-												@foreach($teamMember as $key=>$value)
-												<option selected='selected' value="{{$value}}">{{$value}}</option>
-												@endforeach
-											@endif
-											@foreach($inspectors as $inspector)
-												<option  value="{{$inspector->name.'-'.$inspector->emp_id}}">{{$inspector->name.'-'.$inspector->emp_id}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
-                    <div class="form-group ">
-                                           
-											{{Form::label('event','Type of SIA (Event)', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<?php $options=CommonFunction::getOptions('SIA_Event');?>
-											<select id="event_" name='event' class="demo-default" placeholder="Select Event Type...">
-												<option value="{{$info->event}}">{{$info->event}}</option>
-												@foreach($options as $option)
-												<option value="{{$option}}">{{$option}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
+					
                     
 
                     <div class="form-group question ">
@@ -334,7 +451,10 @@ $(document).ready(function(){
 						{{Form::label('objective', 'Objective ', array('class' => 'col-xs-4 control-label',"title"=>"Objective Defecation"))}}
 
 											<div class="col-xs-6">
-												{{Form::textarea('objective',$info->objective, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
+											<?php $options=CommonFunction::getOptions('SIA_objective');?>
+											
+											{{ Form::select('objective',$options,$info->objective, ['class' => 'demo-default','id'=>'objective','placeholder'=>'Select objective']) }}
+
 											</div>
 											
                     </div>
@@ -352,29 +472,7 @@ $(document).ready(function(){
 											</div>
 											
                     </div>
-
-                    <div class="form-group ">
-                                           
-											{{Form::label('org_name', 'Organization Name', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<?php  $options=CommonFunction::getOptions('organization_all');//$options=CommonFunction::organizations();?>
-											<select id="organizations_" name='organization' class="demo-default" placeholder="Select  Org...">
-												<option selected value="{{$info->organization}}">{{$info->organization}}</option>
-												@foreach($options as $organization)
-												<option value="{{$organization}}">{{$organization}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
-                     <div class="form-group ">
-                                        
-											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-												{{Form::text('location',$info->location, array('class' => 'form-control','placeholder'=>''))}}
-											</div>
-											
-                    </div>
+                    
                      <div class="form-group ">
 	                                           
 												{{Form::label('date', 'Date', array('class' => 'col-xs-4 control-label'))}}
@@ -411,11 +509,11 @@ $(document).ready(function(){
                                         
 											{{Form::label('flight_number', 'Flight Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-												{{Form::text('flight_number',$info->flight_number, array('class' => 'form-control','placeholder'=>''))}}
-												
-											</select>
-											</div>
+											<?php $options=SurveillanceCommon::flightNumber();?>
+
+											{{ Form::select('flight_number',$options,$info->flight_number, ['class' => 'demo-default','id'=>'flight_number','placeholder'=>'Select Or Add Flight Number']) }}	
 											
+											</div>
                     </div>
                     <div class="form-group ">
                                         
@@ -437,7 +535,7 @@ $(document).ready(function(){
                                         
 											{{Form::label('aircraft_mms', 'Aircraft MMS', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-												<?php $options=CommonFunction::listsOfColumn('sia_action','aircraft_mms');?>
+												<?php $options=CommonFunction::listsOfColumn('aircraft_primary_info','serial_number');?>
 												{{ Form::select('aircraft_mms',$options,$info->aircraft_mms , ['class' => 'demo-default','id'=>'aircraft_mms_e','placeholder'=>'Select Or Add Aircraft MMS']) }}	
 											</div>
 											
@@ -456,8 +554,10 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 					<div class="form-group ">
                                         
 											{{Form::label('pic', 'PIC', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-												{{Form::text('pic',$info->pic, array('class' => 'form-control','placeholder'=>''))}}
+										<div class="col-xs-6">
+											<?php $options=SurveillanceCommon::pilotInCommand();?>
+											{{ Form::select('pic',$options, $info->pic, ['class' => 'demo-default','id'=>'pic','placeholder'=>'Select Or Add PIC']) }}
+																						
 											</div>
 											
                     </div>
@@ -498,7 +598,18 @@ Inspected ', array('class' => 'col-xs-4 control-label'))}}
 											{{Form::label('critical_element ', 'SIA by Critical Elements ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::getOptions('SIA_Critical_Element');?>
-											{{ Form::select('critical_element',$options,$info->critical_element, ['class' => 'demo-default','id'=>'critical_element','placeholder'=>'Select Or Add CE']) }}	
+											
+											<select id="critical_element_sia"  multiple name="critical_element[]" class="demo-default" >
+												@if($areas=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'critical_element'))
+												<option value="">Select Critical Elements...</option>
+												@foreach($areas as $key=>$value)
+												<option selected='selected' value="{{$value}}">{{$value}}</option>
+												@endforeach
+												@endif
+												@foreach($options as $option)
+												<option  value="{{$option}}">{{$option}}</option>
+												@endforeach
+											</select>
 																						
 											</div>
 											
@@ -508,7 +619,6 @@ Inspected ', array('class' => 'col-xs-4 control-label'))}}
 											{{Form::label('sia_by_area ', 'SIA by Critical Area ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 												<?php $options=CommonFunction::getOptions('SIA_By_Area');?>
-											
 
 											<select id="sia_by_area"  multiple name="sia_by_area[]" class="demo-default" >
 											@if($areas=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'sia_by_area'))
@@ -516,8 +626,8 @@ Inspected ', array('class' => 'col-xs-4 control-label'))}}
 												@foreach($areas as $key=>$value)
 												<option selected='selected' value="{{$value}}">{{$value}}</option>
 												@endforeach
-											@endif
-											@foreach($options as $option)
+												@endif
+												@foreach($options as $option)
 												<option  value="{{$option}}">{{$option}}</option>
 												@endforeach
 											</select>
@@ -577,135 +687,7 @@ Inspected ', array('class' => 'col-xs-4 control-label'))}}
 									</div>
 	            </div>
 					
-<div class="form-group " style="background: #D0F4B3">
-                    <div class="form-group ">
-                                        
-											{{Form::label('', '', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-												{{Form::label('', 'SMS Area', array('class' => 'col-xs-4 control-label'))}}
-											</div>
-											
-                    </div>
-                   
-                    
-
-				<div class="form-group ">
-                                    
-										{{Form::label('hazard_identification', 'Hazard Identification', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('hazard_identification',$info->hazard_identification, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-                
-                <div class="form-group ">
-                                           
-											{{Form::label('initial_risk','Asses Initial risk', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('initial_risk',$info->initial_risk, array('class' => 'form-control','placeholder'=>''))}}
-											</div>
-											
-                    </div>
-           		
-                <div class="form-group ">
-                                           
-											{{Form::label('determine_severity','Determine Severity', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<?php $options=CommonFunction::getOptions('SIA_Determine_Severity');?>
-											<select id="determine_severity" name='determine_severity' class="demo-default" placeholder="Select ...">
-												<option selected value="{{$info->determine_severity}}">{{$info->determine_severity}}</option>
-												@foreach($options as $option)
-												<option value="{{$option}}">{{$option}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
-                <div class="form-group ">
-                                           
-											{{Form::label('determine_likelyhood','Determine Likelihood', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<?php $options=CommonFunction::getOptions('SIA_Likelihood');?>
-											<select id="determine_likelyhood" name='determine_likelihood' class="demo-default" placeholder="Select ...">
-												<option selected value="{{$info->determine_likelihood}}">{{$info->determine_likelihood}}</option>
-												@foreach($options as $option)
-												<option value="{{$option}}">{{$option}}</option>
-												@endforeach
-											</select>
-											</div>
-											
-                    </div>
-
-				<div class="form-group ">
-                                       
-										{{Form::label('determine_risk','Determine risk [risk matrix] ', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-										<?php $options=CommonFunction::getOptions('SIA_Risk_Matrix');?>
-										<select id="determination_risk" name='determine_risk' class="demo-default" placeholder="Select ...">
-											<option selected value="{{$info->determine_risk}}">{{$info->determine_risk}}</option>
-											@foreach($options as $option)
-											<option value="{{$option}}">{{$option}}</option>
-											@endforeach
-										</select>
-										</div>
-										
-                </div>
-				<div class="form-group ">
-                                    
-										{{Form::label('violation_of_safety_standard', 'Violation Of Safety Standard', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('violation_of_safety_standard',$info->violation_of_safety_standard, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-				<div class="form-group ">
-                                    
-										{{Form::label('safety_risk_management', 'Safety Risk Management', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('safety_risk_management',$info->safety_risk_management, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-                <div class="form-group ">
-                                    
-										{{Form::label('risk_statement ', 'Final Risk Statement', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::textarea('risk_statement',$info->risk_statement, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
-										</div>
-										
-                </div>
-
 				
-				 <div class="form-group ">
-                                    
-										{{Form::label('safety_performance_indicator ', 'Safety performance indicator(SPI) ', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('safety_performance_indicator',$info->safety_performance_indicator, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-				
-                <div class="form-group ">
-                                    
-										{{Form::label('safety_performance_target ', 'Safety performance target (SPT)', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('safety_performance_target',$info->safety_performance_target, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-                <div class="form-group ">
-                                    
-										{{Form::label('lack_of_effective_implementation', 'LEI(%)', array('class' => 'col-xs-4 control-label'))}}
-										<div class="col-xs-6">
-											{{Form::text('lack_of_effective_implementation',$info->lack_of_effective_implementation, array('class' => 'form-control','placeholder'=>''))}}
-										</div>
-										
-                </div>
-				
-	                  
-				
-                   
-  					</div><!-- Green SMS end -->				
                     <div class="form-group">
                       
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
@@ -722,7 +704,7 @@ Inspected ', array('class' => 'col-xs-4 control-label'))}}
 
 $(document).ready(function(){
 $('#lead_inspector').selectize();
-//$('#location').selectize();
+
 $('#organizations_').selectize();
 $('#iats_code').selectize();
 //$('#sia_number').selectize();
@@ -732,11 +714,9 @@ $('#sia_by_area').selectize({ create: true, sortField: {field: 'text',direction:
 $('#aircraft_mms_e').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 $('#aircraft_registration_no_e').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 $('#task').selectize();
-$('#event_').selectize();
+//$('#event_s').selectize();
 //$('#initial_risk').selectize();
-$('#determination_risk').selectize();
-$('#determine_severity').selectize();
-$('#determine_likelyhood').selectize();
+
 //$('#training').selectize();
 $('#msn').selectize();
 
@@ -782,6 +762,19 @@ var $select = $('#pel_num').selectize({
 
 
 var $select = $('#notify_other').selectize({
+					create          : true,
+					onChange        : eventHandler('onChange'),
+					onItemAdd       : eventHandler('onItemAdd'),
+					onItemRemove    : eventHandler('onItemRemove'),
+					onOptionAdd     : eventHandler('onOptionAdd'),
+					onOptionRemove  : eventHandler('onOptionRemove'),
+					onDropdownOpen  : eventHandler('onDropdownOpen'),
+					onDropdownClose : eventHandler('onDropdownClose'),
+					onFocus         : eventHandler('onFocus'),
+					onBlur          : eventHandler('onBlur'),
+					onInitialize    : eventHandler('onInitialize'),
+				});
+var $select = $('#locations').selectize({
 					create          : true,
 					onChange        : eventHandler('onChange'),
 					onItemAdd       : eventHandler('onItemAdd'),
@@ -914,7 +907,7 @@ var $select = $('#notify_other').selectize({
                                             
 											 {{ Form::label('corrective_action_file', 'Upload Updated Corrective Action File: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											  {{ Form::file('corrective_action_file') }}
+											  {{ Form::file('corrective_action_file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 </div>
                     </div>
 					
@@ -962,7 +955,15 @@ $('#').selectize();
 											{{Form::label('sia_number ', 'SIA/ Tracking Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::siaActionListedSiaNumber();?>
-											{{Form::select('sia_number', $options, $info->sia_number ,array('class'=>'form-control','required'=>''))}}
+										{{Form::select('sia_number', $options, $info->sia_number ,array('class'=>'form-control','required'=>''))}}
+											</div>
+											
+                    </div>
+                     <div class="form-group required">
+                                           
+											{{Form::label('title', 'Title', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('title',$info->title, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div>
@@ -1014,7 +1015,7 @@ $('#').selectize();
                                            
 											{{Form::label('upload_file', 'Upload Updated File', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('upload_file')}}
+											{{Form::file('upload_file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>

@@ -34,7 +34,7 @@
 											</tr>
 											@foreach($docTypes as $docType)
 											<tr>
-												<td>{{$docType->	doc_type}}</td>
+												<td>{{$docType->doc_type}}</td>
 												<td> 
 									@if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#updateSupportingDocsType{{$docType->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -43,11 +43,11 @@
 									 @endif
 									 </td>
 									  <td> @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs_type', $docType->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs_type', $docType->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif</td>
 									 	
 									 <td> @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs_type',$docType->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs_type',$docType->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif</td>
 											</tr>
 											@endforeach

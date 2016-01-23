@@ -22,6 +22,8 @@ class SiaApprovalForm extends Migration {
 			$table->date('approval_date');
 			$table->string('approval_note');
 			
+			$table->string('approve');
+			$table->string('warning');
 			$table->string('row_creator');
 			$table->string('row_updator');
 			$table->integer('soft_delete');

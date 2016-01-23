@@ -30,11 +30,9 @@
                                            <tr>
                                                 <td>{{$info->doc_type}} </td>
                                                 <td>{{$info->doc_title}}</td>
-                                                <td>@if($authors=CommonFunction::updateMultiSelection('lib_suporting_docs', 'id',$info->id,'doc_authors'))
-                                                    @foreach($authors as $key=>$value)
-                                                        {{$value}},
-                                                    @endforeach
-                                                @endif</td>
+                                                <td>
+                                                     {{nl2br($info->doc_authors)}}
+                                                </td>
                                                 <td>{{$info->doc_published_year}}</td>
                                                 <td>ISBN: {{$info->doc_isbn}} <br/>
                                                 Series:  {{$info->doc_series}}<br/>
@@ -42,13 +40,8 @@
                                                 Part : {{$info->doc_part}}<br/>
                                                 Volume :  {{$info->doc_volume}}<br/>
                                                 Amendment:  {{$info->doc_amendment}}<br/>       
-                                                Tags: 
-
-                                                 @if($authors=CommonFunction::updateMultiSelection('lib_suporting_docs', 'id',$info->id,'doc_tags'))
-                                                    @foreach($authors as $key=>$value)
-                                                        {{$value}},
-                                                    @endforeach
-                                                @endif
+                                                Tags:  {{nl2br($info->doc_tags)}}
+                                                    <br/> 
                                                     <br/>       
                                     </td>
                                                 <td>Supporting Website(s): {{$info->doc_url}}</br>

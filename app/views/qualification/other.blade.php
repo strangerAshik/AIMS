@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
- <section class="content" style="max-width:760px;margin:0 auto;">
+ <section class="content contentWidth">
  
  
                     <div class="row">
@@ -16,7 +16,7 @@
 										{{Employee::notApproved($pub)}}	
 										<tr>                                           
                                             <th colspan='2'>Publication   #{{++$a_sl}}
-											<a href="{{'deletePublication/'.$pub->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
+											<a onclick=" return confirm('Wanna Delete?')"  href="{{'deletePublication/'.$pub->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
 											<a data-toggle="modal" data-target="#{{'PUB'.$pub->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
@@ -75,7 +75,7 @@
 					<div class="form-group required">
 											{{Form::label('description', 'Description', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('description','', array('class' => 'form-control','placeholder'=>'','size'=>'30x3','required'=>''))}}
+											{{Form::textarea('description','', array('class' => 'form-control','placeholder'=>'Must Mention ISBN Referance & where Published otherwise this publication is not counted as valid Publication ','size'=>'30x3','required'=>''))}}
 											 </div>
 					</div>
 					
@@ -90,7 +90,7 @@
     </div>
 	</div>
 </section>
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth">
  
  
                     <div class="row">

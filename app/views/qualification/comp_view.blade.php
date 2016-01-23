@@ -1,10 +1,10 @@
 @extends('layout')
 @section('content')
-<!------------------------Personnel-------------------------------->
+<!--Personnel-->
 <div style="display:none">
 {{$role=Auth::User()->Role()}}
 </div>
-<section class="content" style="max-width:800px;margin:0 auto;">
+<section class="content contentWidth">
  <div class="row" style="">
                         <!-- left column -->
                         <div class="col-md-12">
@@ -19,32 +19,45 @@
                 <!-- /.box-header -->
 				
 					<div class="box-body">
+					@if($personnel)
 					@foreach($personnel as $person)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="{{$person->id}}">
                         <tbody>
 						{{Employee::notApproved($person)}}	
-						@if($role=='Chief Admin')
-						  <tr>
+						
+						  <tr class='hidden-print'>
                                 
                                 <th colspan='2' >
 								
-                                    
-									{{ HTML::linkAction('QualificationController@deletePersonnel', '',array($person->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                    
-                                    <a data-toggle="modal" data-target="#{{$person->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))
+									{{ HTML::linkAction('QualificationController@deletePersonnel', '',array($person->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+								@endif
+                               
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								   
+									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_personal',$person->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+
+                                    {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_personal',$person->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+                                     <a data-toggle="modal" data-target="#person{{$person->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
+                                @endif
 									
-									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_personal',$person->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
                                     
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-                                    </a>
+								
 									
                                 </th>
                             </tr>
-						@endif
-                           
+						
+                             <tr>
+                                <td>
+									
+									CAA ID
+								</td>
+                                <td>{{$person->caa_id}}</td>
+                            </tr>
 							<tr>
                                 <td>									
 									Title
@@ -117,11 +130,21 @@
                                 <td>Date Of Birth</td>
                                 <td>{{$person->date_of_birth .' '.$person->month_of_birth .' '.$person->year_of_birth  }}</td>
                             </tr>
-							
+							<tr>
+								<td colspan="2"><i>Created at : {{$person->created_at}} | Updated at : {{$person->updated_at}} </i></td>
+
+							</tr>
 							
                         </tbody>
                     </table>
 					@endforeach
+					@else 
+					<table class="table table-bordered">
+						<tr>
+							<td colspan="2">Data Not Provided</td>
+						</tr>
+					</table>
+					@endif
                 </div>
                 <!-- /.box-body -->
                                
@@ -129,10 +152,10 @@
 						</div>
 						
 				</div
-				<!--Edit Personal-->
+				<!------Edit Personal------>
 					<!--Edit content start-->
 	@if($personnel!=null)
-	<div class="modal fade" id="{{$person->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="person{{$person->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -142,16 +165,24 @@
 				 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
                    
-					@foreach($personnel as $person)
+					@foreach($personnel as $info)
 					{{Form::open(array('url' => 'qualification/editPersonnel', 'method' => 'post', 'files'=>true, 'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
 					 <div class="box-body">
-										{{Form::hidden('id', $person->id)}}
-										{{Form::hidden('old_photo',$person->photo)}}
+										{{Form::hidden('id', $info->id)}}
+										{{Form::hidden('old_photo',$info->photo)}}
+										<div class="form-group ">
+                                           
+											{{Form::label('', 'CAA ID', array('class' => 'control-label col-xs-4 '))}}
+											<div class="col-xs-6">
+											{{Form::text('caa_id',$info->caa_id, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                                        </div>		
                                         <div class="form-group required">
                                            
 											{{Form::label('', 'Title', array('class' => 'control-label col-xs-4 '))}}
 											<div class="col-xs-6">
-											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.','Dr.'=>'Dr.','Prof.'=>'Prof.'), $person->title ,array('class'=>'form-control'))}}
+											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.'), $info->title ,array('class'=>'form-control'))}}
 											</div>
 											
                                         </div>										
@@ -161,83 +192,83 @@
 										<div class="form-group required ">
 											{{Form::label('', 'First Name', array('class' => 'control-label col-xs-4 '))}}
 											<div class="col-xs-6">
-											{{Form::text('first_name',$person->first_name, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('first_name',$info->first_name, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 										</div>
 										<div class="form-group">
 											{{Form::label('', 'Middle Name', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('middle_name',$person->middle_name, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('middle_name',$info->middle_name, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required">
 											{{Form::label('', 'Last Name', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('last_name',$person->last_name, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('last_name',$info->last_name, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group ">
 											
 											{{Form::label('', 'Mother\'s Name', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('mother_name',$person->mother_name, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('mother_name',$info->mother_name, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 
 										</div>
 										<div class="form-group">
 											{{Form::label('', 'Father\'s Name', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('father_name',$person->father_name, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('father_name',$info->father_name, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required">											
 											{{Form::label('', 'Mailing Address', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('mailing_address',$person->mailing_address, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
+											{{Form::textarea('mailing_address',$info->mailing_address, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 											 </div>
 										</div>
 										<div class="form-group required">
 											{{Form::label('', 'Permanent Address', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('parmanent_address',$person->parmanent_address, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
+											{{Form::textarea('parmanent_address',$info->parmanent_address, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 											 </div>
 										</div>
 										
                                         <div class="form-group">
 											{{Form::label('', 'Telephone (work)', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('telephone_work',$person->telephone_work, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('telephone_work',$info->telephone_work, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group">
 											{{Form::label('', 'Telephone (residence)', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('telephone_residence',$person->telephone_residence, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('telephone_residence',$info->telephone_residence, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required">
 											{{Form::label('', 'Mobile no', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('mobile_no',$person->mobile_no, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('mobile_no',$info->mobile_no, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required">
 											{{Form::label('', 'Nationality', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('nationality',$person->nationality, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('nationality',$info->nationality, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required">
-											{{Form::label('', 'National ID', array('class' => 'control-label col-xs-4'))}}
+											{{Form::label('', 'National ID / Passport No.', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::text('national_id',$person->national_id, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('national_id',$info->national_id, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
 										</div>
 										<div class="form-group required ">
                                            
 											{{Form::label('', 'Sex', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::select('sex', array('' => '--Select--', 'Male' => 'Male','Female'=>'Female','Others'=>'Others'), $person->sex,array('class'=>'form-control'))}}
+											{{Form::select('sex', array('' => '--Select--', 'Male' => 'Male','Female'=>'Female','Others'=>'Others'), $info->sex,array('class'=>'form-control'))}}
 											 </div>
 											
                                         </div>
@@ -246,7 +277,7 @@
 											
 											{{Form::label('', 'Blood Group', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
-											{{Form::select('blood_group', array('0' => '--Select--', 'A+' => 'A+','A-'=>'A-','B+'=>'B+','B-'=>'B-','O+'=>'O+','O-'=>'O-','AB+'=>'AB+','AB-'=>'AB-','Unknown'=>'Unknown'), $person->blood_group ,array('class'=>'form-control'))}}
+											{{Form::select('blood_group', array('0' => '--Select--', 'A+' => 'A+','A-'=>'A-','B+'=>'B+','B-'=>'B-','O+'=>'O+','O-'=>'O-','AB+'=>'AB+','AB-'=>'AB-','Unknown'=>'Unknown'), $info->blood_group ,array('class'=>'form-control'))}}
                                              </div>								
 											
 											
@@ -259,24 +290,25 @@
 												
 													<div class="row">
 														<div class="col-xs-2">
-														{{Form::select('date_of_birth', $dates ,$person->date_of_birth,array('class'=>'form-control'))}}
+														{{Form::select('date_of_birth', $dates ,$info->date_of_birth,array('class'=>'form-control'))}}
 														</div>
 														<div class="col-xs-3">
-														{{Form::select('month_of_birth',$months,$person->month_of_birth,array('class'=>'form-control'))}}
+														{{Form::select('month_of_birth',$months,$info->month_of_birth,array('class'=>'form-control'))}}
 											
 															
 														</div>
 														<div class="col-xs-2">
-															{{Form::select('year_of_birth',$years,$person->year_of_birth,array('class'=>'form-control'))}}
+															{{Form::select('year_of_birth',$years,$info->year_of_birth,array('class'=>'form-control'))}}
 														</div>
 													</div>
 										</div>
-                                        <div class="form-group required">                                       
+                                        <div class="form-group">
+                                           
                                             
 											 {{ Form::label('image', 'Upload New Photo: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ HTML::image('img/PersonnelPhoto/'.$person->photo, 'Employee Photo', array('class' => 'img-thumbnail','width'=>'250','height'=>'250')) }}
-											 {{ Form::file('photo') }}
+											 {{ HTML::image('img/PersonnelPhoto/'.$info->photo, 'Employee Photo', array('class' => 'img-thumbnail','width'=>'250','height'=>'250')) }}
+											 {{ Form::file('photo',array("accept"=>"image/*",'class'=>'fileupload')) }}
 											 
 											 <p class="help-block">Photo size : 300px250px</p>
 											 </div>
@@ -307,10 +339,10 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 								
-									
+								@if($accademic)	
 								@foreach($accademic as $acca)								
 									
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="{{$acca->id}}">
                                     
 									<tbody>
 									{{Employee::notApproved($acca)}}	
@@ -318,20 +350,29 @@
                                 
                                 <th colspan='2' >
 								    Academic Qualification   #{{++$sl1}}
-									@if($role=='Chief Admin')
-                                   
-									{{ HTML::linkAction('QualificationController@deleteAccademic', '',array($acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                    
+								    <span class='hidden-print'>
+								
+                                   @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                              
+									{{ HTML::linkAction('QualificationController@deleteAccademic', '',array($acca->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+									@endif 
+									@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								
+									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_edu_accademic',$acca->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+								
+									
+
+                                    {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_edu_accademic',$acca->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+                                    @endif
+									@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
                                     <a data-toggle="modal" data-target="#acca{{$acca->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
+                                    @endif
+
+                                    </span>
 									
-									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_edu_accademic',$acca->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-                                    
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-                                    </a>
-									@endif
+								
                                 </th>
                             </tr>
                                         </tr>
@@ -373,16 +414,37 @@
                                             <td>Specialization</td>
                                             <td>{{$acca->specialization}}</td>                                        
                                         </tr>
+                                         <tr>
+                                            <td>Certificate</td>
+                                            <td>
+                                            	  @if($acca->certificate!='Null'){{HTML::link('files/employee/'.$acca->certificate,'Certificate ',array('target'=>'_blank'))}}
+                                                    @else
+                                                        {{HTML::link('#','No Certificate Provided')}}
+                                                    @endif
+
+                                            </td>                                        
+                                        </tr>
+                                        <tr>
+											<td colspan="2"><i>Created at : {{$acca->created_at}} | Updated at : {{$acca->updated_at}} </i></td>
+
+										</tr>
                                     </tbody></table>
 									@endforeach
+									@else 
+									<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+									</table>
+									@endif
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
 </div>   
-<!--------------Edit option For Academic Qualification-------------------->
+<!--Edit option For Academic Qualification-->
 	
 	@foreach($accademic as $acca)
-	<div class="modal fade" id="{{'acca'.$acca->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="{{'acca'.$acca->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -394,8 +456,10 @@
                     <!-- The form is placed inside the body of modal -->
                    
 					
-					{{Form::open(array('url' => 'qualification/updateAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+					
+					{{Form::open(array('url' => 'qualification/updateAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>'true'))}}
 						{{Form::hidden('id', $acca->id)}}
+						{{Form::hidden('old_certificate', $acca->certificate)}}
 						<div class="form-group required">
                                         
 											{{Form::label('level', 'Level [highest degree first]', array('class' => 'col-xs-4 control-label'))}}
@@ -403,9 +467,7 @@
 											{{Form::select('level', array('Null' => '--Select--', 'Post Doctorate or Equivalent' => 'Post Doctorate or Equivalent','Doctorate'=>'Doctorate','Masters or Equivalent'=>'Masters or Equivalent','Bachelors or Equivalent'=>'Bachelors or Equivalent','Diploma'=>'Diploma','H.S.C. or Equivalent'=>'H.S.C. or Equivalent','S.S.C. or Equivalent'=>'S.S.C. or Equivalent','Below S.S.C.'=>'Below S.S.C.'), $acca->level,array('class'=>'form-control','id'=>'category','required'=>''))}}
 											</div>
 											
-                    </div>
-					
-				
+                    </div>	
 					<div class="form-group required">
                                         
 											{{Form::label('', ' Name of degree', array('class' => 'col-xs-4 control-label'))}}
@@ -462,13 +524,26 @@
 													</div>
 					</div>
 					
-					
+					<div class="form-group required">
+                                           
+											{{Form::label('certificate', ' Provide Updated Certificate', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											  @if($acca->certificate!='Null'){{HTML::link('files/employee/'.$acca->certificate,'Certificate ',array('target'=>'_blank'))}}
+                                                    @else
+                                                        {{HTML::link('#','No Certificate Provided')}}
+                                                    @endif
+                                                    
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
+											
+											</div>
+											
+                    </div>
 					
                     
 
                     <div class="form-group">
-                        <div class="col-xs-5 col-xs-offset-3">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="">
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
                         </div>
                     </div>
 					
@@ -480,9 +555,9 @@
 	</div>
 	@endforeach
 
-	<!--------------End Edit option For Academic Qualification-------------------->
-<!------------------------------End academic Education----------------------------------------->
-<!------------------------------Start Thesis Education----------------------------------------->
+	<!--End Edit option For Academic Qualification-->
+<!--End academic Education-->
+<!--Start Thesis Education-->
 <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
@@ -490,25 +565,34 @@
                                     <h3 class="box-title">Thesis/Project/Internship/Dissertation  </h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
+                                @if($thesis)
 								@foreach($thesis as $thes)
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered"  id="{{$thes->id}}">
                                         <tbody>
 										{{Employee::notApproved($thes)}}	
 										<tr>                                           
                                             <th colspan='2'>Thesis/Project/Internship/Dissertation    #{{++$sl2}}
-											@if($role=='Chief Admin')
-										    {{ HTML::linkAction('QualificationController@deleteThesis', '',array($thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+                                            <span class='hidden-print'>
+                                            @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
                               
+											
+										    {{ HTML::linkAction('QualificationController@deleteThesis', '',array($thes->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+										   @endif
+										     @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								
+
+										    {{ HTML::linkAction('QualificationController@approve', '',array('qualification_edu_thesis',$thes->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+											
+											{{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_edu_thesis',$thes->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+											@endif
+											@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
 											<a data-toggle="modal" data-target="#{{'thesis'.$thes->id}}" href='' style='color:green;float:right;padding:5px;'>
 												<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 											</a>
-										
-											{{ HTML::linkAction('QualificationController@approve', '',array('qualification_edu_thesis',$thes->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-                                    
-											<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-												<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-											</a>
 											@endif
+										 </span>
+
+											
 											</th>
                                    
                                         </tr>
@@ -541,17 +625,27 @@
                                             <td>{{$thes->duration}}</td>
                                             
                                         </tr>
-										                            
+										 <tr>
+											<td colspan="2"><i>Created at : {{$thes->created_at}} | Updated at : {{$thes->updated_at}} </i></td>
+
+										</tr>                            
                                        
                                     </tbody></table>
 									@endforeach
+									@else 
+									<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+									</table>
+									@endif
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
                             </div> 
-<!--------------Start Edit option For Thesis Qualification-------------------->
+<!--Start Edit option For Thesis Qualification-->
 	@foreach($thesis as $thes)
-	<div class="modal fade" id="{{'thesis'.$thes->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="{{'thesis'.$thes->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -625,7 +719,7 @@
     </div>
 	</div>
 	@endforeach
-	<!--------------End Edit option For Thesis Qualification-------------------->
+	<!--End Edit option For Thesis Qualification-->
 
 
 <script>
@@ -639,8 +733,8 @@ $(document).ready(function(){
   
 });
 </script>
-<!------------------------------End Thesis Education----------------------------------------->
-<!------------------------------Start Pro_degree----------------------------------------->
+<!--End Thesis Education-->
+<!--Start Pro_degree-->
 <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
@@ -648,75 +742,88 @@ $(document).ready(function(){
                                     <h3 class="box-title">Professional Degree </h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-								
-                                    <table class="table table-bordered">
+								<?php $num=0;?>
+								@if($pro_degree)
+								 @foreach($pro_degree as $pro)		
+                                    <table class="table table-bordered" id="{{$pro->id}}">
                                         <tbody>
-										<tr>                                           
-                                            <th >Name of professional degree</th>
-                                            <th >Institute</th>
-                                            <th >Duration</th>
-                                            <th >Class/ Grade/ Percentage</th>
-                                            <th >Major/Area</th>
-                                            <th >Year</th>
-											@if($role=='Chief Admin')
-                                            <th >Approve</th>
-                                            <th >Warning</th>										
-                                            <th >Edit</th>
-                                            <th >Delete</th> 
-                                           	@endif
-                                            
-                                        </tr>
-										@foreach($pro_degree as $pro)
 										{{Employee::notApproved($pro)}}	
-                                        <tr>
-                                           
-                                            <td>{{$pro->pro_degree_name}}</td>
-                                            <td>{{$pro->pro_degree_institute}}</td>
-                                            <td>{{$pro->pro_degree_duration}}</td>
-                                            <td>{{$pro->pro_degree_grade}}</td>
-                                            <td>{{$pro->pro_degree_major_area}}</td>
-                                            <td>{{$pro->pro_degree_year}}</td>
-                                           @if($role=='Chief Admin')
-										   <td >
-											{{ HTML::linkAction('QualificationController@approve', '',array('qualification_pro_degree',$pro->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-												
-											</td>
-											<td >
-												
-											<a data-toggle="modal" data-target="#{{'proD'.$pro->id}}" href='' style='color:red;float:right;padding:5px;'>
-											<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-											</a>
-												
-											</td> 
-											
-											<td >
-												
-											<a data-toggle="modal" data-target="#{{'proD'.$pro->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                       								
+										<tr>		
+                                
+                                <th colspan='2' >
+								    Professional Degree   #{{++$num}}
+								    <span class='hidden-print'>
+									
+                                   @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                              
+                                
+									{{ HTML::linkAction('QualificationController@deleteProDegree', '',array($pro->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+									@endif
+
+									  @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))									
+									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_pro_degree',$pro->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+
+                                    {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_pro_degree',$pro->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+                                    @endif
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+	
+                                   <a data-toggle="modal" data-target="#{{'proD'.$pro->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 											</a>
+								@endif
+									</span>
+                                </th>
+                            </tr>
 												
-											</td>
-                                            <td>												
-											{{ HTML::linkAction('QualificationController@deleteProDegree', '',array($pro->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-											</td>
-                                            @endif
+										<tr>                                           
+                                            <th >Name of professional degree</th>  <td>{{$pro->pro_degree_name}}</td>
                                         </tr>
-                                            
-                                       @endforeach
-										
+                                        <tr>
+                                            <th >Institute</th><td>{{$pro->pro_degree_institute}}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th >Duration</th>  <td>{{$pro->pro_degree_duration}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th >Class/ Grade/ Percentage</th> <td>{{$pro->pro_degree_grade}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th >Major/Area</th> <td>{{$pro->pro_degree_major_area}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th >Year</th> <td>{{$pro->pro_degree_year}}</td>
+                                        </tr>
+											
+										 <tr>
+											<td colspan="2"><i>Created at : {{$pro->created_at}} | Updated at : {{$pro->updated_at}} </i></td>
+
+										</tr> 
 										
 										
                                             
                                        
                                     </tbody></table>
+                                    	    
+                                       @endforeach
+                                       @else 
+                                       <table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+										</table>
+									   @endif
+										
 								
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
 </div>
-<!------------------------Edit Option Start------------------------------------>
+<!--Edit Option Start-->
 @foreach($pro_degree as $pro)
-<div class="modal fade" id="{{'proD'.$pro->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div  class="modal fade" id="{{'proD'.$pro->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -790,61 +897,70 @@ $(document).ready(function(){
     </div>
 </div>
 @endforeach
-<!------------------------Edit Option End------------------------------------>
-<!------------------------------End Pro_degree----------------------------------------->
-<!------------------------------Start Training/workshop/ojt----------------------------------------->
+<!--Edit Option End-->
+<!--End Pro_degree-->
+<!--Start Training/workshop/ojt-->
 <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">Training/ Workshop/ OJT  </h3>
+                                    <h3 class="box-title">Training/ Workshop & Seminar / OJT  </h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-								@foreach($training_ojt as $to)
-                                 <table class="table table-bordered">
+                                @if($training_ojt)
+								@foreach($training_ojt as $info)
+                                 <table class="table table-bordered" id="{{$info->id}}">
                                         <tbody>
-										{{Employee::notApproved($to)}}	
+										{{Employee::notApproved($info)}}	
 										<tr>                                           
-                                            <th colspan='2'>Training/ Workshop/ OJT   #{{++$sl3}}
-											@if($role=='Chief Admin')
-											{{ HTML::linkAction('QualificationController@deleteTraining', '',array($to->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-											<a data-toggle="modal" data-target="#{{'training'.$to->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                            <th colspan='2'>Training/ Workshop & Seminar / OJT   #{{++$sl3}}
+											<span class='hidden-print'>
+											@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                                
+											{{ HTML::linkAction('QualificationController@deleteTraining', '',array($info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+											@endif
+											@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								
+											{{ HTML::linkAction('QualificationController@approve', '',array('qualification_training_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+
+											 {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_training_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+											 @endif
+											 @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+											<a data-toggle="modal" data-target="#{{'training'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 											</a>
-											{{ HTML::linkAction('QualificationController@approve', '',array('qualification_training_ojt',$to->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-											<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-												<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-											</a>
 											@endif
+											</span>
+											
 											</th>
                                         </tr>
                                         <tr>
                                            
                                             <td class="col-md-4">Category</td>
-                                            <td >{{$to->category}}</td>
+                                            <td >{{$info->category}}</td>
                                             
                                         </tr>
-                                        @if($to->category=='Training')
+                                        @if($info->category=='Training')
 											<tr>
-												<td>Type of Training</td><td>{{$to->type_of_training}}</td>
+												<td>Type of Training</td><td>{{$info->type_of_training}}</td>
 											</tr>
 											<tr>
-												<td>Type of Training</td><td>{{$to->training_course}}</td>
+												<td>Training Course / Number</td><td>{{$info->training_course}}</td>
 											</tr>
 											<tr>
-												<td>Subject</td><td>{{$to->subject}}</td>
+												<td>Subject / Specialization</td><td>{{$info->subject}}</td>
 											</tr>
 										@endif
-										@if($to->category=='OJT')
+										@if($info->category=='OJT')
 											<tr>
-												<td>Training Task</td><td>{{$to->training_task}}</td>
+												<td>Training Task</td><td>{{$info->training_task}}</td>
 											</tr>
 											
 											
 										@endif
-										@if($to->category=='Workshop')
+										@if($info->category=='Seminar / Workshop / Meeting / Conference')
 											<tr>
-												<td>Topic</td><td>{{$to->topic}}</td>
+												<td>Topic</td><td>{{$info->topic}}</td>
 											</tr>
 											
 											
@@ -855,17 +971,17 @@ $(document).ready(function(){
 												Major Area
 											</td>
                                             <td>
-                                               {{$to->major_area}}
+                                               {{$info->major_area}}
                                             </td>
                                             
                                         </tr>
 										<tr>
                                            
                                             <td>
-											Instructor(s) With Level:
+											Instructor(s):
 											</td>
                                             <td>
-                                               {{$to->instructor}}
+                                               {{$info->instructor}}
                                             </td>
                                             
                                         </tr> 
@@ -875,16 +991,16 @@ $(document).ready(function(){
 												Institute:
 											</td>
                                             <td>
-                                               {{$to->institute}}
+                                               {{$info->institute}}
                                             </td>
                                             
                                         </tr>
 										<tr>
                                             <td>												
-												Address:
+												Location:
 											</td>
                                             <td>
-                                               {{$to->location}}
+                                               {{$info->location}}
 												
                                             </td>
                                             
@@ -894,51 +1010,65 @@ $(document).ready(function(){
 												Certificate Issued:
 											</td>
                                             <td>
-                                               {{$to->proof}}
+                                               {{$info->proof}}
+                                            </td>
+                                            
+                                        </tr>
+										
+										<tr>
+                                            <td>
+												Start Date:
+											</td>
+                                            <td>
+                                                {{$info->start_date}}
                                             </td>
                                             
                                         </tr>
 										<tr>
                                             <td>
-												Management Certification:
+												End Date:
 											</td>
                                             <td>
-                                                {{$to->certification}}
+                                                {{$info->end_date}}
                                             </td>
                                             
                                         </tr>
 										<tr>
                                             <td>
-												Duration:
+												Uploaded Evidence:
 											</td>
                                             <td>
-                                                {{$to->duration}}
-                                            </td>
-                                            
-                                        </tr>
-										<tr>
-                                            <td>
-												PDF Document :
-											</td>
-                                            <td>
-										@if($to->pdf!='Null'){{HTML::link('files/TrainingWorkshopOJT/'.$to->pdf,'Document',array('target'=>'_blank'))}}
+										@if($info->pdf!='Null'){{HTML::link('files/TrainingWorkshopOJT/'.$info->pdf,'Document',array('target'=>'_blank'))}}
 											@else
 												{{HTML::link('#','No Document Provided')}}
 											@endif
                                             </td>
                                             
                                         </tr>
-                                            
+										
+                                        
+                                        <tr>
+											<td colspan="2"><i>Created at : {{$info->created_at}} | Updated at : {{$info->updated_at}} </i></td>
+
+										</tr>    
                                        
                                     </tbody></table>
 								@endforeach
+								@else 
+								<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+								</table>
+								@endif
+
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
                             </div>  
-<!--------------------Edit Pop up Start---------------------------->
-@foreach($training_ojt as $to)
-<div class="modal fade" id="{{'training'.$to->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--Edit Pop up Start-->
+@foreach($training_ojt as $info)
+<div  class="modal fade" id="{{'training'.$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -948,139 +1078,165 @@ $(document).ready(function(){
 
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
-                {{Form::open(array('url'=>'qualification/updateTrainingWorkOJT','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>true))}}
-						{{Form::hidden('id', $to->id)}}
-						{{Form::hidden('old_file', $to->pdf)}}
+               {{Form::open(array('url'=>'qualification/updateTrainingWorkOJT','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>true))}}
+						{{Form::hidden('id', $info->id)}}
+						{{Form::hidden('old_file', $info->pdf)}}
+						{{Form::hidden('category', $info->category)}}
 					
 					<div class="form-group required">
                                         
 											{{Form::label('category', 'Category', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('category', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT','Workshop'=>'Workshop'), $to->category,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('categorys', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT', 'Seminar / Workshop / Meeting / Conference' => 'Seminar / Workshop / Meeting / Conference'), $info->category,array('class'=>'form-control','id'=>'category','required'=>'','disabled'=>'disabled'))}}
 											</div>
 											
                     </div>
 					<!--IF training -->
-					<div id='training' style='display:none;'>
-					<div class="form-group required">
+					@if($info->category=='Training')
+					<div id='training' >
+					<div class="form-group">
                                         
 											{{Form::label('type_of_training', 'Type of Training', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('type_of_training', array('' => '--Select--', 'Class Room'=>'Class Room','CBT'=>'CBT','Others'=>'Others'),$to->type_of_training,array('class'=>'form-control'))}}
+											{{Form::select('type_of_training', array('' => '--Select--', 'Class Room'=>'Class Room','CBT'=>'CBT','Others'=>'Others'),$info->type_of_training,array('class'=>'form-control'))}}
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('training_course', 'Training Course', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('training_course', 'Training Course / Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('training_course',$to->training_course, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('training_course',$info->training_course, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('subject', 'Subject', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('subject', 'Subject / Specialization', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('subject',$to->subject, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('subject',$info->subject, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
 					</div>
+					@endif
 					<!--end training -->
 					<!--If workshop / seminar -->
-					<div id='workshop' style='display:none;'> 
-					<div class="form-group required">
+					@if($info->category=='Seminar / Workshop / Meeting / Conference')
+					<div id='workshop' > 
+					<div class="form-group ">
                                            
 											{{Form::label('topic', 'Topic', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('topic',$to->topic, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('topic',$info->topic, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
 					
 					<!--end workshop / seminar -->
 					</div>
+					@endif
 					<!--If OJT -->
-					<div id='ojt' style='display:none;'> 
-						<div class="form-group required required">
+					@if($info->category=='OJT')
+					<div id='ojt' > 
+						<div class="form-group ">
                                            
 											{{Form::label('training_task', 'Training Task', array('class' => 'col-xs-4 control-label '))}}
 											<div class="col-xs-6">
-											{{Form::text('training_task',$to->training_task, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('training_task',$info->training_task, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
 					</div>
+					@endif
 					<!--End OJT -->
 					<!--Start Common content-->
-					<div class="form-group required">											
-											{{Form::label('duration', 'Duration', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('duration',$to->duration, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
+						<div class="form-group required">												
+
+													{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('start_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
 					</div>
-					<div class="form-group required">
+					
+					<div class="form-group required">												
+
+													{{Form::label('end_date', 'End Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('end_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('end_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('end_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
+					</div>
+					
+					<div class="form-group ">
                                            
 											{{Form::label('major_area', 'Major Area', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('major_area',$to->major_area, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('major_area',$info->major_area, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
 					<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor(s)', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Instructor(s) Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('instructor',$to->instructor, array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>'i.e Inspector Name '))}}
 											</div>
 											
                     </div>
-					<div class="form-group  required">
+					
+					<div class="form-group  ">
                                            
 											{{Form::label('institute', 'Institute', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('institute',$to->institute, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('institute',$info->institute, array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
 											
                     </div>
 					<div class="form-group " >											
-											{{Form::label('location', 'Address', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('location',$to->location, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
+											{{Form::textarea('location',$info->location, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 											</div>
 					</div>
-					
-					 <div class="form-group required">
+				    <div class="form-group">
                                            
 											{{Form::label('', 'Certificate Issued', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 										<div class="radio">
 									 
-									   <label> {{ Form::radio('proof', 'Yes',Input::old('proof', $to->proof == 'Yes'),array()) }} &nbsp  Yes</label>
-									 <label> {{ Form::radio('proof', 'No',Input::old('proof', $to->proof == 'No'),array()) }} &nbsp  No</label>
+									   <label> {{ Form::radio('proof', 'Yes',Input::old('proof', $info->proof == 'Yes'),array()) }} &nbsp  Yes</label>
+									 <label> {{ Form::radio('proof', 'No',Input::old('proof', $info->proof == 'No'),array()) }} &nbsp  No</label>
 									</div>
 									
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), $to->certification,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
-					
 					
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload Updated Document: ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Updated Evidence ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>
@@ -1091,9 +1247,7 @@ $(document).ready(function(){
                     
 
                     <div class="form-group">
-                        <div class="col-xs-5 col-xs-offset-3">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
+                           <button type="submit" class="btn btn-primary btn-lg btn-block ">Save</button>
                     </div>
 					{{Form::close()}}
             </div>
@@ -1101,46 +1255,13 @@ $(document).ready(function(){
     </div>
 </div>
 @endforeach
-<!--------------------Edit Pop up End---------------------------->
-
-<script>
-$(document).ready(function(){
-  
-  $("select#category").change(function(){
-     var content=$( "#category option:selected" ).text();
-	
-	// alert(content)
-	 if(content=='Training'){
-		 $("#training").show();
-		 $("#workshop").hide();
-		 $("#ojt").hide();		 
-		 }
-	 else if(content=='OJT'){
-		 $("#training").hide();
-		 $("#workshop").hide();
-		 $("#ojt").show();
-	 }
-	 else if(content=='Workshop'){
-		 $("#training").hide();
-		 $("#workshop").show();
-		 $("#ojt").hide();
-	 }
-	 else{
-		  $("#training").hile();
-		 $("#workshop").hide();
-		 $("#ojt").hide();	
-		 
-	 }
-	 //else $("#out_of").prop('disabled', true);
-	 
-});
-  
-});
-</script>
+<!--Edit Pop up End-->
 
 
-<!------------------------------End Training/workshop/ojt----------------------------------------->
-<!------------------------------Start Language----------------------------------------->
+
+
+<!--End Training/workshop/ojt-->
+<!--Start Language-->
 <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -1149,37 +1270,37 @@ $(document).ready(function(){
 					
                 </div>
                 <!-- /.box-header -->
-                <!--<div class="box-body">
-					<table class="table table-bordered">
-						 <th >Mother Language</th><td>Bangle</td><th >
-                                    <a href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
-                                    <a href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
-                                </th>
-					</table>
-					</div>-->
+              
 					<div class="box-body">
+					@if($language)
 					@foreach($language as $lang)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="{{$lang->id}}">
                         <tbody>
 						{{Employee::notApproved($lang)}}	
                             <tr>
                                 <th colspan='2'> Language  #{{++$sl4}} 
-								@if($role=='Chief Admin')
+                                <span class='hidden-print'>
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))  
+                                
 								   
-								{{ HTML::linkAction('QualificationController@deleteLanguage', '',array($lang->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  <a data-toggle="modal" data-target="#{{'lang'.$lang->id}}" href='' style='color:green;float:right;padding:5px;'>
+								{{ HTML::linkAction('QualificationController@deleteLanguage', '',array($lang->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                 
+								@endif
+
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_language',$lang->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+
+									 {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_language',$lang->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+									 <a data-toggle="modal" data-target="#{{'lang'.$lang->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-								
-									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_language',$lang->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-                                    </a>
-									@endif
+                                @endif
+									
+								</span>
 								</th>
                             </tr>
                             <tr>
@@ -1202,22 +1323,33 @@ $(document).ready(function(){
                                 <td>Write</td>
                                 <td>{{$lang->lang_writing}}</td>
                             </tr>
+                             <tr>
+								<td colspan="2"><i>Created at : {{$lang->created_at}} | Updated at : {{$lang->updated_at}} </i></td>
+
+							</tr>    
                         </tbody>
                     </table>
 					@endforeach
+					@else 
+					<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+					</table>
+					@endif
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
     </div>
-	<!-----------------Start Update Pop up----------------------------->
+	<!--Start Update Pop up-->
 	@foreach($language as $lang)
-	 <div class="modal fade" id="{{'lang'.$lang->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <div  class="modal fade" id="{{'lang'.$lang->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Add Language </h4>
+                    <h4 class="modal-title">Update Language </h4>
                 </div>
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
@@ -1277,39 +1409,52 @@ $(document).ready(function(){
     </div>
 	
 	@endforeach
-	<!-----------------End Update Pop up----------------------------->
-<!------------------------------End Language----------------------------------------->
-<!------------------------------Start Technical licence----------------------------------------->
+	<!--End Update Pop up-->
+<!--End Language-->
+<!--Start Technical licence-->
 <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Technical Licence Record</h3>
+                    <h3 class="box-title">Technical License Record</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
 					
 					</div>
 					<div class="box-body">
+					@if($technical_licence)
 					@foreach($technical_licence as $tl)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="{{$tl->id}}">
                         <tbody>
 						{{Employee::notApproved($tl)}}	
                             <tr>
                                 <th colspan='2'>LICENSE  #{{++$sl5}}
-								@if($role=='Chief Admin')
+                                <span class='hidden-print'>
+								
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                                
                                     
 									
-								{{ HTML::linkAction('QualificationController@deleteTechlicence', '',array($tl->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  
-                                    <a data-toggle="modal" data-target="#{{'TL'.$tl->id}}" href='' style='color:green;float:right;padding:5px;'>
+								{{ HTML::linkAction('QualificationController@deleteTechlicence', '',array($tl->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                @endif 
+
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))  
+                                   
+									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_technical_licence',$tl->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+
+
+									 {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_language',$tl->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+									 <a data-toggle="modal" data-target="#{{'TL'.$tl->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_technical_licence',$tl->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-                                    </a>
-									@endif
+                                @endif
+									
+									</span>
                                 </th>
                             </tr>
                             <tr>
@@ -1336,23 +1481,35 @@ $(document).ready(function(){
                                 <td>Rating </td>
                                 <td>{{$tl->rating}}</td>
                             </tr>
+
+                             <tr>
+								<td colspan="2"><i>Created at : {{$tl->created_at}} | Updated at : {{$tl->updated_at}} </i></td>
+
+							</tr>  
 							
                         </tbody>
                     </table>
 					@endforeach
+					@else 
+					<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+					</table>
+					@endif
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
     </div>
-		<!-----------Start Update Pop up---------------->
+		<!--Start Update Pop up-->
 	@foreach($technical_licence as $tl)
-	<div class="modal fade" id="{{'TL'.$tl->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="{{'TL'.$tl->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Update Technical Licence Record </h4>
+                    <h4 class="modal-title">Update Technical License Record </h4>
                 </div>
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
@@ -1444,9 +1601,9 @@ $(document).ready(function(){
         </div>
     </div>
 	@endforeach
-	<!-----------End Update Pop up---------------->
-<!------------------------------End Technical licence----------------------------------------->
-<!------------------------------Start aircraft Qualification----------------------------------------->
+	<!--End Update Pop up-->
+<!--End Technical licence-->
+<!--Start aircraft Qualification-->
 <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -1458,34 +1615,43 @@ $(document).ready(function(){
 					
 					</div>
 					<div class="box-body">
+					@if($aircraft)
 					@foreach($aircraft as $aircr)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered"  id="{{$aircr->id}}">
                         <tbody>
 						{{Employee::notApproved($aircr)}}	
                             <tr>
                                 <th colspan='2'>Aircraft Qualification  #{{++$sl6}}
-								@if($role=='Chief Admin')
-								  									
-									{{ HTML::linkAction('QualificationController@deleteAirQualification', '',array($aircr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+                                <span class='hidden-print'>
+								
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))   									
+									{{ HTML::linkAction('QualificationController@deleteAirQualification', '',array($aircr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
                                   
-                                     <a data-toggle="modal" data-target="#{{'AC'.$aircr->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
+                                @endif 
+
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
 								
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_aircraft',$aircr->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+									 {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_aircraft',$aircr->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+                                
+									 <a data-toggle="modal" data-target="#{{'AC'.$aircr->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+                                @endif
+									
+								</span>
                                 </th>
                             </tr>
-                            <tr>
+                             <tr>
                                 <td class="col-md-4">Active</td>
                                 <td >{{$aircr->active}}</td>
                             </tr>
                             <tr>
-                                <td>Qualification Type</td>
+                                <td>License Type</td>
                                 <td>{{$aircr->qualification_type}}</td>
                             </tr>
                             <tr>
@@ -1501,32 +1667,26 @@ $(document).ready(function(){
                                 <td>{{$aircr->aircraft_msm}}</td>
                             </tr>
                             <tr>
-                                <td>Completion Date </td>
+                                <td>License Issue Date</td>
                                 <td>{{$aircr->completion_date." ".$aircr->completion_month." ".$aircr->completion_year}}</td>
                             </tr>
+							
 							<tr>
-                                <td>Status</td>
-                                <td>{{$aircr->status}}</td>
-                            </tr>
-							<tr>
-                                <td>Training Institute</td>
+                                <td>Organization</td>
                                 <td>{{$aircr->institute}}</td>
                             </tr>
 							<tr>
-                                <td>Instructor name</td>
+                                <td>Issuing Authority</td>
                                 <td>{{$aircr->instructor}}</td>
                             </tr>
 							<tr>
-                                <td>Certificate Issued</td>
+                                <td>License Validation</td>
                                 <td>{{$aircr->proof}}</td>
                             </tr>
-							<tr>
-                                <td>Management Certification</td>
-                                <td>{{$aircr->certification}}</td>
-                            </tr>
+							
 							<tr>
                                             <td>
-												PDF Document :
+												Uploaded Evidence :
 											</td>
                                             <td>
 										@if($aircr->pdf!='Null'){{HTML::link('files/AircraftQualification/'.$aircr->pdf,'Document',array('target'=>'_blank'))}}
@@ -1536,28 +1696,39 @@ $(document).ready(function(){
                                             </td>
                                             
                             </tr>
+							 <tr>
+								<td colspan="2"><i>Created at : {{$aircr->created_at}} | Updated at : {{$aircr->updated_at}} </i></td>
+
+							</tr> 
                         </tbody>
                     </table>
 					@endforeach
+					@else 
+					<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+					</table>
+					@endif
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
     </div>
-		<!--------------------Start Update pop Up---------------------------->
-	@foreach($aircraft as $aircr)
-	<div class="modal fade" id="{{'AC'.$aircr->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<!--Start Update pop Up-->
+@foreach($aircraft as $info)
+	<div  class="modal fade" id="{{'AC'.$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">ADD CAA EMPLOYEE AIRCRAFT QUALIFICATION</h4>
+                    <h4 class="modal-title">Update CAA EMPLOYEE AIRCRAFT QUALIFICATION</h4>
                 </div>
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
                     {{Form::open(array('url'=>'qualification/updateAircraftQualification','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>true))}}
-						{{Form::hidden('id',$aircr->id)}}					
-						{{Form::hidden('old_file', $aircr->pdf)}}
+						{{Form::hidden('id',$info->id)}}					
+						{{Form::hidden('old_file', $info->pdf)}}
                         <div class="form-group required">
                                            
 											{{Form::label('active', 'Active', array('class' => 'col-xs-4 control-label'))}}
@@ -1565,17 +1736,17 @@ $(document).ready(function(){
                                 <div class="col-xs-6">
 										<div class="radio">
 									 
-									  <label> <label> {{ Form::radio('active', 'Yes',Input::old('active', $aircr->active == 'Yes'),array()) }} &nbsp  Yes</label>
-									 <label> {{ Form::radio('active','No',Input::old('active', $aircr->active == 'No'),array()) }} &nbsp  No</label>
+									  <label> <label> {{ Form::radio('active', 'Yes',Input::old('active', $info->active == 'Yes'),array()) }} &nbsp  Yes</label>
+									 <label> {{ Form::radio('active','No',Input::old('active', $info->active == 'No'),array()) }} &nbsp  No</label>
 									</div>
 									
 								</div>
                         </div>
 						<div class="form-group required">
                                         
-											{{Form::label('qualification_type', 'Qualification Type', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('qualification_type', 'License Type', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('qualification_type', array('' => '--Select--', 'Aircraft Initial' => 'Aircraft Initial','Aircraft Recurrent'=>'Aircraft Recurrent','Flight Proficiency '=>'Flight Proficiency','Recency of Experience '=>'Recency of Experience','Aircraft System'=>'Aircraft System','Recurrent Qualification'=>'Recurrent Qualification'), $aircr->qualification_type,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('qualification_type', array('' => '--Select--', 'PPL' => 'PPL','CPL'=>'CPL','ATPL'=>'ATPL','FI'=>'FI','B1'=>'B1','B2'=>'B2','CA'=>'CA','ATC'=>'ATC','Navigator'=>'Navigator'), $info->qualification_type ,array('class'=>'form-control','id'=>'category','required'=>''))}}
 											</div>
 											
 						</div>
@@ -1584,98 +1755,84 @@ $(document).ready(function(){
 											{{Form::label('total_hours', 'Total Hours', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('total_hours',$aircr->total_hours, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('total_hours',$info->total_hours, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('aircraft_mm', 'Aircraft MM', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_mm',$aircr->aircraft_mm, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_mm',$info->aircraft_mm, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('', 'Aircraft MSN', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_msm',$aircr->aircraft_msm, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_msm',$info->aircraft_msm, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
 						<div class="form-group required">
 												
-													{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('completion_date', 'License Issue Date', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
-														{{Form::select('completion_date', $dates,  $aircr->completion_date ,array('class'=>'form-control'))}}
+														{{Form::select('completion_date', $dates,  $info->completion_date ,array('class'=>'form-control'))}}
 														</div>
 														<div class="col-xs-3">
-														{{Form::select('completion_month',$months, $aircr->completion_month  ,array('class'=>'form-control'))}}
+														{{Form::select('completion_month',$months, $info->completion_month  ,array('class'=>'form-control'))}}
 											
 															
 														</div>
 														<div class="col-xs-2">
-															{{Form::select('completion_year',$years, $aircr->completion_year ,array('class'=>'form-control'))}}
+															{{Form::select('completion_year',$years, $info->completion_year ,array('class'=>'form-control'))}}
 														</div>
 													</div>
 						</div>
-						<div class="form-group ">
-                                        
-											{{Form::label('status', 'Status', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::select('status', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT','Workshop'=>'Workshop'), $aircr->status ,array('class'=>'form-control','id'=>'category','required'=>''))}}
-											</div>
-											
-						</div>
+						
 						<div class="form-group ">
                                            
-											{{Form::label('institute', 'Training Institute', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('institute', 'Organization', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('institute', $aircr->institute , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('institute', $info->institute , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Issuing Authority', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('instructor',$aircr->instructor, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
 						 <div class="form-group required">
                                            
-											{{Form::label('', 'Certificate Issued', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('', 'License Validation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 										<div class="radio">
 									 
-									  <label> <label> {{ Form::radio('proof', 'Yes',Input::old('proof', $aircr->proof == 'Yes'),array())}} &nbsp  Yes</label>
-									 <label> {{ Form::radio('proof', 'No',Input::old('proof', $aircr->proof == 'No'),array()) }} &nbsp  No</label>
+									  <label> <label> {{ Form::radio('proof', 'Yes',Input::old('proof', $info->proof == 'Yes'),array())}} &nbsp  Yes</label>
+									 <label> {{ Form::radio('proof', 'No',Input::old('proof', $info->proof == 'No'),array()) }} &nbsp  No</label>
 									</div>
 									
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), $aircr->certification ,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
+					
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload PDF Document: ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Updated Evidence: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>
@@ -1686,9 +1843,7 @@ $(document).ready(function(){
 					
                        
                         <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
+                           <button type="submit" class="btn btn-lg btn-block btn-primary">Save</button>
                         </div>
 						{{Form::close()}}
                 </div>
@@ -1696,9 +1851,9 @@ $(document).ready(function(){
         </div>
     </div>
 	@endforeach
-	<!--------------------End Update pop Up---------------------------->
-<!------------------------------End aircraft Qualification----------------------------------------->
-<!------------------------------Start Employment history  ----------------------------------------->
+	<!--End Update pop Up-->
+<!--End aircraft Qualification-->
+<!--Start Employment history-->
  
                     <div class="row">
                         <div class="col-md-12">
@@ -1707,26 +1862,33 @@ $(document).ready(function(){
                                     <h3 class="box-title">Employment History </h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
+                                @if($emplyment)
 								@foreach($emplyment as $emply)
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="{{$emply->id}}">
                                         <tbody class="table-bordered">
 										{{Employee::notApproved($emply)}}	
 										<tr>                                           
                                             <th colspan='2'>Previous Employment #{{++$sl12}}
-											@if($role=='Chief Admin')
-								  									
-									{{ HTML::linkAction('QualificationController@deleteEmployment', '',array($emply->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  
-                                    <a data-toggle="modal" data-target="#{{'emp'.$emply->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
+
+                                    <span class='hidden-print'>
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                                  									
+									{{ HTML::linkAction('QualificationController@deleteEmployment', '',array($emply->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                @endif 
+
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
 								
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_emplyment',$emply->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+									 {{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_emplyment',$emply->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+                                 <a data-toggle="modal" data-target="#{{'emp'.$emply->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+								@endif	
+								    </span>
                                 </th>
 											</th>
                                         </tr>
@@ -1812,17 +1974,27 @@ $(document).ready(function(){
                                             
                                         </tr>
 										
-                                            
+                                         <tr>
+											<td colspan="2"><i>Created at : {{$emply->created_at}} | Updated at : {{$emply->updated_at}} </i></td>
+
+										</tr>    
                                        
                                     </tbody></table>
 									@endforeach
+									@else
+									<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+									</table>
+									@endif
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
                             </div>    
-							<!------------------Start Edit pop up-------------------------->
+							<!--Start Edit pop up-->
 @foreach($emplyment as $emply)
-<div class="modal fade" id="{{'emp'.$emply->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div  class="modal fade" id="{{'emp'.$emply->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -1954,12 +2126,12 @@ $(document).ready(function(){
     </div>
 </div>
 @endforeach
-<!------------------End Edit pop up-------------------------->
+<!--End Edit pop up-->
 
 
-<!------------------------------End Employment history  ----------------------------------------->
+<!--End Employment history-->
 
-<!------------------------------Start Reference Qualification----------------------------------------->
+<!--Start Reference Qualification-->
 <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -1969,26 +2141,31 @@ $(document).ready(function(){
                 <!-- /.box-header -->
                
 					<div class="box-body">
+					@if($reference)
 					@foreach($reference as $ref)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="{{$ref->id}}">
                         <tbody>
 						{{Employee::notApproved($ref)}}	
                             <tr>
                                 <th colspan='2' >Reference  #{{++$sl7}}
-								@if($role=='Chief Admin')
+                                <span class='hidden-print'>
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))   
                                      
-									{{ HTML::linkAction('QualificationController@deleteReference', '',array($ref->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  
-                                    <a data-toggle="modal" data-target="#{{'R'.$ref->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
-									
+									{{ HTML::linkAction('QualificationController@deleteReference', '',array($ref->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                @endif 
+
+                                @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								  									
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_reference',$ref->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+									{{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_reference',$ref->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+                                	<a data-toggle="modal" data-target="#{{'R'.$ref->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+								@endif
+								</span>
                                 </th>
                             </tr>
                             <tr>
@@ -2023,18 +2200,30 @@ $(document).ready(function(){
                                 <td>May we request a reference</td>
                                 <td>{{$ref->may_we_request}}</td>
                             </tr>
+                             <tr>
+								<td colspan="2"><i>Created at : {{$ref->created_at}} | Updated at : {{$ref->updated_at}} </i></td>
+
+							</tr>
                         </tbody>
                     </table>
 				@endforeach
+				@else 
+				<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+				</table>
+				@endif
+
 				
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
     </div>
-	<!-----------Update Pop up start------------------>
+	<!--Update Pop up start-->
 	@foreach($reference as $ref)
-	<div class="modal fade" id="{{'R'.$ref->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="{{'R'.$ref->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -2061,12 +2250,12 @@ $(document).ready(function(){
 											{{Form::text('name',$ref->name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('designation', ' Designation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('designation', $ref->designation , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('designation', $ref->designation , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
@@ -2077,32 +2266,32 @@ $(document).ready(function(){
 											{{Form::textarea('address', $ref->address , array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 								</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('telephone', 'Telephone', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('telephone', $ref->telephone , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('telephone', $ref->telephone , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('years_acquainted', '  Years acquainted', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('years_acquainted',$ref->years_acquainted, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('years_acquainted',$ref->years_acquainted, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('email_address', 'E-mail address', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('email_address', $ref->email_address, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('email_address', $ref->email_address, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
 						
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('may_we_request', ' May we request a reference?', array('class' => 'col-xs-4 control-label'))}}
 											
@@ -2113,8 +2302,8 @@ $(document).ready(function(){
 					
                        
                         <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-3">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
                             </div>
                         </div>
 					{{Form::close()}}
@@ -2125,9 +2314,9 @@ $(document).ready(function(){
 
 
 	@endforeach 
-	<!-----------Update Pop up End------------------>
-<!------------------------------End Reference Qualification----------------------------------------->
-<!------------------------------Start Emp Verification ----------------------------------------->
+	<!--Update Pop up End-->
+<!--End Reference Qualification-->
+<!--Start Emp Verification-->
 <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -2139,38 +2328,43 @@ $(document).ready(function(){
 					
 					</div>
 					<div class="box-body">
+					@if($verification)
 					@foreach($verification as $veri)
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="{{$veri->id}}">
                         <tbody>
 						{{Employee::notApproved($veri)}}	
                             <tr>
                                 <th colspan='2'>Employee Assignment #{{++$ev}}
-								@if($role=='Chief Admin')
+                                <span class='hidden-print'>
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                               
                                    
-									{{ HTML::linkAction('QualificationController@deleteEnpVeri', '',array($veri->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  
-                                    <a data-toggle="modal" data-target="#{{'EV'.$veri->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
-									
-									
+									{{ HTML::linkAction('QualificationController@deleteEnpVeri', '',array($veri->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                @endif  
+
+                                 @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))
+								
+                                
+                                   
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_employee_verification',$veri->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) 
 									}}
-									
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+
+									{{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_employee_verification',$veri->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									@endif 
+									@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+									 <a data-toggle="modal" data-target="#{{'EV'.$veri->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+                                    @endif
+									
+									</span>
                                 </th>
                             </tr>
                             <tr>
-                                <td class="col-md-4">Name</td>
+                                <td class="col-md-4">Name Of Assigned Task</td>
                                 <td >{{$veri->name}}</td>
                             </tr>
-                            <tr>
-                                <td>Employee ID</td>
-                                <td>{{Auth::user()->emp_id()}}</td>
-                            </tr>
+                           
                             <tr>
                                 <td>Date Of Entry</td>
                                 <td>{{$veri->entry_date." ".$veri->entry_month." ".$veri->entry_year}}</td>
@@ -2180,7 +2374,7 @@ $(document).ready(function(){
                                 <td> {{$veri->active}}</td>
                             </tr>
                             <tr>
-                                <td>Termination/ Separation Date</td>
+                                <td>Posting / Release  Date</td>
                                   <td>{{$veri->termination_date." ".$veri->termination_month." ".$veri->termination_year}}</td>
                             </tr>
                             <tr>
@@ -2201,18 +2395,28 @@ $(document).ready(function(){
                                 <td>{{$veri->note}}
 								</td>
                             </tr>
-							
+							 <tr>
+								<td colspan="2"><i>Created at : {{$veri->created_at}} | Updated at : {{$veri->updated_at}} </i></td>
+
+							</tr>
                         </tbody>
                     </table>
 					@endforeach
+					@else 
+					<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+					</table>
+					@endif
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
     </div>
-	<!--------------------Start Update Pop up area--------------------------->
+	<!--Start Update Pop up area-->
 	 @foreach($verification as $veri)
-	 <div class="modal fade" id="{{'EV'.$veri->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <div  class="modal fade" id="{{'EV'.$veri->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -2324,9 +2528,9 @@ $(document).ready(function(){
         </div>
     </div>
 	@endforeach
-	<!--------------------End Update Pop up area--------------------------->
-<!------------------------------End Emp Verification ----------------------------------------->
-<!------------------------------Start Other publications----------------------------------------->
+	<!--End Update Pop up area-->
+<!--End Emp Verification-->
+<!--Start Other publications-->
 <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
@@ -2334,27 +2538,39 @@ $(document).ready(function(){
                                     <h3 class="box-title">Publication</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
+                                @if($publication)
 								@foreach($publication as $pub)
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="{{$pub->id}}">
                                         <tbody>
 								{{Employee::notApproved($pub)}}
 										<tr>                                           
                                             <th colspan='2'>Publication   #{{++$sl8}}
-									@if($role=='Chief Admin')
+                                   <span class='hidden-print'>
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                              
+                                	
 										
-									{{ HTML::linkAction('QualificationController@deletePublication', '',array($pub->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-                                  
-									
-									<a data-toggle="modal" data-target="#{{'PUB'.$pub->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
+									{{ HTML::linkAction('QualificationController@deletePublication', '',array($pub->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                                @endif 
+                                  @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))  
 									
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_others_publication',$pub->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) 
 									}}
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+
+									{{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_others_publication',$pub->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+
+								@endif
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+
+									<a data-toggle="modal" data-target="#{{'PUB'.$pub->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+
+                                @endif
+
+									
+									</span>
 											</th>
                                         </tr>
                                         <tr>
@@ -2363,16 +2579,26 @@ $(document).ready(function(){
                                             <td >{{$pub->description}}</td>
                                             
                                         </tr>
-                                        
+                                         <tr>
+											<td colspan="2"><i>Created at : {{$pub->created_at}} | Updated at : {{$pub->updated_at}} </i></td>
+
+										</tr>
                                     </tbody>
 									</table>
 								@endforeach
+								@else 
+								<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+								</table>
+								@endif
 									  
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
                             </div>   
-							<!--------------------Start Update POP UP For Publication--------------------------------->
+							<!--Start Update POP UP For Publication-->
 	@foreach($publication as $pub)
 		<div class="modal fade" id="{{'PUB'.$pub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -2416,9 +2642,9 @@ $(document).ready(function(){
     </div>
 	</div>
 	@endforeach
-	<!--------------------End Update POP UP--------------------------------->
-<!------------------------------End Other publications----------------------------------------->
-<!------------------------------Start Other Membership----------------------------------------->
+	<!--End Update POP UP-->
+<!--End Other publications-->
+<!--Start Other Membership-->
  <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
@@ -2426,27 +2652,39 @@ $(document).ready(function(){
                                     <h3 class="box-title">Membership</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
+                                @if($membership)
 								@foreach($membership as $memb)
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="{{$memb->id}}">
                                         <tbody>
 										{{Employee::notApproved($memb)}}
 										<tr>                                           
                                             <th colspan='2'>Membership   #{{++$sl9}}
-									@if($role=='Chief Admin')
+                                   <span class='hidden-print'>
 									
-									{{ HTML::linkAction('QualificationController@deleteMembership', '',array($memb->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-									<a data-toggle="modal" data-target="#{{'M'.$memb->id}}" href='' style='color:green;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    </a>
-									
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
+                               
+                                	
+									{{ HTML::linkAction('QualificationController@deleteMembership', '',array($memb->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+
+								@endif
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'approve'))	
 									
 									{{ HTML::linkAction('QualificationController@approve', '',array('qualification_others_membership',$memb->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) 
 									}}
 									
-									<a data-toggle="modal" data-target="#" href='' style='color:red;float:right;padding:5px;'>
-                                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+									{{ HTML::linkAction('QualificationController@notApprove', '',array('qualification_others_membership',$memb->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif 
+
+
+								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'update'))
+
+									<a data-toggle="modal" data-target="#{{'M'.$memb->id}}" href='' style='color:green;float:right;padding:5px;'>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
-									@endif
+                                @endif
+									
+								</span>
 											</th>
                                         </tr>
                                         <tr>
@@ -2455,17 +2693,28 @@ $(document).ready(function(){
                                             <td >{{$memb->description}}</td>
                                             
                                         </tr>
-                                        
+                                         <tr>
+											<td colspan="2"><i>Created at : {{$memb->created_at}} | Updated at : {{$memb->updated_at}} </i></td>
+
+										</tr>
                                     </tbody>
 									</table>
 								@endforeach
+								@else 
+								<table class="table table-bordered">
+										<tr>
+											<td colspan="2">Data Not Provided</td>
+										</tr>
+								</table>
+								@endif
+
                                 </div><!-- /.box-body -->
                             </div>    
                             </div>    
                             </div>
-							<!--------------------Start Update POP UP For Membership--------------------------------->
+							<!--Start Update POP UP For Membership-->
 	@foreach($membership as $memb)
-	<div class="modal fade" id="{{'M'.$memb->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div  class="modal fade" id="{{'M'.$memb->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -2504,15 +2753,9 @@ $(document).ready(function(){
     </div>
 	</div>
 	@endforeach
-	<!--------------------End Update POP UP For Membership--------------------------------->
-<!------------------------------End Other Membership----------------------------------------->
+	<!--End Update POP UP For Membership-->
+<!--End Other Membership-->
 
-<a class="btn btn-primary"id='printOption'href="javascript:void();" onclick="document.getElementById('printOption').style.visibility = 'hidden'; myFunction(); return true;">Print/Save</a>
-</section>
-
-<script>
-function myFunction() {
-    window.print();
-}
-</script>
+@include('common')
+@yield('print')
 @stop

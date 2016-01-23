@@ -18,10 +18,10 @@ class SiaCorrectiveAction extends Migration {
 
 			$table->string('finding_number');
 			$table->string('sia_number');
-			$table->string('currective_action');
+			$table->longText('currective_action');
 			$table->string('revived_date');
 			$table->string('concern_authority_officer');
-			$table->string('regulation_mitigation');
+			$table->longText('regulation_mitigation');
 			$table->string('regulation_mitigation_date');
 			$table->string('corrective_action_file');
 			

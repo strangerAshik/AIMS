@@ -26,10 +26,29 @@
 </div>
 
 <div class="box-body table-responsive">
-<h4 class="text-center text-success"> Recor Shown From <b class="text-primary">{{$from}}</b> To <b class="text-primary">{{$to}}</b></h4>
-    <table id="example" class="display table table-bordered table-striped table-responsive" cellspacing="0" width="100%">
+<h4 class="text-center text-success"> Record Shown From <b class="text-primary">{{$from}}</b> To <b class="text-primary">{{$to}}</b></h4>
+    <table id="example" class="display nowrap table table-bordered table-striped table-responsive" cellspacing="0" width="100%">
         <thead>
             <tr>
+               
+                <th>Date Of Execution</th>
+                <th>Time</th>
+                <th>SIA Number</th>
+                <th>Organization</th>
+                <th>Event</th>
+                <th>Spe. Purpose</th>
+                <th>Team Members</th>
+                <th>Finding</th>
+                <th>MMS</th>
+                <th>PEL NO.</th>
+                <th>Location</th>
+                <th>SC</th>
+                <th>EDP</th>
+                <th>Status</th>
+                <th>Details</th>
+            </tr>
+            <tr id="filterrow">
+              
                 <th>Date Of Execution</th>
                 <th>Time</th>
                 <th>SIA Number</th>
@@ -50,6 +69,7 @@
  
         <tfoot>
             <tr>
+               
                 <th>DOE</th>
                 <th>Time</th>
                 <th>SIA Number</th>
@@ -71,6 +91,7 @@
         <tbody>
         @foreach($actionList as $info)
             <tr>
+
                 <td>{{date('d F Y',strtotime($info->date))}}</td>
                 <td>{{$info->time}}</td>
                 <td>{{$info->sia_number}}</td>
@@ -83,7 +104,7 @@
                  @if($authors=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'team_members'))
                        @if($authors!=null)
                             @foreach($authors as $key=>$value)
-                                {{$value}},
+                                {{$value}},<br>
                             @endforeach
                        
                         @endif
@@ -99,7 +120,7 @@
                  @if($authors=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'pel_numbers'))
                        @if($authors!=null)
                             @foreach($authors as $key=>$value)
-                                {{$value}},
+                                {{$value}},<br>
                             @endforeach
                        
                         @endif

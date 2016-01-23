@@ -36,12 +36,8 @@
                                         @foreach ($allDocs as $info)
                                            <tr>
                                                 <td>{{$info->doc_type}} </td>
-                                                <td>{{$info->doc_title}}</td>
-                                                <td>@if($authors=CommonFunction::updateMultiSelection('lib_suporting_docs', 'id',$info->id,'doc_authors'))
-                                                    @foreach($authors as $key=>$value)
-                                                        {{$value}},
-                                                    @endforeach
-                                                @endif</td>
+                                                 <td>{{$info->doc_title}}</td>
+                                                <td>{{nl2br($info->doc_authors)}}</td>
                                                 <td>{{$info->doc_published_year}}</td>
                                                 <td>ISBN: {{$info->doc_isbn}} <br/>
                                                 Series:  {{$info->doc_series}}<br/>
@@ -49,13 +45,7 @@
                                                 Part : {{$info->doc_part}}<br/>
                                                 Volume :  {{$info->doc_volume}}<br/>
                                                 Amendment:  {{$info->doc_amendment}}<br/>       
-                                                Tags: 
-
-                                                 @if($authors=CommonFunction::updateMultiSelection('lib_suporting_docs', 'id',$info->id,'doc_tags'))
-                                                    @foreach($authors as $key=>$value)
-                                                        {{$value}},
-                                                    @endforeach
-                                                @endif
+                                                Tags: {{nl2br($info->doc_tags)}}
                                                     <br/>       
                                     </td>
                                                 <td>Supporting Website(s): {{$info->doc_url}}</br>
@@ -67,17 +57,21 @@
                                                     </br></td>
 
 									<td>
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									 @if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'par_delete'))
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+									 @endif
 									</td>
 									<td>
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
-									
+									@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'sof_delete'))
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+									@endif
 									</td>
 									<td>
-									
+									@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#updateSupportingDocs{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
+									@endif
 									</td>
 									
                                                 
@@ -136,32 +130,25 @@
 											</div>
 											
                     </div>
+					
 					<div class="form-group ">
                                         
 											{{Form::label('doc_authors', 'Author(s)', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											<select id="doc_authors{{$info->id}}"  multiple name="doc_authors[]" class="demo-default" >
-	@if($authors=CommonFunction::updateMultiSelection('lib_suporting_docs', 'id',$info->id,'doc_authors'))
-												@foreach($authors as $key=>$value)
-									<option selected='selected' value="{{$value}}">{{$value}}</option>
-												@endforeach
-												@endif
-											</select>
+											{{Form::textarea('doc_authors',$info->doc_authors, array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+
+											
 											</div>
 											
                     </div>
 					
-					<div class="form-group ">
+					<div class="form-group required">
                                         
 											{{Form::label('doc_type', 'Document Type', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											<select id='doc_type{{$info->id}}' name='doc_type' class="demo-default" placeholder="Select Document Type">																	
-												<option selected="selected" value="{{$info->doc_type}}">{{$info->doc_type}}</option>												
-												@foreach($docTypes as $docType)
-												<option value="{{$docType}}">{{$docType}}</option>
-												@endforeach
-											</select>
+											{{Form::select('doc_type',$docTypesList,$info->doc_type,array('class'=>'form-control', 'required'=>''))}}
+											
 											</div>
 											
                     </div>
@@ -169,81 +156,76 @@
                                            
 											{{Form::label('doc_subject', 'Subject', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('doc_subject',$info->doc_subject, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
+											{{Form::textarea('doc_subject',$info->doc_subject, array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
 											</div>
 											
                     </div>
-					<div class="form-group ">
+					<div class="form-group">
                                         
 											{{Form::label('doc_tags', 'Tags', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
+											{{Form::text('doc_tags',$info->doc_tags, array('class' => 'form-control','placeholder'=>'tags seferate with comma'))}}
 											
-											<select id="doc_tags{{$info->id}}"  multiple name="doc_tags[]" class="demo-default" >
-												<option value=""></option>
-												<option value="AL">Alabama</option>
-												<option value="AK">Alaska</option>
-												<option value="AZ">Arizona</option>
-											</select>
 											</div>
 											
                     </div>
 					
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_series', 'Series', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_series',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'), $info->doc_series ,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_series',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'), $info->doc_series ,array('class'=>'form-control',))}}
 												</div>													
 													
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_edition', 'Edition', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_edition',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_edition,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_edition',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_edition,array('class'=>'form-control'))}}
 												</div>													
 													
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_part', 'Part', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_part',array(''=>'--Select Part --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_part',array(''=>'--Select Part --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
 												</div>													
 													
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_volume', 'Volume', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_volume',array(''=>'--Select Volume --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_volume',array(''=>'--Select Volume --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
 												</div>													
 													
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_amendment', 'Amendment', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_amendment',array(''=>'--Select Amendment --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_amendment',array(''=>'--Select Amendment --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
 												</div>													
 													
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                            
 											{{Form::label('doc_published_year', 'Published Year', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_published_year', $years,$info->doc_published_year,array('class'=>'form-control', 'required'=>''))}}
+														{{Form::select('doc_published_year', $years,$info->doc_published_year,array('class'=>'form-control', ))}}
 												</div>													
 													
 											

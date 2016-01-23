@@ -16,15 +16,15 @@
                {{Form::open(array('url'=>'surveillance/programListDateToDate','method'=>'get','class'=>'form-inline','data-toggle'=>'validator','role'=>'form'))}}
                   <div class="form-group">
                     <label for="email"> From :</label>
-                    {{Form::select('from_date', $dates,'1',array('class'=>'form-control','required'=>''))}}
-                    {{Form::select('from_month',$months,'January',array('class'=>'form-control','required'=>''))}}
-                    {{Form::select('from_year',$years,'2015',array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('from_date', $dates,$fdate,array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('from_month',$months,$fmonth,array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('from_year',$years,$fyear,array('class'=>'form-control','required'=>''))}}
                   </div>
                   <div class="form-group">
                     <label for="email"> To: </label>
-                    {{Form::select('to_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
-                    {{Form::select('to_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
-                    {{Form::select('to_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('to_date', $dates,$tdate,array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('to_month',$months,$tmonth,array('class'=>'form-control','required'=>''))}}
+                    {{Form::select('to_year',$years,$tyear,array('class'=>'form-control','required'=>''))}}
                   </div>
                   
                   <button type="submit" class="btn btn-default">Submit</button>
@@ -33,7 +33,7 @@
                 </div>
                                 </div>
                                 <div class="box-body table-responsive">
-                               <h4 class="text-center text-success"> Recor Shown From <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
+                               <h4 class="text-center text-success"> Record Shown From <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
                               
                                     <table id="example1" class="table table-bordered table-striped table-responsive">
                                         <thead>
@@ -55,7 +55,11 @@
                                         <tbody>
                                          <div style="display: none">{{$num=0;}}</div>
                                         @foreach ($prgramList as $program)
+                                       
+                                        
+                                       
                                             <tr>
+                                           
                                                 <td>{{++$num}}</td>                                                
                                                 <td>{{date('d F Y',strtotime($program->date))}}</td>
                                                 <td>{{$program->time}}</td>
@@ -64,9 +68,13 @@
                                                 <td>{{$program->event}}</td>
                                                 
                                                 <td>
-                                               @if($authors=CommonFunction::updateMultiSelection('sia_program', 'id',$program->id,'team_members'))
-                                               @if($authors!=null)
-                                                    @foreach($authors as $key=>$value)
+                                        <?php 
+                                        $members=CommonFunction::updateMultiSelection('sia_program', 'id',$program->id,'team_members');
+                                      
+                                        ?>
+                                               @if($members)
+                                               @if($members!=null)
+                                                    @foreach($members as $key=>$value)
                                                         {{$value}},
                                                     @endforeach
                                                
@@ -81,9 +89,10 @@
                                                     @endif
                                                  </td>
                                                 
-                                                <td><a target="_blink" href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
+                                                <td><a  href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
                                                 
                                             </tr>
+                                           
                                         @endforeach
                                         </tbody>
                                         <tfoot>

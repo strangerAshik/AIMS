@@ -81,7 +81,7 @@
 												<th>Approval Date</th>
 												<th>Inspector Type</th>
 												<th>Training Category</th>
-												<th>Associative FAA Job Task #</th>							
+												<th>Associative CAA Job Task #</th>							
 												<th>View Details</th>
 											</tr>
 										</thead>

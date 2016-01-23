@@ -2,19 +2,23 @@
 <html>
     <head>
       <meta charset="UTF-8">
-        <title>AIMS | Oversight</title>
+        <title>{{CommonFunction::getCompanySetupDetails()->short_name}}</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
       <!--Favicon-->
        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" >
 
      
 
-      <!-- On-line-->
+  <!-- On-line-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!--<script src="{{URL::asset('layoutResource/jquery.min.js')}}" type="text/javascript"></script>-->
+   	
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-   	   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
 	   <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-	   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	   
      
        
        
@@ -78,18 +82,7 @@
       //]]>
       </script>-->
 
-        <script type="text/javascript">
-function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
 
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
 
     </head>
     <body class="skin-blue">
@@ -97,7 +90,7 @@ function printDiv(divName) {
         <!-- header logo: style can be found in header.less -->
         <header class="header">
            @include('header')
-		   @yield('header')
+        @yield('header')
         </header>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
@@ -105,7 +98,7 @@ function printDiv(divName) {
 		   <aside class="left-side sidebar-offcanvas">
                @include('left_sidebar')
 			   @yield('left_sidebar')
-            </aside>
+        </aside>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -133,23 +126,24 @@ function printDiv(divName) {
 			@endif 
 			<!--End success massage-->
 			<!--Start error massage-->
+             @if($errors->any())
+              <div>
+                <ul class="">
+                   <div id='myAlert' class='alert alert-warning'>
+                               <a href='#' class='close' data-dismiss='alert'>&times;</a>
+                               <strong>Error list: </strong>  {{ implode('', $errors->all('<li>:message</li>'))}}
+
+                </ul>
+              </div>
+              @endif
 			@if(Session::has('error'))
 				
 				 <div id='myAlert' class='alert alert-warning'>
 							   <a href='#' class='close' data-dismiss='alert'>&times;</a>
 							   <strong>Error: </strong> {{Session::get('error')}}
 				</div>
-				@endif 
-			  @if($errors->any())
-			  <div>
-				<ul class="alert alert-warning">
-				   <div id='myAlert' class='alert alert-warning'>
-							   <a href='#' class='close' data-dismiss='alert'>&times;</a>
-							   <strong>Error list: </strong>  {{ implode('', $errors->all('<li>:message</li>'))}}
-
-				</ul>
-			  </div>
-			  @endif
+			@endif 
+			 
 			  <!--End error massage-->
 			
                 <!-- Main content -->
@@ -175,6 +169,18 @@ function printDiv(divName) {
 </style>
 
 <script type="text/javascript">
+//fileupload worning 
+ $(document).on('change','.fileupload',function(){
+          files = this.files;
+          size = files[0].size;
+          //max size 250kb => 250*1000
+          if( size > 250*1024){
+             alert('Your File Size is '+size/1024+'Kb ,Please upload less than 250kb file');
+             return false;
+          }
+          return true; 
+     });
+
 //table toggle
  $('.table_toggle').click(function(){
       $(this).find('.man').text(function(_, value){return value=='-'?'+':'-'});
@@ -197,22 +203,21 @@ function printDiv(divName) {
             
             $('#finding_number_sc').empty();
             if(data==''){
-                    $('#finding_number_sc').append('<option value="#">'+'No Finding Found'+'</option>');
+                    $('#finding_number_sc').append('<option value="No Finding Found">'+'No Finding Found'+'</option>');
             }
              else{
+                 $('#finding_number_sc').append('<option value="">--Select Finding--</option>');
                 $.each(data,function(index,data){
                     $('#finding_number_sc').append('<option value="'+data+'">'+data+'</option>');
                 })
             }
-        
             
         })
     })
 //for edp finding
  $('#sia_edp').on('change',function(e){
         console.log(e);
-        var siaNum=e.target.value;
-       
+        var siaNum=e.target.value;       
         //ajax
         $.get('findingNumbers/' +siaNum,{
             siaNum: siaNum,
@@ -222,9 +227,10 @@ function printDiv(divName) {
             
             $('#finding_number_edp').empty();
             if(data==''){
-                    $('#finding_number_edp').append('<option value="#">'+'No Finding Found'+'</option>');
+                    $('#finding_number_edp').append('<option value="No Finding Found">'+'No Finding Found'+'</option>');
             }
              else{
+                 $('#finding_number_edp').append('<option value="">--Select Finding--</option>');
                 $.each(data,function(index,data){
                     $('#finding_number_edp').append('<option value="'+data+'">'+data+'</option>');
                 })
@@ -252,12 +258,11 @@ function printDiv(divName) {
             
             $('#sc_number_edp').empty();
             if(data==''){
-                    $('#sc_number_edp').append('<option value="#">'+'No SC Found'+'</option>');
+                    $('#sc_number_edp').append('<option value="No SC Found">'+'No SC Found'+'</option>');
             }
              else{
-               // $('#finding_number_edp').append("<option value='hello'>--Select Sc--</option>");
+                $('#sc_number_edp').append('<option value=""> --Select Safety Concern Number--</option>');
                 $.each(data,function(index,data){
-                   //$('#finding_number_edp').append("<option value='hello'>--Select Sc--</option>");
                     $('#sc_number_edp').append('<option value="'+data+'">'+data+'</option>');
                 })
             }
@@ -290,28 +295,10 @@ $(document).ready(function() {
     } );
 } );
 </script>
+
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Morris.js charts -->
-		
-        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="{{ URL::asset('js/plugins/morris/morris.min.js') }}" type="text/javascript"></script>
-        <!-- Sparkline -->
-        <script src="{{ URL::asset('js/plugins/sparkline/jquery.sparkline.min.js') }}" type="text/javascript"></script>
-        <!-- jvectormap -->
-        <script src="{{URL::asset('js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')}}" type="text/javascript"></script>
-        <script src="{{URL::asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}" type="text/javascript"></script>
-        <!-- jQuery Knob Chart -->
-        <script src="{{URL::asset('js/plugins/jqueryKnob/jquery.knob.js')}}" type="text/javascript"></script>
-        <!-- daterangepicker -->
-        <script src="{{URL::asset('js/plugins/daterangepicker/daterangepicker.js')}}" type="text/javascript"></script>
-        <!-- datepicker -->
-        <script src="{{URL::asset('js/plugins/datepicker/bootstrap-datepicker.js')}}" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="{{URL::asset('js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
-        <!-- iCheck -->
-        <script src="{{URL::asset('js/plugins/iCheck/icheck.min.js')}}" type="text/javascript"></script>
-
+        
         <!-- AdminLTE App -->
         <script src="{{URL::asset('js/AdminLTE/app.js')}}" type="text/javascript"></script>
 
@@ -322,8 +309,6 @@ $(document).ready(function() {
         <script src="{{URL::asset('js/AdminLTE/demo.js')}}" type="text/javascript"></script>
       
 
-           <!-- page script -->
-    
 	
     </body>
 </html>

@@ -15,13 +15,17 @@ class LibraryController extends \BaseController {
 		return App::make('SurveillanceController')->reportByDateToDate('library');
 	}
 	public function newSupportingDocuments(){
+		 $docTypesList =array(''=>'--Select Type--')+DB::table('lib_suporting_docs_type')
+		->where('soft_delete','<>','1')
+		->lists('doc_type','doc_type');
 		 $docTypes = DB::table('lib_suporting_docs_type')
 		->where('soft_delete','<>','1')
 		->get();
-		
+		$authors=[];
+		$tags=[];
 		//Multiple selection update
-		$authors=parent::getMultipleOptionList('lib_suporting_docs','doc_authors');
-		$tags=parent::getMultipleOptionList('lib_suporting_docs','doc_tags');
+		//$authors=parent::getMultipleOptionList('lib_suporting_docs','doc_authors');
+		//$tags=parent::getMultipleOptionList('lib_suporting_docs','doc_tags');
 		
 		
 		//merge arrays 
@@ -35,6 +39,7 @@ class LibraryController extends \BaseController {
 		->with('years_from',parent::years_from())
 		->with('years',parent::years())
 		->with('authors',$authors)
+		->with('docTypesList',$docTypesList)
 		->with('docTypes',$docTypes)
 		->with('tags',$tags)
 		;
@@ -42,18 +47,13 @@ class LibraryController extends \BaseController {
 	public function saveSupportingDocument(){
 		
 		$doc_upload=parent::fileUpload('doc_upload','lib_supporting_docs');
-		//Multiple selection 
-		$doc_authors =Input::get('doc_authors');
-		$doc_authors= serialize($doc_authors);
-		$doc_tags =Input::get('doc_tags');;
-		$doc_tags= serialize($doc_tags);
-	//End Multiple selection 
+	
 		$sd=new LibSupportingDocument;
 		$sd->doc_title=Input::get('doc_title');
-		$sd->doc_authors=$doc_authors;
+		$sd->doc_authors=Input::get('doc_authors');
 		$sd->doc_type=Input::get('doc_type');
 		$sd->doc_subject=Input::get('doc_subject');
-		$sd->doc_tags=$doc_tags;
+		$sd->doc_tags=Input::get('doc_tags');
 		$sd->doc_series=Input::get('doc_series');
 		$sd->doc_edition=Input::get('doc_edition');
 		$sd->doc_part=Input::get('doc_part');
@@ -76,10 +76,7 @@ class LibraryController extends \BaseController {
 		
 		$doc_upload=parent::updateFileUpload('old_doc_upload','doc_upload','lib_supporting_docs');
 		//Multiple selection 
-		$doc_authors =Input::get('doc_authors');;
-		$doc_authors= serialize($doc_authors);
-		$doc_tags =Input::get('doc_tags');;
-		$doc_tags= serialize($doc_tags);
+		
 	     //End Multiple selection 
 	
 		$id=Input::get('id');
@@ -87,10 +84,10 @@ class LibraryController extends \BaseController {
 		->where('id',$id)
 		->update(array(
 		'doc_title' => Input::get('doc_title'),
-		'doc_authors' =>$doc_authors,
+		'doc_authors' =>Input::get('doc_authors'),
 		'doc_type' => Input::get('doc_type'),
 		'doc_subject' => Input::get('doc_subject'),
-		'doc_tags' =>$doc_tags,
+		'doc_tags' =>Input::get('doc_tags'),
 		'doc_series' => Input::get('doc_series'),
 		'doc_edition' => Input::get('doc_edition'),
 		'doc_part' => Input::get('doc_part'),
@@ -148,6 +145,9 @@ class LibraryController extends \BaseController {
 		->where('soft_delete','<>','1')
 		->orderBy('doc_type')
 		->get();
+		 $docTypesList =array(''=>'--Select Type--')+DB::table('lib_suporting_docs_type')
+		->where('soft_delete','<>','1')
+		->lists('doc_type','doc_type');
 	
 		$docTypes = DB::table('lib_suporting_docs_type')
 		->where('soft_delete','<>','1')
@@ -167,6 +167,7 @@ class LibraryController extends \BaseController {
 			->with('years_from',parent::years_from())
 			->with('years',parent::years())
 			->with('allDocs',$allDocs)
+			->with('docTypesList',$docTypesList)
 			
 			->with('docTypes',$docTypes);
 	}

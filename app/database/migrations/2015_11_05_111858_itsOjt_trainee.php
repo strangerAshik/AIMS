@@ -20,7 +20,10 @@ class ItsOjtTrainee extends Migration {
 			$table->string('employee_name');
 			$table->string('employees_speciality');
 			$table->string('hire_date');
+			$table->string('hiring_criteria',1000);
 			$table->string('current_position');
+			$table->string('position_description',1000);
+			
 
 			$table->string('row_creator');
 			$table->string('row_updator');

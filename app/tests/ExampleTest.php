@@ -14,4 +14,12 @@ class ExampleTest extends TestCase {
 		$this->assertTrue($this->client->getResponse()->isOk());
 	}
 
+	public function dashboard()
+	{
+
+		$crawler = $this->client->request('GET', 'dashboard');
+
+		$this->assertTrue($this->client->getResponse()->isOk());
+	}
+
 }

@@ -43,19 +43,21 @@ class SiaAction extends Migration {
 			$table->string('result');
 			$table->string('has_edp');
 			//$table->string('corrective_action_plan');
-			$table->string('hazard_identification');
-			$table->string('initial_risk');
+			$table->longText('hazard_identification');
+			$table->longText('initial_risk');
 			$table->string('determine_risk');
-			$table->string('violation_of_safety_standard');
-			$table->string('safety_risk_management');
+			$table->longText('violation_of_safety_standard');
+			$table->longText('safety_risk_management');
 			$table->string('determine_severity');
 			$table->string('determine_likelihood');
 			//$table->string('final_risk_determination');
-			$table->string('risk_statement',1000);
+			$table->longText('risk_statement',1000);
 			$table->string('has_safety_concern');
 			$table->string('lack_of_effective_implementation');
 			
 
+			$table->string('approve');
+			$table->string('warning');
 			$table->string('safety_performance_indicator');
 			$table->string('safety_performance_target');
 

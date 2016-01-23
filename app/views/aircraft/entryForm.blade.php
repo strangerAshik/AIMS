@@ -222,7 +222,7 @@
                                            
 											{{Form::label('tc_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('tc_upload')}}
+											{{Form::file('tc_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -363,7 +363,7 @@
                                            
 											{{Form::label('stc_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('stc_upload')}}
+											{{Form::file('stc_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -455,7 +455,7 @@
                                            
 											{{Form::label('exemption_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('exemption_upload')}}
+											{{Form::file('exemption_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -617,7 +617,7 @@
                                            
 											{{Form::label('registration_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('registration_upload')}}
+											{{Form::file('registration_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -814,7 +814,7 @@
                                            
 											{{Form::label('ac_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('ac_upload')}}
+											{{Form::file('ac_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -954,7 +954,7 @@
                                            
 											{{Form::label('approval_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('approval_upload')}}
+											{{Form::file('approval_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1109,7 +1109,7 @@
                                            
 											{{Form::label('owner_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('owner_upload')}}
+											{{Form::file('owner_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1254,7 +1254,7 @@
                                            
 											{{Form::label('lesse_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('lesse_upload')}}
+											{{Form::file('lesse_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1434,7 +1434,7 @@
                                            
 											{{Form::label('insurer_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('insurer_upload')}}
+											{{Form::file('insurer_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1521,14 +1521,14 @@
                                            
 											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											
-											{{Form::select('location',array(
+											{{Form::text('location','',array('class' => 'form-control','placeholder'=>''))}}
+											{{--Form::select('location',array(
 									''=>'--Select--',
 									'KBHM-Birmingham International'=>'KBHM-Birmingham International',
 									'KATL-Atlanta-Harts-field International'=>'KATL-Atlanta-Harts-field International',
 									'KCHA-Chattanooga'=>'KCHA-Chattanooga',
 									'KMIA- Miami International'=>'KMIA- Miami International'
-													),'0',array('class'=>'form-control','required'=>''))}}
+													),'0',array('class'=>'form-control','required'=>''))--}}
 											</div>
 											
                     </div>
@@ -1746,7 +1746,7 @@
                                            
 											{{Form::label('equip_upload', 'Upload Document ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('equip_upload')}}
+											{{Form::file('equip_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>

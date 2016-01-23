@@ -1,4 +1,4 @@
-@extends('layoutTable')
+@extends('layoutMT')
 @section('content')
 <section class='content widthController'>
 <p class="text-center">
@@ -18,10 +18,11 @@
 								<div style="display:none">
 									{{$num=0;}}
 								</div>
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="example" class="table table-bordered table-striped">
 										<thead>
 											<tr>
 												<th>No.</th>
+												<th>Label</th>
 												<th>Module Name</th>
 												<th>Update</th>
 												<th>Permanent Delete</th>
@@ -33,6 +34,7 @@
 										@foreach($modules as $module)
 											<tr>
 												<td>{{++$num}}</td>
+												<td class='text-centre'>{{$module->label}}</td>
 												<td class='text-centre'>{{$module->module_name}}</td>
 																								
 												<td class='text-centre'>

@@ -3,12 +3,18 @@
 @section('content')
 <section class="content contentWidth">
 <!--Menu-->
+
+@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'access'))
 	<p class="text-center col-md-6">
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#forwardingForm" >Action Details</button>    
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#action" >Action Details</button>    
 	</p>
+@endif
+	
+@if('true'==CommonFunction::hasPermission('voluntary_reporting_approval',Auth::user()->emp_id(),'access'))
 	<p class="text-center col-md-6">
 	    <button class="btn btn-primary btn-block " data-toggle="modal" data-target="#approvalForm" >Approval</button>	
 	</p>
+@endif
 
 <!--Details of Reporting-->
 	<div class="row" >
@@ -30,12 +36,13 @@
                     <table class="table table-bordered">
 				
 				        <tbody>
+				        @foreach ($reportInfo as $info)
 						   <tr>
-                               <th>									
+                               <th class="col-md-4">									
 								Title
 							  </th>
                                 <td>
-									Title Of Report
+									{{$info->title}}
 								</td>
 						   </tr>
 							<tr>
@@ -43,7 +50,7 @@
 								Date
 							  </th>
                                 <td>
-									01 January 2015
+									{{$info->created_at}}
 								</td>
 						   </tr>
 						   <tr>
@@ -51,7 +58,7 @@
 								Email of Reporter
 							  </th>
                                 <td>
-									example@caab.com
+									{{$info->email}}
 								</td>
 						   </tr>
 						   <tr>
@@ -60,9 +67,7 @@
 						 		 </th>
                                
                                 <td>
-									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of 
-
-									type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+									{{nl2br($info->report)}}
 								</td>
 							</tr>
 							<tr>
@@ -70,9 +75,13 @@
 									Document
 								 </th>
 								<td>
-									Document
+									@if($info->file!='Null'){{HTML::link('files/voluntaryReporting/'.$info->file,'Document',array('target'=>'_blank'))}}
+                                    @else
+                                        {{HTML::link('#','No Document Provided')}}
+                                    @endif
 								</td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     </div>
@@ -97,28 +106,31 @@
                     <table class="table table-bordered">
 				     
 				        <tbody>
-				        	<tr><td colspan="4">
+				        @if($reportAction)
+				        @foreach ($reportAction as $info)
+				     
+				        	<tr id="{{$reportId}}"><td colspan="4">
 									
 								<span class='hidden-print'>
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'par_delete'))
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'par_delete'))
 
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'sof_delete'))	
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'sof_delete'))	
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'approve'))
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'approve'))
 
-									{{ HTML::linkAction('AircraftController@approve', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'worning'))	
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'worning'))	
+									{{ HTML::linkAction('BaseController@removeWarning', '',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@warning', '',array('voluntary_reporting_action',$info->id,$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'update'))
-									<a data-toggle="modal" data-target="#approvalForm" href='' style='color:green;float:right;padding:5px;'>
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_action_details',Auth::user()->emp_id(),'update'))
+									<a data-toggle="modal" data-target="#action{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -126,15 +138,14 @@
 							</span>	
 
                     </td></tr>	
+                  
 						   <tr>
-						   		<th>									
+						   		<th class="col-md-4">									
 						  		  Action Details
 						 		 </th>
                                
                                 <td>
-									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of 
-
-									type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+									{{nl2br($info->action_details)}}
 								</td>
 							</tr>
 							<tr>
@@ -142,9 +153,22 @@
 									Document
 								 </th>
 								<td>
-									Document
+									@if($info->file!='Null'){{HTML::link('files/voluntaryReporting/'.$info->file,'Document',array('target'=>'_blank'))}}
+                                    @else
+                                        {{HTML::link('#','No Document Provided')}}
+                                    @endif
 								</td>
                             </tr>
+                            <tr>
+                            	<th>Notification</th>
+                            	<td>{{$info->notify}}</td>
+                            </tr>
+                            @endforeach
+                            @else 
+                            <tr>
+                            	<td colspan="2">Action is not taken yet!!</td>
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                     </div>
@@ -168,29 +192,23 @@
 					<div class="box-body">
 						
                     <table class="table table-bordered">
-					 <thead>
-					 	<tr><td colspan="4">
+						<tr><th>Approved By</th><th>Designation</th><th>Approval Date</th><th>Note</th></tr>
+						@if($approvalInfo)
+						@foreach($approvalInfo as $info)
+					
+					 	<tr id="{{$info->id}}"><td colspan="4">
 									
 								<span class='hidden-print'>
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'par_delete'))
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_approval',Auth::user()->emp_id(),'par_delete'))
 
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('voluntary_reporting_approval',$info->id,$info->approval_note), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'sof_delete'))	
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_approval',Auth::user()->emp_id(),'sof_delete'))	
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('voluntary_reporting_approval',$info->id,$info->approval_note), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'approve'))
-
-									{{ HTML::linkAction('AircraftController@approve', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
-								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'worning'))	
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('sia_approval','$info->id'), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
-								@endif
-								@if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'update'))
-									<a data-toggle="modal" data-target="#approvalForm" href='' style='color:green;float:right;padding:5px;'>
+								
+								@if('true'==CommonFunction::hasPermission('voluntary_reporting_approval',Auth::user()->emp_id(),'update'))
+									<a data-toggle="modal" data-target="#approvalForm{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								@endif
@@ -198,21 +216,38 @@
 							</span>	
 
                     </td></tr>	
-				      	<tr><th>Approved By</th><th>Designation</th><th>Approval Date</th><th>Note</th></tr>
-				      </thead>
-				        <tbody>
+                  
+				      
+				      
+				      
 						  <tr>
-						  	<td>Name NF</td><td>Admin</td><td>01 January 2015</td><td>Note example</td></tr>
+						  	<td>{{$info->approved_by}}</td><td>{{$info->designation}}</td><td>{{$info->approval_date}}</td><td>{{nl2br($info->approval_note)}}</td>
 						  </tr>
-                        </tbody>
+						@endforeach
+						@else 
+						<tr>
+						  	<td colspan="4">This Voluntary Report Action is not approved yet!</td>
+
+					    </tr>
+						@endif
+                    
 				    </table>
                     </div>
                     </div>
                     </div>
+                  @include('common')
+                  @yield('print')
     </div>
 </section>
 
 <!--Entry Form-->
 @include('voluntaryReporting/entryForm')
 @yield('approvalForm')
+@yield('action')
+
+
+@include('voluntaryReporting/editForm')
+@yield('updateApprovalForm')
+@yield('updateAction')
+
 @stop

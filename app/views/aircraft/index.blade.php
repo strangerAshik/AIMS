@@ -1,14 +1,8 @@
 
-@extends('layoutTable')
+@extends('layoutMT')
 @section('content')
-<div style='display:none'>
-{{$role=Auth::User()->Role()}}
-{{$org=Auth::User()->Organization()}}
-{{$counter=0;}}
-</div>
 
-
-<section class='content widthController'>
+<section class='content contentWidth'>
 
          <div class="row">
                         <div class="col-md-12">
@@ -21,9 +15,8 @@
 									
                                 </div><!-- /.box-header -->
                                 <div style="display:none">{{$num=0}}</div>
-                                <div class="box-body">
-								
-                                    <table id="example1" class="table table-bordered table-striped">
+                               <div class="box-body table-responsive">
+                                   <table id="example" class="display nowrap table table-bordered table-striped table-responsive" cellspacing="0" width="100%">
 										<thead>
 											<tr>
 												<th>No.</th>
@@ -33,14 +26,14 @@
 												<th>Aircraft MM </th>
 												<th>Aircraft MSN </th>
 												<th>Assigned Inspector</th>												
-												<th>View Details</th>
+												<th>Details</th>
 											</tr>
 										</thead>
 										
 										<tbody>
 										@if($aircrafts)
 										@foreach ($aircrafts as $aircraft)
-											 @if('true'==CommonFunction::hasPermission('airaft_admin_list',Auth::user()->emp_id(),'access'))
+											
 											 <tr>
 												<td class='text-centre'>{{++$num}}</td>
 												<td class='text-centre'>{{$aircraft->aircraft_operator}}</td>
@@ -52,27 +45,11 @@
 												
 												
 												<td class='text-centre'>
-												<a target='_blank' href="single/{{$aircraft->aircraft_MM.'/'.$aircraft->aircraft_MSN}}">view Details</a>
+												<a  href="single/{{$aircraft->aircraft_MM.'/'.$aircraft->aircraft_MSN}}">Details</a>
 												</td>
 												
 											</tr>
-											@elseif($aircraft->aircraft_operator==$org )
-											<tr>
-												<td class='text-centre'>{{++$num}}</td>
-												<td class='text-centre'>{{$aircraft->aircraft_operator}}</td>
-												<td class='text-centre'>{{$aircraft->serial_number}}</td>
-												<td class='text-centre'>{{$aircraft->registration_no}}</td>
-												<td class='text-centre'>{{$aircraft->aircraft_MM}}</td>
-												<td class='text-centre'>{{$aircraft->aircraft_MSN}}</td>
-												<td class='text-centre'>{{$aircraft->assigned_inspector}}</td>
-												
-												<td class='text-centre'>
-												<a target='_blank' href="single/{{$aircraft->aircraft_MM.'/'.$aircraft->aircraft_MSN}}" >view Details</a>
-												</td>
-												
-											</tr>											
-
-											@endif
+											
 										@endforeach
 										
 										@else
@@ -92,11 +69,5 @@
 
    <!-- End delete User-->         
 	</section>
-	<script>
-$(document).ready(function(){
-  
-$('#searching').selectize();
-	
-});
-</script>
+
 @stop

@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 <style>
-
+.inner a h4{color: #FFF}
 </style>
 <section class='content' >
 <div style='display:none'>
@@ -12,52 +12,64 @@
                       
 						
 						<div class="row">
-						@if('true'==CommonFunction::hasPermission('surveillance_inspection_audit',Auth::user()->emp_id(),'access'))
+
+                        @if('true'==CommonFunction::hasPermission('notifications',Auth::user()->emp_id(),'access'))
+                            <div class="col-lg-3 col-xs-6 col-md-3 disNon">
+                                <!-- small box -->
+                                <div class="small-box bg-aqua  height">
+                                    <div class="inner">
+                                        <a class="small-box-footer"  href="#" onclick="alert('Sorry!! This Module is Under Development.')"><h4 class='title'>
+                                            Notifications
+                                        </h4></a>                                    
+                                    </div>
+                                    <div class="icon">
+                                     <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
+                                        <i class="ion ion-ios7-alarm-outline"></i>
+                                    </a>
+                                    </div>
+                                    <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
+                                       <!-- More info--> <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div><!-- ./col -->
+                        @endif
+
+						@if('true'==CommonFunction::hasPermission('sia',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
 						<div class="small-box bg-blue  height" >
-							<div class="inner">
-								<h4 style='font-weight:bold;'>Surveillance,Inspection & Audit (SIA)</h4>
+							<div    class="inner">
+								<a  class="small-box-footer" href="{{'surveillance/main'}}"><h4 style='font-weight:bold; color:#fff; z-index:99999'>Surveillance, Inspection & Audit (SIA)</h4></a>
 							</div>
 							<div class="icon">
-								<i class=" icon ion-social-buffer"></i>
+                                <a class="small-box-footer" href="{{'surveillance/main'}}">
+    								<i  class="icon ion-arrow-expand"></i>
+                                </a>
 							</div>
 							<a class="small-box-footer" href="{{'surveillance/main'}}">
-								More info <i class="fa fa-arrow-circle-right"></i>
+							 <i class="fa fa-arrow-circle-right"></i>
 							</a>
 						</div>
                         </div><!-- ./col -->
 						@endif
-						@if('true'==CommonFunction::hasPermission('safety_concern',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
-                            <!-- small box -->
-                            <div class="small-box bg-blue  height" >
-                                <div class="inner">
-                                    <h4 style='font-weight:bold;'> Safety Concern</h4>
-                                    
-                                </div>
-                                <div class="icon">
-                                    <i class="icon ion-alert-circled"></i>
-                                </div>
-                                <a class="small-box-footer" href="{{'safety/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
-						@endif
+						
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-blue  height" >
                                 <div class="inner">
+                                <a class="small-box-footer" href="{{'aircraft/main'}}">
                                    <h4 style='font-weight:bold;'>Aircraft</h4>
+                                </a>
                                    
                                 </div>
                                 <div class="icon">
-                                    <i class="icon ion-plane"></i>
+                                    <a class="small-box-footer" href="{{'aircraft/main'}}">
+                                        <i class="icon ion-plane"></i>
+                                    </a>
                                 </div>
                                 <a class="small-box-footer" href="{{'aircraft/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -73,8 +85,9 @@
                                 <div class="icon">
                                     <i class="icon ion-briefcase"></i>
                                 </div>
+                                
                                 <a class="small-box-footer" href="{{'organization/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -93,8 +106,9 @@
                                 <div class="icon">
                                     <i class="icon ion-key"></i>
                                 </div>
+                                
                                 <a class="small-box-footer" href="{{'pel/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -113,26 +127,28 @@
                                     <i class="icon ion-pricetags"></i>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                  <!--   More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
 						@endif
-						@if('true'==CommonFunction::hasPermission('employee ',Auth::user()->emp_id(),'access'))
+						@if('true'==CommonFunction::hasPermission('employee',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
                                 <div class="inner">
+                                 <a href="{{URL::to('qualification/main');}}">    
                                     <h4 class='title'>
                                         Employee
                                     </h4>
+                                </a>
                                    
                                 </div>
                                 <div class="icon">
                                    <a href="{{URL::to('qualification/main');}}"> <i class="icon ion-person-stalker"></i></a>
                                 </div>
                                 <a class="small-box-footer" href="{{URL::to('qualification/main');}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -142,16 +158,19 @@
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
                                 <div class="inner">
+                                <a href="{{URL::to('itsOjt/main');}}">
                                     <h4 class='title'>
                                        ITS
                                     </h4>
+                                </a>
                                    
                                 </div>
                                 <div class="icon">
-                                   <a href="{{URL::to('itsOjt/main');}}"> <i class="icon ion-person-stalker"></i></a>
+                                   <a href="{{URL::to('itsOjt/main');}}"> <i class="fa fa-briefcase"></i></a>
                                 </div>
+                                
                                 <a class="small-box-footer" href="{{URL::to('itsOjt/main');}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -173,12 +192,12 @@
                                     <i class="ion ion-bag"></i>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
 						@endif
-                    @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
+                    @if('true'==CommonFunction::hasPermission('environment ',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-aqua height">
@@ -191,7 +210,7 @@
                                    <span class="glyphicons glyphicons-snowflake">❄</span>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -210,7 +229,7 @@
                                     <i class="icon ion-alert"></i>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -229,7 +248,7 @@
                                     <i class="icon ion-ios7-compose"></i>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -241,41 +260,25 @@
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
                                 <div class="inner">
+                                 <a class="small-box-footer" href="{{URL::to('library/main');}}">
                                     <h4 class='title'>
                                          E-Library
                                     </h4>
+                                </a>
                                     
                                 </div>
                                 <div class="icon">
+                                    <a class="small-box-footer" href="{{URL::to('library/main');}}">
                                     <i class="icon ion-document-text"></i>
+                                    </a>
                                 </div>
                                 <a class="small-box-footer" href="{{URL::to('library/main');}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
 					@endif
-					@if('true'==CommonFunction::hasPermission('volunteer_reporting',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 ">
-                            <!-- small box -->
-                            <div class="small-box bg-aqua height">
-                                <div class="inner">
-                                    <h4 class='title'>
-                                        Volunteer Reporting 
-                                    </h4>
-                                    <p>
-                                        
-                                    </p>
-                                </div>
-                                <div class="icon">
-                                    <i class="icon ion-flag"></i>
-                                </div>
-                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
-						@endif
+					
                         
                     
                     @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
@@ -290,13 +293,14 @@
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
+                                
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                   <!--  More info  --><i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
                     @endif
-                    @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
+                  @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-aqua height">
@@ -309,7 +313,7 @@
                                     <i class="ion ion-pie-graph"></i>
                                 </div>
                                 <a class="small-box-footer" href="{{'usoap/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -327,7 +331,7 @@
                                     <i class="ion ion-eye"></i>
                                 </div>
                                 <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -337,69 +341,67 @@
                                 <!-- small box -->
                                 <div class="small-box bg-blue  height">
                                     <div class="inner">
+                                       <a class="small-box-footer" href="report/report">
                                         <h4 class='title'>
                                             Report
                                         </h4>
+                                        </a>
                                     </div>
                                     <div class="icon">
-                                        <i class="icon ion-clipboard"></i>
-                                    </div>
                                     <a class="small-box-footer" href="report/report">
-                                        More info <i class="fa fa-arrow-circle-right"></i>
+                                        <i class="icon ion-clipboard"></i>
+                                    </a>
+                                    </div>
+                                    
+                                    <a class="small-box-footer" href="report/report">
+                                        <i class="fa fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
                             </div><!-- ./col -->
-                        @endif
-                    @if('true'==CommonFunction::hasPermission('notifications',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3">
-                            <!-- small box -->
-                            <div class="small-box bg-aqua  height">
-                                <div class="inner">
-                                    <h4 class='title'>
-                                        Notifications
-                                    </h4>                                    
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-ios7-alarm-outline"></i>
-                                </div>
-                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
-                        @endif
-                    @if('true'==CommonFunction::hasPermission('help_faq',Auth::user()->emp_id(),'access'))
-                        <div class="col-lg-3 col-xs-6 col-md-3">
-                            <!-- small box -->
-                            <div class="small-box bg-blue  height">
-                                <div class="inner">
-                                    <h4 class='title'>
-                                        Help & FAQ
-                                    </h4>                                    
-                                </div>
-                                <div class="icon">
-                                    <i class="fa fa-question-circle"></i>
-                                </div>
-                                <a class="small-box-footer" href="{{'helpFaq/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div><!-- ./col -->
                     @endif
+
                     @if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
                                 <div class="inner">
+                                 <a class="small-box-footer" href="{{'voluntary/main'}}">
                                     <h4 class='title'>
                                         Voluntary  Reporting
-                                    </h4>                                    
+                                    </h4>   
+                                </a>                                 
                                 </div>
                                 <div class="icon">
-                                    <i class="fa fa-users"></i>
+                                 <a class="small-box-footer" href="{{'voluntary/main'}}">
+                                    <i class="icon ion-android-friends"></i>
+                                </a>
                                 </div>
+                                
                                 <a class="small-box-footer" href="{{'voluntary/main'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                     <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                    @endif
+                    @if('true'==CommonFunction::hasPermission('help_faq',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3">
+                            <!-- small box -->
+                            <div class="small-box bg-blue  height">
+                                <div class="inner">
+                                 <a class="small-box-footer" href="{{'helpFaq/main'}}">
+                                    <h4 class='title'>
+                                        Help & FAQ
+                                    </h4>      
+                                </a>                              
+                                </div>
+                                <div class="icon">
+                                <a class="small-box-footer" href="{{'helpFaq/main'}}">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                </div>
+                                 
+                                <a class="small-box-footer" href="{{'helpFaq/main'}}">
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div><!-- ./col -->
@@ -409,16 +411,22 @@
                             <!-- small box -->
                             <div class="small-box bg-blue  height">
                                 <div class="inner">
+                                 <a class="small-box-footer" href="{{'settings'}}">
                                     <h4 class='title'>
                                         Settings
-                                    </h4>                                    
+                                    </h4>     
+                                </a>                               
                                 </div>
                                 <div class="icon">
-                                    <i class="icon ion-ios7-gear"></i>
-                                </div>
                                 <a class="small-box-footer" href="{{'settings'}}">
-                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                    <i class="icon ion-ios7-gear"></i>
                                 </a>
+                                </div>
+                                
+                                <a class="small-box-footer" href="{{'settings'}}">
+                                     <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                               
                             </div>
                         </div><!-- ./col -->
                     @endif
@@ -458,8 +466,14 @@
               Change Your Default Password
             </h4>
          </div>
-         <div class="modal-body">
-           <h4> <p>Please Change Your Default Password For Security purpose.</br> Thanks</p></h4>
+         <div class="modal-body ">
+           <h4> <p>Please Change Your Default Password For Security purpose.</br>
+           For changing password follow the steps<br>
+           1.Go to settings<br>
+           2.Go to My Profile<br>
+           3.Click On Change Password<br><br>
+
+            Thanks</p></h4>
 		  
          </div>
          <div class="modal-footer">

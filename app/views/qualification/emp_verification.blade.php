@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
  
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -19,7 +19,7 @@
 						{{Employee::notApproved($info)}}	
                             <tr>
                                 <th colspan="2">Employee Assignment #{{++$a_sl}}
-                                    <a href="{{'deleteEnpVeri/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteEnpVeri/'.$info->id}}" style='color:red;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                     <a data-toggle="modal" data-target="#{{'EV'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -28,13 +28,10 @@
                                 </th>
                             </tr>
                             <tr>
-                                <td class="col-md-4">Name</td>
+                                <td class="col-md-4">Name Of Assigned Task</td>
                                 <td >{{$info->name}}</td>
                             </tr>
-                            <tr>
-                                <td>Employee ID</td>
-                                <td>{{Auth::user()->emp_id()}}</td>
-                            </tr>
+                           
                             <tr>
                                 <td>Date Of Entry</td>
                                 <td>{{$info->entry_date." ".$info->entry_month." ".$info->entry_year}}</td>
@@ -44,7 +41,7 @@
                                 <td> {{$info->active}}</td>
                             </tr>
                             <tr>
-                                <td>Termination/ Separation Date</td>
+                                <td>Posting / Release Date</td>
                                   <td>{{$info->termination_date." ".$info->termination_month." ".$info->termination_year}}</td>
                             </tr>
                             <tr>
@@ -90,7 +87,7 @@
                         
 						<div class="form-group required">
                                            
-											{{Form::label('name', 'Name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('name', 'Name Of Assigned Task', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 											{{Form::text('name','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
@@ -130,7 +127,7 @@
                         </div>
 						<div class="form-group">
 												
-													{{Form::label('termination_date', 'Termination Date/ Separation Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('termination_date', 'Posting / Release Date', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -149,24 +146,24 @@
 														</div>
 													</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('position', 'Position', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('position','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('position','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required" >											
+						<div class="form-group " >											
 											{{Form::label('assigned_task', 'Assigned Task', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('assigned_task','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
+											{{Form::textarea('assigned_task','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
 											</div>
 					    </div>
-						<div class="form-group required" >											
+						<div class="form-group " >											
 											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('assigned_by','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
+											{{Form::textarea('assigned_by','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
 											</div>
 					    </div>
 						<div class="form-group " >											
@@ -203,7 +200,7 @@
 					 {{Form::hidden('id',$info->id)}}
 						<div class="form-group required">
                                            
-											{{Form::label('name', 'Name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('name', 'Name Of Assigned Task', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 											{{Form::text('name',$info->name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
@@ -243,7 +240,7 @@
                         </div>
 						<div class="form-group">
 												
-													{{Form::label('termination_date', 'Termination Date/ Separation Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('termination_date', 'Posting / Release Date', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -262,30 +259,30 @@
 														</div>
 													</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('position', 'Position', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('position', $info->position , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('position', $info->position , array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
                         </div>
-						<div class="form-group required" >											
+						<div class="form-group " >											
 											{{Form::label('assigned_task', 'Assigned Task', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('assigned_task',$info->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
+											{{Form::textarea('assigned_task',$info->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', ))}}
 											</div>
 					    </div>
-						<div class="form-group required" >											
+						<div class="form-group " >											
 											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('assigned_by',$info->assigned_by, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
+											{{Form::textarea('assigned_by',$info->assigned_by, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', ))}}
 											</div>
 					    </div>
 						<div class="form-group " >											
 											{{Form::label('note', 'Note', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('note', $info->note , array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
+											{{Form::textarea('note', $info->note , array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
 											</div>
 					</div>
 						

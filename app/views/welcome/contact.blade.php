@@ -51,12 +51,12 @@
                 <div class="panel panel-default">
                     <div class="text-center header">Our Office</div>
                     <div class="panel-body text-center">
+                    @if(CommonFunction::getCompanySetupDetails()->address)
                         <h4>Address</h4>
                         <div>
-                        Dhaka<br />
-                       Bangladesh<br />
-                    
-                       ASRTM@tecnologianova.com<br />
+                       {{CommonFunction::getCompanySetupDetails()->address}}<br>
+                    @endif
+                      {{CommonFunction::getCompanySetupDetails()->support_email}}<br />
                         </div>
                         <hr />
                         <div id="map1" class="map">

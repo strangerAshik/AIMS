@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
  
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -16,7 +16,7 @@
 						{{Employee::notApproved($info)}}	
                             <tr>
                                 <th colspan='2'> Language  #{{++$a_sl}}
-                                    <a href="{{'deleteLanguage/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteLanguage/'.$info->id}}" style='color:red;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                   <a data-toggle="modal" data-target="#{{'lang'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>

@@ -22,14 +22,15 @@
                                                 <th>Date</th>
                                                 <th>Time</th>
                                                 <th>SIA/Tracking No</th>
+                                                <th>Team Leaded</th>
                                                 <th>Organization</th>
-                                                <th>Event</th>
-                                              
+                                                <th>Event</th>                                              
                                                 <th>Accomplish Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>
                                         </thead>
+                                        @if($prgramList)
                                         <tbody>
                                          <div style="display: none">{{$num=0;}}</div>
                                         @foreach ($prgramList as $program)
@@ -37,7 +38,18 @@
                                                                                              
                                                 <td>{{date('d F Y',strtotime($program->date))}}</td>
                                                 <td>{{$program->time}}</td>
-                                                <td>{{$program->sia_number}}</td>                                                
+                                                <td>{{$program->sia_number}}</td>
+                                                <td> 
+                                                   @if($authors=CommonFunction::updateMultiSelection('sia_program', 'id',$program->id,'team_members'))
+                                                                                   @if($authors!=null)
+                                                                                        @foreach($authors as $key=>$value)
+                                                                                            {{$value; break}}
+                                                                                        @endforeach
+                                                                                   
+                                                                                    @endif
+                                                    @else
+                                                        No Members Added!!
+                                                    @endif</td>                                                
                                                 <td>{{$program->org_name}}</td>
                                                 <td>{{$program->event}}</td>
                                              
@@ -48,31 +60,23 @@
                                                     @endif
                                                  </td>
                                                 
-                                                <td><a target="_blink" href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
+                                                <td><a  href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
                                                 
                                             </tr>
                                         @endforeach
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                               
-                                                <th>Date</th>
-                                                <th>SIA/Tracking No</th>
-                                                <th>Event</th>
-                                                
-                                                <th>Time</th>
-                                               
-                                                <th>Accomplished?</th>
-                                                <th>Remark</th>
-                                                <th>Details</th>
-                                            </tr>
-                                        </tfoot>
+                                        @else 
+                                         <tbody>
+                                            <tr><td colspan="8">No Program Designed Yet!!</td></tr>
+                                         </tbody>
+                                        @endif
+                                        
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
-                    </div> 
-                    <?php echo $prgramList->links(); ?>
+ </div> 
+ <?php echo $prgramList->links(); ?>
 </section>
 
 @include('surveillance.entryForm')

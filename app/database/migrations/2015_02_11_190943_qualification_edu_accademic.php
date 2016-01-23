@@ -25,6 +25,7 @@ class QualificationEduAccademic extends Migration {
 			$table->string('standard');
 			$table->string('grade_division');
 			$table->string('out_of');
+			$table->string('certificate');
 			$table->string('verify',10);
 			$table->timestamps();
 		});

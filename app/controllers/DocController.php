@@ -86,8 +86,8 @@ class DocController extends \BaseController {
 		
 		'pdf' =>$filename,
 		
-		'created_at' => time(),
-		'updated_at' =>time()		
+		'created_at' => time('Y-m-d H:i:s'),
+		'updated_at' =>time('Y-m-d H:i:s')		
 		));
 			
 		return Redirect::to('doc/entry')->with('message', 'Successfully Saved!!');
@@ -134,7 +134,7 @@ class DocController extends \BaseController {
 		
 		'pdf' =>$filename,
 		
-		'updated_at' =>time()		
+		'updated_at' =>time('Y-m-d H:i:s')		
 		));
 			
 		return Redirect::to('doc/listView')->with('message', 'Successfully Saved!!');

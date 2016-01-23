@@ -12,11 +12,11 @@
                               
 				{{Form::open(array('url'=>'itsOjt/addFormalCourse','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 				  
-                    <div class="form-group ">
+                    <div class="form-group required">
                                            
 											{{Form::label('its_course_number', 'ITS Course Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('its_course_number','', array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('its_course_number','', array('class' => 'form-control','placeholder'=>'i.e AIR-XXXX / OPS-XXXX','required'=>''))}}
 											</div>
 											
                     </div>
@@ -194,19 +194,21 @@ var eventHandler = function(name) {
             <div class="modal-body"> 
                               
 				{{Form::open(array('url'=>'itsOjt/addOjtCourse','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
+				
 				  <div class="form-group required">
                                            
 											{{Form::label('its_course_number', 'ITS Course Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('its_course_number','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::select('its_course_number',$formalCourseList ,'',array('class'=>'form-control'))}}
+											
 											</div>
 											
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group required">
                                            
 											{{Form::label('its_job_task_no', 'ITS Job Task #', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('its_job_task_no','', array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('its_job_task_no','', array('class' => 'form-control','placeholder'=>'i.e AIR-X.XXX / OPS-X.XXX','required'=>''))}}
 											</div>
 											
                     </div>
@@ -218,21 +220,21 @@ var eventHandler = function(name) {
 											</div>
 											
                     </div>
-                    <div class="form-group required">
+                    <div class="form-group ">
 	                                           
 												{{Form::label('approval_date', 'Approval Date', array('class' => 'col-xs-4 control-label'))}}
 												
 														<div class="row">
 															<div class="col-xs-2">
-															{{Form::select('approval_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
+															{{Form::select('approval_date', $dates,date('d'),array('class'=>'form-control'))}}
 															</div>
 															<div class="col-xs-3">
-															{{Form::select('approval_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+															{{Form::select('approval_month',$months,date('F'),array('class'=>'form-control'))}}
 												
 																
 															</div>
 															<div class="col-xs-2">
-																{{Form::select('approval_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+																{{Form::select('approval_year',$years,date('Y'),array('class'=>'form-control'))}}
 															</div>
 														</div>
 												
@@ -272,7 +274,7 @@ var eventHandler = function(name) {
                     </div>
                     <div class="form-group ">
                                            
-											{{Form::label('associative_faa_job_task_no', 'Associative FAA Job Task #', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('associative_faa_job_task_no', 'Associative CAA Job Task #', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('associative_faa_job_task_no','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
@@ -397,7 +399,7 @@ var eventHandler = function(name) {
                                            
 											{{Form::label('employees_speciality', 'Employee\'s Speciality', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('employees_speciality',[''=>'--  Select Speciality  --','OPS'=>'OPS','AIR'=>'AIR'],'0',array('class'=>'form-control','required'=>''))}}
+											{{Form::select('employees_speciality',[''=>'--  Select Speciality  --','OPS'=>'OPS','AIR'=>'AIR','ANS-AGA'=>'ANS-AGA','Others'=>'Others'],'0',array('class'=>'form-control','required'=>''))}}
 											</div>
 											
                     </div>
@@ -420,11 +422,27 @@ var eventHandler = function(name) {
 														</div>
 												
 	                    </div>	
+                    <div class="form-group ">
+                                           
+											{{Form::label('hiring_criteria', 'Hiring Criteria', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('hiring_criteria','', array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+											</div>
+											
+                    </div>
                     <div class="form-group required">
                                            
 											{{Form::label('current_position', 'Current Position', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('current_position','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											</div>
+											
+                    </div>
+                    <div class="form-group ">
+                                           
+											{{Form::label('position_description', 'Position Description', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('position_description','', array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
 											</div>
 											
                     </div>
@@ -497,7 +515,7 @@ var eventHandler = function(name) {
                                            
 											{{Form::label('emp_tracker', 'Employee Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('emp_tracker',$traineeList,'0',array('class'=>'form-control','required'=>''))}}
+											{{Form::select('emp_tracker',$traineeList,'',array('class'=>'form-control','required'=>''))}}
 											</div>
 											
                     </div>
@@ -633,182 +651,21 @@ var eventHandler = function(name) {
 
 
 
-@if($PageName=='Individual Training OJT')
+@if($PageName=='Individual Training OJT' ||$PageName=='Trainee Single Training OJT')
 @section('courseUpdate')
 @foreach($assingedFormalCourses as $info)
 <!--Formal Course-->
-<div class="modal fade" id="updateFormalCourseStatus{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Update Formal Course Status</h4>
-            </div>
 
-            <div class="modal-body"> 
-                              
-				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
-				{{Form::hidden('emp_tracker',$emp_tracker)}}
-				{{Form::hidden('itscn',$info->its_course_number)}}
-				{{Form::hidden('level','formal')}}
-				  <div class="form-group required">
-                                           
-											{{Form::label('instructor', 'Instructor', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
-											
-                    </div>
-                     <div class="form-group required">
-                                           
-											{{Form::label('supervisor', 'Supervisor', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('supervisor','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
-											
-                    </div>
-                   				
-                     <div class="form-group required">
-                                           
-											{{Form::label('manager', 'Manager', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('manager','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
-											
-                    </div>
-                    <div class="form-group required">
-	                                           
-												{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}
-												
-														<div class="row">
-															<div class="col-xs-2">
-															{{Form::select('start_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
-															</div>
-															<div class="col-xs-3">
-															{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
-												
-																
-															</div>
-															<div class="col-xs-2">
-																{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
-															</div>
-														</div>
-												
-	                </div>	
-                    <div class="form-group required">
-	                                           
-												{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
-												
-														<div class="row">
-															<div class="col-xs-2">
-															{{Form::select('completion_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
-															</div>
-															<div class="col-xs-3">
-															{{Form::select('completion_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
-												
-																
-															</div>
-															<div class="col-xs-2">
-																{{Form::select('completion_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
-															</div>
-														</div>
-												
-	                </div>	
-                    <div class="form-group required">
-	                                           
-												{{Form::label('validity_date', 'Validity', array('class' => 'col-xs-4 control-label'))}}
-												
-														<div class="row">
-															<div class="col-xs-2">
-															{{Form::select('validity_date', $dates,date('d'),array('class'=>'form-control','required'=>''))}}
-															</div>
-															<div class="col-xs-3">
-															{{Form::select('validity_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
-												
-																
-															</div>
-															<div class="col-xs-2">
-																{{Form::select('validity_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
-															</div>
-														</div>
-												
-	                </div>	
-	                 <div class="form-group required">
-                                           
-											{{Form::label(' completion_status', ' Completion Status', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											<div class="radio">									 
-											  <label> {{ Form::radio('completion_status', 'Yes',true) }} &nbsp  Passed</label>
-											 <label> {{ Form::radio('completion_status', 'No') }} &nbsp  Failed</label>
-										</div>
-											</div>
-											
-                    </div>		
-                    <div class="form-group ">
-                                           
-											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::file('certificate')}}
-											</div>
-											
-                    </div>
-                    <div class="form-group ">
-                                           
-											{{Form::label('comment', 'Comment', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('notes','',array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
-											</div>
-											
-                    </div>
-                   
-                   
-                   
-					 
-						
-					
-					<div class="form-group">
-                       
-                            <button type="submit"  value='' class="btn btn-primary btn-lg btn-block">Save</button>
-                       
-                    </div>
-					</div>
-					{{Form::close()}}
-            </div>
-        </div>
-    </div>
-</div>
 
-<script>
-	$(document).ready(function(){
-	//$('#org_name').selectize();
-	$('#event').selectize();
-	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
-	//multiple selection from options
-var eventHandler = function(name) {
-					return function() {
-						console.log(name, arguments);
-						$('#log').append('<div><span class="name">' + name + '</span></div>');
-					};
-				};
-	var $select = $('#team_members').selectize({
-					create          : true,
-					onChange        : eventHandler('onChange'),
-					onItemAdd       : eventHandler('onItemAdd'),
-					onItemRemove    : eventHandler('onItemRemove'),
-					onOptionAdd     : eventHandler('onOptionAdd'),
-					onOptionRemove  : eventHandler('onOptionRemove'),
-					onDropdownOpen  : eventHandler('onDropdownOpen'),
-					onDropdownClose : eventHandler('onDropdownClose'),
-					onFocus         : eventHandler('onFocus'),
-					onBlur          : eventHandler('onBlur'),
-					onInitialize    : eventHandler('onInitialize'),
-				});	
-	});
-           
-</script>
 @endforeach
+
+@stop
+@endif
+
+@if($PageName=='Individual Training OJT')
+@section('levels')
 <!--Level 1-->
-@foreach($allJobTask as $info)
+@foreach($assingedOjt as $info)
 <div class="modal fade" id="level1{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -921,7 +778,7 @@ var eventHandler = function(name) {
                                            
 											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('certificate')}}
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -950,36 +807,7 @@ var eventHandler = function(name) {
         </div>
     </div>
 </div>
-
-<script>
-	$(document).ready(function(){
-	//$('#org_name').selectize();
-	$('#event').selectize();
-	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
-	//multiple selection from options
-var eventHandler = function(name) {
-					return function() {
-						console.log(name, arguments);
-						$('#log').append('<div><span class="name">' + name + '</span></div>');
-					};
-				};
-	var $select = $('#team_members').selectize({
-					create          : true,
-					onChange        : eventHandler('onChange'),
-					onItemAdd       : eventHandler('onItemAdd'),
-					onItemRemove    : eventHandler('onItemRemove'),
-					onOptionAdd     : eventHandler('onOptionAdd'),
-					onOptionRemove  : eventHandler('onOptionRemove'),
-					onDropdownOpen  : eventHandler('onDropdownOpen'),
-					onDropdownClose : eventHandler('onDropdownClose'),
-					onFocus         : eventHandler('onFocus'),
-					onBlur          : eventHandler('onBlur'),
-					onInitialize    : eventHandler('onInitialize'),
-				});	
-	});
-           
-</script>
-<!--Level 2-->
+<!--Level2-->
 <div class="modal fade" id="level2{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -991,7 +819,7 @@ var eventHandler = function(name) {
             <div class="modal-body"> 
                               
 				{{Form::open(array('url'=>'itsOjt/updateFormalOjtStatus','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
-				{{Form::hidden('emp_tracker',$emp_tracker)}}\
+				{{Form::hidden('emp_tracker',$emp_tracker)}}
 				{{Form::hidden('itscn',$info->its_course_number)}}
 				{{Form::hidden('ojt_task_no',$info->its_job_task_no)}}
 				{{Form::hidden('level','L2')}}
@@ -1092,7 +920,7 @@ var eventHandler = function(name) {
                                            
 											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('certificate')}}
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1121,35 +949,6 @@ var eventHandler = function(name) {
         </div>
     </div>
 </div>
-
-<script>
-	$(document).ready(function(){
-	//$('#org_name').selectize();
-	$('#event').selectize();
-	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
-	//multiple selection from options
-var eventHandler = function(name) {
-					return function() {
-						console.log(name, arguments);
-						$('#log').append('<div><span class="name">' + name + '</span></div>');
-					};
-				};
-	var $select = $('#team_members').selectize({
-					create          : true,
-					onChange        : eventHandler('onChange'),
-					onItemAdd       : eventHandler('onItemAdd'),
-					onItemRemove    : eventHandler('onItemRemove'),
-					onOptionAdd     : eventHandler('onOptionAdd'),
-					onOptionRemove  : eventHandler('onOptionRemove'),
-					onDropdownOpen  : eventHandler('onDropdownOpen'),
-					onDropdownClose : eventHandler('onDropdownClose'),
-					onFocus         : eventHandler('onFocus'),
-					onBlur          : eventHandler('onBlur'),
-					onInitialize    : eventHandler('onInitialize'),
-				});	
-	});
-           
-</script>
 <!--Level 3-->
 <div class="modal fade" id="level3{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1263,7 +1062,7 @@ var eventHandler = function(name) {
                                            
 											{{Form::label('upload_certificate', 'Upload Certificate', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('certificate')}}
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -1292,36 +1091,7 @@ var eventHandler = function(name) {
         </div>
     </div>
 </div>
-
-<script>
-	$(document).ready(function(){
-	//$('#org_name').selectize();
-	$('#event').selectize();
-	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
-	//multiple selection from options
-var eventHandler = function(name) {
-					return function() {
-						console.log(name, arguments);
-						$('#log').append('<div><span class="name">' + name + '</span></div>');
-					};
-				};
-	var $select = $('#team_members').selectize({
-					create          : true,
-					onChange        : eventHandler('onChange'),
-					onItemAdd       : eventHandler('onItemAdd'),
-					onItemRemove    : eventHandler('onItemRemove'),
-					onOptionAdd     : eventHandler('onOptionAdd'),
-					onOptionRemove  : eventHandler('onOptionRemove'),
-					onDropdownOpen  : eventHandler('onDropdownOpen'),
-					onDropdownClose : eventHandler('onDropdownClose'),
-					onFocus         : eventHandler('onFocus'),
-					onBlur          : eventHandler('onBlur'),
-					onInitialize    : eventHandler('onInitialize'),
-				});	
-	});
-           
-</script>
 @endforeach
+
 @stop
 @endif
-

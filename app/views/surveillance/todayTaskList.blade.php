@@ -21,8 +21,9 @@
                                                 
                                                 <th>Time</th>
                                                 <th>Teammembers</th>
+                                                 <th>Location</th>
                                                 <th>Accomplished?</th>
-                                                <th>Remark</th>
+                                               
                                                 <th>Details</th>
                                             </tr>
                                         </thead>
@@ -46,14 +47,16 @@
                                                 @else
                                                     No Members Added!!
                                                 @endif</td>
-                                                <td>@if($insNum=CommonFunction::inspectionHappend($program->sia_number)>0) 
+                                               
+                                                <td>{{$program->location}}</td>
+
+                                                 <td>@if($insNum=CommonFunction::inspectionHappend($program->sia_number)>0) 
                                                     Yes
                                                     @else
                                                     No
                                                     @endif
                                                  </td>
-                                                <td>{{$program->remarks}}</td>
-                                                <td><a target="_blink" href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
+                                                <td><a  href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
                                                 
                                             </tr>
                                         @endforeach
@@ -67,8 +70,9 @@
                                                 
                                                 <th>Time</th>
                                                 <th>Teammembers</th>
+                                                <th>Location</th>
                                                 <th>Accomplished?</th>
-                                                <th>Remark</th>
+                                                
                                                 <th>Details</th>
                                             </tr>
                                         </tfoot>

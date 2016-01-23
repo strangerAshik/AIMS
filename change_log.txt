@@ -1,0 +1,27 @@
+27-12-2015:
+	ITS: In central search filter "Trainee Removed" 
+27-12-2015
+	Finding/SC/EDP- Adding Title-- Save/Update/display
+===============================================================	
+url : www.tecnologianova.com/aims_1_1_7
+Email(user name) & password are same
+
+Version 1.1.7 
+Change Log: 
+	1. Delete popup confirmation- SIA,ITS,Emp,Aircraft,ITS,E-library,VR,Help & Faq
+	2. Approval Button diabale once approved
+	3. ITS redesigned & develop to reduce loading time
+	4. Notification of SIA
+		-Program : Execution Date Exceed
+		-Finding : Target Date Exceed
+		-Safety Concern : Target Date Exceed
+		-Surveillance : Approval Pending
+		-Safety Concern : Approval Pending
+		-EDP : Approval Pending
+	5. Title at finding, safety concern and edp added 
+	6. Without being team member no one allowed to view a SIA info except DB Admin and Cheif Admin
+	7. Some work with User Permission 
+
+Bug Fix:
+	1. Table Report view- logout now work
+	

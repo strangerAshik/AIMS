@@ -1,6 +1,6 @@
 @extends('layoutReport')
 @section('content')
-<section class='content widthController'>
+<section class='content contentWidth'>
  <!-- Main content -->
                 <div class="content">
 

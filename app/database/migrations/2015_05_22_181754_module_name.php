@@ -16,6 +16,7 @@ class ModuleName extends Migration {
 			
 			$table->increments('id');
 
+			$table->string('label');
 			$table->string('module_name');
 
 			$table->string('row_creator');

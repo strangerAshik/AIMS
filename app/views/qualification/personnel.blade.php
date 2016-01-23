@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth" >
                     <div class="row" style="">
                         <!-- left column -->
                         <div class="col-md-12">
@@ -16,18 +16,25 @@
 					@foreach($infos as $info)
                     <table class="table table-bordered">
                         <tbody>
-						{{Employee::notApproved($info)}}	
+						{{--Employee::notApproved($info)--}}	
                             <tr>
                                 
                                 <th colspan='2' >
 								
-                                    <a href="{{'deletePersonnel/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')"  href="{{'deletePersonnel/'.$info->id}}" style='color:red;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                     <a data-toggle="modal" data-target="#{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
                                 </th>
+                            </tr>
+                            <tr>
+                                <td>
+									
+									CAA ID
+								</td>
+                                <td>{{$info->caa_id}}</td>
                             </tr>
                             <tr>
                                 <td>
@@ -81,7 +88,7 @@
                                 <td>{{$info->nationality}}</td>
                             </tr>
 							<tr>
-                                <td>National ID</td>
+                                <td>National ID/ Passport No.</td>
                                 <td>{{$info->national_id}}</td>
                             </tr>
 							<tr>
@@ -113,7 +120,7 @@
 				<!--Button for popup-->
 @if($infos==null)
 <p class="text-center">
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#EmploymentDetails">Add New</button>
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#EmploymentDetails">Add Personal Info.</button>
 	
 </p>
 @endif
@@ -133,15 +140,23 @@
 					
 					{{Form::open(array('url' => 'qualification/savePersonnel', 'method' => 'post', 'files'=>true, 'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
 					 <div class="box-body">
-                                        <div class="form-group required">
+												
+                                        <div class="form-group ">
                                            
-											{{Form::label('', 'Title', array('class' => 'control-label col-xs-4 '))}}
+											{{Form::label('', 'CAA ID', array('class' => 'control-label col-xs-4 '))}}
 											<div class="col-xs-6">
-											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.','Dr.'=>'Dr.','Prof.'=>'Prof.'), '0',array('class'=>'form-control','required'=>''))}}
+											{{Form::text('caa_id','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                                         </div>										
-												
+										 <div class="form-group required">
+                                           
+											{{Form::label('', 'Title', array('class' => 'control-label col-xs-4 '))}}
+											<div class="col-xs-6">
+											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.'), '0',array('class'=>'form-control','required'=>''))}}
+											</div>
+											
+                                        </div>										
 										
 										
 										<div class="form-group required ">
@@ -214,7 +229,7 @@
 											 </div>
 										</div>
 										<div class="form-group required">
-											{{Form::label('', 'National ID', array('class' => 'control-label col-xs-4'))}}
+											{{Form::label('', 'National ID / Passport No.', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
 											{{Form::text('national_id','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											 </div>
@@ -257,12 +272,12 @@
 														</div>
 													</div>
 										</div>
-                                        <div class="form-group required">
+                                        <div class="form-group ">
                                            
                                             
 											 {{ Form::label('image', 'Upload Photo: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('photo', array('required'=>'')) }}
+											 {{ Form::file('photo',array("accept"=>"image/*",'class'=>'fileupload')) }}
 											 
 											 <p class="help-block">Photo size : 300px250px</p>
 											 </div>
@@ -283,7 +298,7 @@
 			</div>
 		</div>
 	</div>
-	<!--Edit content start--->
+	<!--Edit content start-->
 	@if($infos!=null)
 	<div class="modal fade" id="{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -300,11 +315,19 @@
 					 <div class="box-body">
 										{{Form::hidden('id', $info->id)}}
 										{{Form::hidden('old_photo',$info->photo)}}
+										<div class="form-group ">
+                                           
+											{{Form::label('', 'CAA ID', array('class' => 'control-label col-xs-4 '))}}
+											<div class="col-xs-6">
+											{{Form::text('caa_id',$info->caa_id, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                                        </div>		
                                         <div class="form-group required">
                                            
 											{{Form::label('', 'Title', array('class' => 'control-label col-xs-4 '))}}
 											<div class="col-xs-6">
-											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.','Dr.'=>'Dr.','Prof.'=>'Prof.'), $info->title ,array('class'=>'form-control'))}}
+											{{Form::select('title', array('0' => '--Select--', 'Mr.' => 'Mr.','Ms.'=>'Ms.'), $info->title ,array('class'=>'form-control'))}}
 											</div>
 											
                                         </div>										
@@ -381,7 +404,7 @@
 											 </div>
 										</div>
 										<div class="form-group required">
-											{{Form::label('', 'National ID', array('class' => 'control-label col-xs-4'))}}
+											{{Form::label('', 'National ID / Passport No.', array('class' => 'control-label col-xs-4'))}}
 											<div class="col-xs-6">
 											{{Form::text('national_id',$info->national_id, array('class' => 'form-control','placeholder'=>''))}}
 											 </div>
@@ -424,7 +447,7 @@
 														</div>
 													</div>
 										</div>
-                                        <div class="form-group required">
+                                        <div class="form-group">
                                            
                                             
 											 {{ Form::label('image', 'Upload New Photo: ',array('class'=>'control-label col-xs-4')) }}

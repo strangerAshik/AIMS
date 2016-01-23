@@ -16,7 +16,7 @@ class BaseController extends Controller {
 	}
 	public function years(){
 		$years['']='Year';
-		$i =date('Y')+5;
+		$i =date('Y')+30;
 		for($i; $i >=1930; $i--){$years[$i] = $i;} return $years;
 	}
 	public function years_from(){
@@ -58,7 +58,7 @@ class BaseController extends Controller {
 	   if($file = Input::file($field_name)){
 		$destinationPath = 'files/'.$folder_name;
 		//$filename = $file->getClientOriginalName();
-		$filename = time().'_'.Auth::user()->emp_id().'.'.$file->getClientOriginalExtension();
+		$filename = time().'.'.$file->getClientOriginalExtension();
 		$upload_success = Input::file($field_name)->move($destinationPath, $filename);
 		return $filename;
 		}
@@ -72,7 +72,7 @@ class BaseController extends Controller {
 		if($file = Input::file($new_file)){
 		$destinationPath = 'files/'.$folder_name;
 		//$filename = $file->getClientOriginalName();
-		$filename = time().'_'.Auth::user()->getId().'.'.$file->getClientOriginalExtension();
+		$filename = time().'.'.$file->getClientOriginalExtension();
 		$upload_success = Input::file($new_file)->move($destinationPath, $filename);
 		File::delete('files/'.$folder_name.'/'.$old_file);
 		
@@ -101,6 +101,79 @@ class BaseController extends Controller {
 		}
 		return $result;
  }
+
+
+  /******************Approval,Worning,softdelete,hard Delete************************/
+   //Approve
+  public function approve($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'approve' =>'1',
+         'updated_at' =>time()  
+      ));
+
+    return Redirect::to(URL::previous() . "#{$pageId}")->with('message', 'Approval Info Updated!!');
+   //return Redirect::back()->with('message', 'Data Approved !!');
+  }
+  public function notApprove($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'approve' =>'0',
+         'updated_at' =>time()  
+      ));
+     return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Approval Info Updated!!');
+  }
+  //End Approve
+  //warning
+  public function warning($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'warning' =>'1',
+         'updated_at' =>time()  
+      ));
+     return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Warning Info Updated!!');
+  }
+  public function removeWarning($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'warning' =>'0',
+         'updated_at' =>time()  
+      ));
+      return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Warning Info Updated!!');
+  }
+  //End warning
+  //soft delete
+  public function softDelete($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'soft_delete' =>'1',
+         'updated_at' =>time()  
+      ));
+     return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Deleted Softly!!');
+  }
+  public function undoSoftDelete($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->update(array(
+         'soft_delete' =>'0',
+         'updated_at' =>time()  
+      ));
+     return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Deleted Softly!!');
+  }
+  //End soft delete
+  //Permanent delete
+  public function permanentDelete($table,$id,$pageId=''){
+     DB::table($table)
+            ->where('id',$id)
+            ->delete();
+     return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Data Deleted Permanently !!');
+  }
+  /************************************************/
  
  
 }

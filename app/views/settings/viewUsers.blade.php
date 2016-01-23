@@ -46,12 +46,13 @@
                                     </h6>
                                     Role:{{$info->role}}</br>
                                     Emp Id:{{$info->emp_id}}</br>
-                                    Org:{{$info->organization}}
+                                    Org:{{$info->organization}}</br>
+                                    Email:{{$info->email}}
                                    
                         </div> 
                       </td>
                       <td>
-                         <a class="small-box-footer" target="_blink" href="{{'singleUser/'.$info->emp_id}}" >
+                         <a class="small-box-footer"  href="{{'singleUser/'.$info->emp_id}}" >
                                    View Details <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                       </td>

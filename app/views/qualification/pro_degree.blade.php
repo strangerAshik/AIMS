@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
- <section class="content" style="max-width:760px;margin:0 auto;">
+ <section class="content contentWidth">
                     <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
@@ -41,7 +41,7 @@
                                     </a>
 												
 											</td>
-                                            <td><a href="{{'deleteProDegree/'.$info->id}}" style='color:red'><span class="glyphicon glyphicon-trash"></span></a> </td>
+                                            <td><a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteProDegree/'.$info->id}}" style='color:red'><span class="glyphicon glyphicon-trash"></span></a> </td>
                                             
                                         </tr>
                                         	@endforeach

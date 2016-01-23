@@ -1,6 +1,6 @@
 @if($PageName=='Ask Question')
 @section('askQuestion')
-<div class="modal fade" id="newProgram" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="askQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +10,7 @@
 
             <div class="modal-body"> 
                               
-				{{Form::open(array('url'=>'helpFaq/store','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
+				{{Form::open(array('url'=>'helpFaq/saveQuestion','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
 				  
 					
                      
@@ -20,7 +20,7 @@
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::getOptions('helpFaq_categories');?>
 											<select required id="categories"  multiple name="categories[]" class="demo-default" placeholder="Select  Category...">
-												<option value="">Select  Org...</option>
+												<option value="">Select  Cat...</option>
 												@foreach($options as $option)
 												<option value="{{$option}}">{{$option}}</option>
 												@endforeach
@@ -38,9 +38,9 @@
                     </div>
                     <div class="form-group ">
                                            
-											{{Form::label('upload', 'Upload File', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('file', 'Upload File', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('upload')}}
+											{{Form::file('file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -92,6 +92,7 @@ var eventHandler = function(name) {
 
 @if($PageName=='Single Question')
 @section('answare')
+@foreach($question as $info)
 <div class="modal fade" id="answare" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -102,22 +103,22 @@ var eventHandler = function(name) {
 
             <div class="modal-body"> 
                               
-				{{Form::open(array('url'=>'answare/store','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
-				  
+				{{Form::open(array('url'=>'helpFaq/saveAnswre','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>true))}}
+				  {{Form::hidden('question_id',$info->id)}}
 					
 					<div class="form-group ">
                                            
 											{{Form::label('answare', 'Answare', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('answare','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
+											{{Form::textarea('ans','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
 											</div>
 											
                     </div>
                     <div class="form-group ">
                                            
-											{{Form::label('upload', 'Upload File', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('file', 'Upload File', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::file('upload')}}
+											{{Form::file('file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>
@@ -125,7 +126,7 @@ var eventHandler = function(name) {
 					
 					<div class="form-group">
                        
-                            <button type="submit" name='saveAndContinue' value='' class="btn btn-primary btn-lg btn-block">Submit Answare</button>
+                            <button type="submit"   class="btn btn-primary btn-lg btn-block">Submit Answare</button>
                        
                     </div>
 					</div>
@@ -162,6 +163,6 @@ var eventHandler = function(name) {
 	});
            
 </script>
-
+@endforeach
 @stop
 @endif

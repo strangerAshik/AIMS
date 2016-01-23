@@ -15,13 +15,21 @@
                 
 				{{Form::open(array('url'=>'updateModule','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
                     {{Form::hidden('id',$module->id)}}
+
                     {{Form::hidden('old_module_name',$module->module_name)}}
-				
+				      <div class="form-group required">
+                                           
+                                            {{Form::label('label','Label', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-7">
+                                            {{Form::text('label',$module->label, array('class' => 'form-control','placeholder'=>'Module Name: Label','required'=>''))}}
+                                            </div>
+                                            
+                    </div>
 					<div class="form-group required">
                                            
 											{{Form::label('module_name','Module Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-7">
-											{{Form::text('module_name',$module->module_name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('module_name',$module->module_name, array('class' => 'form-control','placeholder'=>'use _ among the words','required'=>''))}}
 											</div>
 											
                     </div>
@@ -183,23 +191,35 @@
                     <div class="form-group">
                                            
                                             {{Form::label('role','Role', array('class' => 'col-xs-4 control-label'))}}
-                                            <div class="col-xs-7">
-                                            <select id="designation" name='role' class="demo-default" placeholder="Select  Designation...">
-                                                <option value="{{$info->role}}">{{$info->role}}</option>
-                                                @foreach($roles as $role)
-                                                <option value="{{$role}}">{{$role}}</option>
-                                                @endforeach
-                                            </select>
+                                            
+                                             <div class="col-md-7">
+                                            <?php $options=array(
+                                                ''=>'--Select Role For This System--',
+
+                                                'DB Admin'=>'DB Admin',
+                                                'Chief Admin'=>'Chief Admin',
+                                                'Inspector OPS,Airworthiness'=>'Inspector OPS,Airworthiness',
+                                                'Inspector ANS-AGA'=>'Inspector ANS-AGA',
+                                                'Inspector Legal'=>'Inspector Legal',
+                                                'ITS Manager'=>'ITS Manager',                                                
+                                                'Voluntary Reporting Manager'=>'Voluntary Reporting Manager',
+                                                'Program Manager'=>'Program Manager',
+                                                'Service Provider-AOC'=>'Service Provider-AOC',
+                                                'Service Provider-Airport'=>'Service Provider-Airport',
+                                                'Employee'=>'Employee',
+                                            );?>
+                                            {{Form::select('role', $options ,$info->role ,array('class'=>'form-control'))}}
                                             </div>
+
                                             
                     </div>
                     <div class="form-group">
-                                           
+                                              <?php $options=CommonFunction::getOptions('organization_all');?>
                                             {{Form::label('organization','Organization', array('class' => 'col-xs-4 control-label'))}}
                                             <div class="col-xs-7">                                          
-                                            <select id="organization" name='organization' class="demo-default" placeholder="Select  Organization...">
-                                                <option  selected='selected'value="{{$info->organization}}">{{$info->organization}}</option>
-                                                @foreach($organizations as $organization)
+                                            <select id="organizationEx" name='organization' class="demo-default" placeholder="Select  Organization...">
+                                                <option  selected='selected' value="{{$info->organization}}">{{$info->organization}}</option>
+                                                @foreach($options as $organization)
                                                 <option value="{{$organization}}">{{$organization}}</option>
                                                 @endforeach
                                             </select>                                       
@@ -259,7 +279,7 @@
 <script>
 $(document).ready(function(){
 //$('#organization').selectize();
-$('#organization').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+$('#organizationEx').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 $('#designation').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
     
 });

@@ -26,8 +26,8 @@
                                            
 											{{Form::label('assigned_inspector', 'Assigned Inspector', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											
-											{{Form::select('assigned_inspector', $inspectors,'0',array('class'=>'form-control'))}}
+											<?php $inspector=CommonFunction::getInspectorList();?>
+											{{Form::select('assigned_inspector', $inspector,'0',array('class'=>'form-control'))}}
 											</div>
 											
                     </div>
@@ -36,7 +36,7 @@
                                            
 											{{Form::label('serial_number', 'Serial Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('serial_number','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('serial_number','', array('class' => 'form-control','placeholder'=>'i.e Boeing-737NG-123456','required'=>''))}}
 											</div>
 											
                     </div>
@@ -67,7 +67,7 @@
                                         
 											{{Form::label('aircraft_MM', 'Aircraft MM', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('aircraft_MM','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+{{Form::text('aircraft_MM','', array('class' => 'form-control','placeholder'=>"Don't use '/' or '\' among words",'required'=>'','pattern'=>"[^/\^\\x22]+", 'title'=>"Invalid input : can't use / "))}}
 											</div>
 											
                     </div>
@@ -75,7 +75,7 @@
                                         
 											{{Form::label('aircraft_MSN', 'Aircraft MSN', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('aircraft_MSN','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+{{Form::text('aircraft_MSN','', array('class' => 'form-control','placeholder'=>"Don't use '/' or '\' among words",'pattern'=>"[^/\^\\x22]+",'required'=>'','title'=>"Invalid input : can't use /"))}}
 											</div>
 											
                     </div>

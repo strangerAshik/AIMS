@@ -24,7 +24,7 @@
 			</div><!-- ./col -->
 			@endif
 			
-			@if('true'==CommonFunction::hasPermission('safety_concern',Auth::user()->emp_id(),'report'))
+			@if('true'==CommonFunction::hasPermission('sc_report',Auth::user()->emp_id(),'access'))
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
 				<div class="small-box bg-aqua " >

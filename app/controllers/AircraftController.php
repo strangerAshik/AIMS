@@ -30,24 +30,27 @@ class AircraftController extends \BaseController {
 	//Start Save data
 	public function savePrimary(){	
 	DB::table('aircraft_primary_info')->insert(array(
-			'aircraft_MM'=>Input::get('aircraft_MM'),
-			'aircraft_MSN'=>Input::get('aircraft_MSN'),
-			'assigned_inspector'=>Input::get('assigned_inspector'),
-			'serial_number'=>Input::get('serial_number'),
-			'state_registration'=>Input::get('state_registration'),
-			'registration_no'=>Input::get('registration_no'),
-			'aircraft_operator'=>Input::get('aircraft_operator'),
-			'active'=>Input::get('active'),
+			'aircraft_MM'=>Input::get('aircraft_MM',' '),
+			'aircraft_MSN'=>Input::get('aircraft_MSN',' '),
+			'assigned_inspector'=>Input::get('assigned_inspector',' '),
+			'serial_number'=>Input::get('serial_number',' '),
+			'state_registration'=>Input::get('state_registration',' '),
+			'registration_no'=>Input::get('registration_no',' '),
+			'aircraft_operator'=>Input::get('aircraft_operator',' '),
+			'active'=>Input::get('active',' '),
 			'registration'=>Input::get('registration',false),
 			'cofa'=>Input::get('cofa',false),
 			'stcs'=>Input::get('stcs',false),
 			'current_exemptions'=>Input::get('current_exemptions',false),
 			'insurance'=>Input::get('insurance',false),
 			'currently_leased'=>Input::get('currently_leased',false),
-			'memo'=>Input::get('memo'),
-			'approve'=>'0',
+			'memo'=>Input::get('memo',' '),
+			'approve'=>'1',
 			'warning'=>'0',
 			'soft_delete'=>'0',
+
+			'created_at'=>date('Y-m-d H:i:s'),
+			'updated_at'=>date('Y-m-d H:i:s')
 		));
 		return Redirect::to('aircraft/single/'.Input::get('aircraft_MM').'/'.Input::get('aircraft_MSN'));
 		
@@ -70,7 +73,8 @@ class AircraftController extends \BaseController {
 				'insurance' =>Input::get('insurance') ,	
 				'currently_leased' =>Input::get('currently_leased') ,	
 				'memo' =>Input::get('memo') ,	
-				'updated_at' =>time()	
+				
+				'updated_at'=>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -93,40 +97,42 @@ class AircraftController extends \BaseController {
 
 		$aircraft=new AircrafTCInfo;
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
-		$aircraft->tc_number=Input::get('tc_number');
+		$aircraft->tc_number=Input::get('tc_number',' ');
 		
-		$aircraft->tc_validation_date=Input::get('tc_validation_date');
-		$aircraft->tc_validation_month=Input::get('tc_validation_month');
-		$aircraft->tc_validation_year=Input::get('tc_validation_year');
-		$aircraft->tc_control_number=Input::get('tc_control_number');
-		$aircraft->tc_AFM_approval_date=Input::get('tc_AFM_approval_date');
-		$aircraft->tc_AFM_approval_month=Input::get('tc_AFM_approval_month');
-		$aircraft->tc_AFM_approval_year=Input::get('tc_AFM_approval_year');
-		$aircraft->tc_AFM_revision=Input::get('tc_AFM_revision');
-		$aircraft->tc_state_of_design=Input::get('tc_state_of_design');
-		$aircraft->tc_power_plant_model=Input::get('tc_power_plant_model');
-		$aircraft->tc_power_plant_tds_number=Input::get('tc_power_plant_tds_number');
-		$aircraft->tc_propeller_model=Input::get('tc_propeller_model');
-		$aircraft->tc_propeller_tds_number=Input::get('tc_propeller_tds_number');
+		$aircraft->tc_validation_date=Input::get('tc_validation_date',' ');
+		$aircraft->tc_validation_month=Input::get('tc_validation_month',' ');
+		$aircraft->tc_validation_year=Input::get('tc_validation_year',' ');
+		$aircraft->tc_control_number=Input::get('tc_control_number',' ');
+		$aircraft->tc_AFM_approval_date=Input::get('tc_AFM_approval_date',' ');
+		$aircraft->tc_AFM_approval_month=Input::get('tc_AFM_approval_month',' ');
+		$aircraft->tc_AFM_approval_year=Input::get('tc_AFM_approval_year',' ');
+		$aircraft->tc_AFM_revision=Input::get('tc_AFM_revision',' ');
+		$aircraft->tc_state_of_design=Input::get('tc_state_of_design',' ');
+		$aircraft->tc_power_plant_model=Input::get('tc_power_plant_model',' ');
+		$aircraft->tc_power_plant_tds_number=Input::get('tc_power_plant_tds_number',' ');
+		$aircraft->tc_propeller_model=Input::get('tc_propeller_model',' ');
+		$aircraft->tc_propeller_tds_number=Input::get('tc_propeller_tds_number',' ');
 
 		$aircraft->tc_type_approval_date=$tc_type_approval_date;
 		$aircraft->tc_type_acceptance_date=$tc_type_acceptance_date;
-		$aircraft->tc_state_of_manufacturing=Input::get('tc_state_of_manufacturing');
-		$aircraft->tcds_no=Input::get('tcds_no');
+		$aircraft->tc_state_of_manufacturing=Input::get('tc_state_of_manufacturing',' ');
+		$aircraft->tcds_no=Input::get('tcds_no',' ');
 		$aircraft->tcds_revision_date=$tcds_revision_date;
-		$aircraft->tcds_revision_no=Input::get('tcds_revision_no');
-		$aircraft->tdcs_link=Input::get('tdcs_link');
+		$aircraft->tcds_revision_no=Input::get('tcds_revision_no',' ');
+		$aircraft->tdcs_link=Input::get('tdcs_link',' ');
 
 		
 		$aircraft->tc_upload=$tc_upload;
 		
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
-		
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
+
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -175,7 +181,7 @@ class AircraftController extends \BaseController {
 				'tdcs_link' => Input::get('tdcs_link'),
 				'tc_upload' => $tc_upload,
 
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -184,29 +190,31 @@ class AircraftController extends \BaseController {
 	public function saveSTC(){
 		$aircraft=new AircraftSTCInfo;		
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
-		$aircraft->stc_number=Input::get('stc_number');
-		$aircraft->stc_validation_date=Input::get('stc_validation_date');
-		$aircraft->stc_validation_month=Input::get('stc_validation_month');
-		$aircraft->stc_validation_year=Input::get('stc_validation_year');
-		$aircraft->stc_control_number=Input::get('stc_control_number');
-		$aircraft->stc_afm_revision=Input::get('stc_afm_revision');
-		$aircraft->stc_state_of_design=Input::get('stc_state_of_design');
-		$aircraft->stc_SOD_notified=Input::get('stc_SOD_notified');
-		$aircraft->stc_AFM_revision_number=Input::get('stc_AFM_revision_number');
-		$aircraft->stc_AFM_approval_date=Input::get('stc_AFM_approval_date');
-		$aircraft->stc_AFM_approval_month=Input::get('stc_AFM_approval_month');
-		$aircraft->stc_AFM_approval_year=Input::get('stc_AFM_approval_year');
-		$aircraft->stc_purpose=Input::get('stc_purpose');
+		$aircraft->stc_number=Input::get('stc_number',' ');
+		$aircraft->stc_validation_date=Input::get('stc_validation_date',' ');
+		$aircraft->stc_validation_month=Input::get('stc_validation_month',' ');
+		$aircraft->stc_validation_year=Input::get('stc_validation_year',' ');
+		$aircraft->stc_control_number=Input::get('stc_control_number',' ');
+		$aircraft->stc_afm_revision=Input::get('stc_afm_revision',' ');
+		$aircraft->stc_state_of_design=Input::get('stc_state_of_design',' ');
+		$aircraft->stc_SOD_notified=Input::get('stc_SOD_notified',' ');
+		$aircraft->stc_AFM_revision_number=Input::get('stc_AFM_revision_number',' ');
+		$aircraft->stc_AFM_approval_date=Input::get('stc_AFM_approval_date',' ');
+		$aircraft->stc_AFM_approval_month=Input::get('stc_AFM_approval_month',' ');
+		$aircraft->stc_AFM_approval_year=Input::get('stc_AFM_approval_year',' ');
+		$aircraft->stc_purpose=Input::get('stc_purpose',' ');
 
 		$stc_upload=parent::fileUpload('stc_upload','air_stc_upload');
 		$aircraft->stc_upload=$stc_upload;
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 				
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -237,7 +245,7 @@ class AircraftController extends \BaseController {
 
 				'stc_upload' =>$stc_upload,				
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -246,23 +254,26 @@ class AircraftController extends \BaseController {
 	public function saveExemption(){
 		$aircraft=new AircraftExemptionInfo;
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
-		$aircraft->exemption_number=Input::get('exemption_number');
-		$aircraft->regulation=Input::get('regulation');
-		$aircraft->effective_date=Input::get('effective_date');
-		$aircraft->effective_month=Input::get('effective_month');
-		$aircraft->effective_year=Input::get('effective_year');
-		$aircraft->exemption_control_number=Input::get('exemption_control_number');
-		$aircraft->basis=Input::get('basis');
+		$aircraft->exemption_number=Input::get('exemption_number',' ');
+		$aircraft->regulation=Input::get('regulation',' ');
+		$aircraft->effective_date=Input::get('effective_date',' ');
+		$aircraft->effective_month=Input::get('effective_month',' ');
+		$aircraft->effective_year=Input::get('effective_year',' ');
+		$aircraft->exemption_control_number=Input::get('exemption_control_number',' ');
+		$aircraft->basis=Input::get('basis',' ');
 		
 		$exemption_upload=parent::fileUpload('exemption_upload','air_exemption_upload');
 		$aircraft->exemption_upload=$exemption_upload;
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -283,10 +294,9 @@ class AircraftController extends \BaseController {
 				'effective_year' =>Input::get('effective_year'),				
 				'exemption_control_number' =>Input::get('exemption_control_number'),				
 				'basis' =>Input::get('basis'),				
-				'exemption_upload' =>$exemption_upload,				
-								
+				'exemption_upload' =>$exemption_upload,								
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -295,33 +305,36 @@ class AircraftController extends \BaseController {
 	public function saveRegistrationInfo(){
 		$aircraft=new AircraftRegistrationInfo;
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
-		$aircraft->registration_number=Input::get('registration_number');
-		$aircraft->reg_effective_date=Input::get('reg_effective_date');
-		$aircraft->reg_effective_month=Input::get('reg_effective_month');
-		$aircraft->reg_effective_year=Input::get('reg_effective_year');
-		$aircraft->state_of_registration=Input::get('state_of_registration');
-		$aircraft->activation_control_number=Input::get('activation_control_number');
-		$aircraft->reg_expiration_date=Input::get('reg_expiration_date');
-		$aircraft->reg_expiration_month=Input::get('reg_expiration_month');
-		$aircraft->reg_expiration_year=Input::get('reg_expiration_year');
-		$aircraft->registry_number=Input::get('registry_number');
-		$aircraft->de_registration_date=Input::get('de_registration_date');
-		$aircraft->de_registration_month=Input::get('de_registration_month');
-		$aircraft->de_registration_year=Input::get('de_registration_year');
-		$aircraft->de_regisration_control_number=Input::get('de_regisration_control_number');
-		$aircraft->de_regisration_basis=Input::get('de_regisration_basis');
-		$aircraft->previous_state_registration=Input::get('previous_state_registration');
-		$aircraft->reg_status_memo=Input::get('reg_status_memo');
+		$aircraft->registration_number=Input::get('registration_number',' ');
+		$aircraft->reg_effective_date=Input::get('reg_effective_date',' ');
+		$aircraft->reg_effective_month=Input::get('reg_effective_month',' ');
+		$aircraft->reg_effective_year=Input::get('reg_effective_year',' ');
+		$aircraft->state_of_registration=Input::get('state_of_registration',' ');
+		$aircraft->activation_control_number=Input::get('activation_control_number',' ');
+		$aircraft->reg_expiration_date=Input::get('reg_expiration_date',' ');
+		$aircraft->reg_expiration_month=Input::get('reg_expiration_month',' ');
+		$aircraft->reg_expiration_year=Input::get('reg_expiration_year',' ');
+		$aircraft->registry_number=Input::get('registry_number',' ');
+		$aircraft->de_registration_date=Input::get('de_registration_date',' ');
+		$aircraft->de_registration_month=Input::get('de_registration_month',' ');
+		$aircraft->de_registration_year=Input::get('de_registration_year',' ');
+		$aircraft->de_regisration_control_number=Input::get('de_regisration_control_number',' ');
+		$aircraft->de_regisration_basis=Input::get('de_regisration_basis',' ');
+		$aircraft->previous_state_registration=Input::get('previous_state_registration',' ');
+		$aircraft->reg_status_memo=Input::get('reg_status_memo',' ');
 		
 		$registration_upload=parent::fileUpload('registration_upload','air_registration_upload');
 		$aircraft->registration_upload=$registration_upload;
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -353,7 +366,7 @@ class AircraftController extends \BaseController {
 				'reg_status_memo' => Input::get('reg_status_memo'),									
 				'registration_upload' =>$registration_upload,									
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -362,37 +375,40 @@ class AircraftController extends \BaseController {
 	public function saveAC(){
 		$aircraft=new AircraftAirworthinessInfo;
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
-		$aircraft->ac_effective_date=Input::get('ac_effective_date');
-		$aircraft->ac_effective_month=Input::get('ac_effective_month');
-		$aircraft->ac_effective_year=Input::get('ac_effective_year');
-		$aircraft->ac_cofa_type=Input::get('ac_cofa_type');
-		$aircraft->ac_category=Input::get('ac_category');
-		$aircraft->ac_activation_control_number=Input::get('ac_activation_control_number');
-		$aircraft->c_of_a_number=Input::get('c_of_a_number');
-		$aircraft->ac_expiration_date=Input::get('ac_expiration_date');
-		$aircraft->ac_expiration_month=Input::get('ac_expiration_month');
-		$aircraft->ac_expiration_year=Input::get('ac_expiration_year');
-		$aircraft->max_gross_take_off_weight=Input::get('max_gross_take_off_weight');
-		$aircraft->max_pax_seating_capacity=Input::get('max_pax_seating_capacity');
-		$aircraft->mode_s_code=Input::get('mode_s_code');
-		$aircraft->ac_deactivation_date=Input::get('ac_deactivation_date');
-		$aircraft->ac_deactivation_month=Input::get('ac_deactivation_month');
-		$aircraft->ac_deactivation_year=Input::get('ac_deactivation_year');
-		$aircraft->ac_deactivation_basis=Input::get('ac_deactivation_basis');
-		$aircraft->ac_deactivation_control_number=Input::get('ac_deactivation_control_number');
-		$aircraft->system_of_airwothiness=Input::get('system_of_airwothiness');
-		$aircraft->ac_status_memo=Input::get('ac_status_memo');
-		$aircraft->ac_exemption=Input::get('ac_exemption');
+		$aircraft->ac_effective_date=Input::get('ac_effective_date',' ');
+		$aircraft->ac_effective_month=Input::get('ac_effective_month',' ');
+		$aircraft->ac_effective_year=Input::get('ac_effective_year',' ');
+		$aircraft->ac_cofa_type=Input::get('ac_cofa_type',' ');
+		$aircraft->ac_category=Input::get('ac_category',' ');
+		$aircraft->ac_activation_control_number=Input::get('ac_activation_control_number',' ');
+		$aircraft->c_of_a_number=Input::get('c_of_a_number',' ');
+		$aircraft->ac_expiration_date=Input::get('ac_expiration_date',' ');
+		$aircraft->ac_expiration_month=Input::get('ac_expiration_month',' ');
+		$aircraft->ac_expiration_year=Input::get('ac_expiration_year',' ');
+		$aircraft->max_gross_take_off_weight=Input::get('max_gross_take_off_weight',' ');
+		$aircraft->max_pax_seating_capacity=Input::get('max_pax_seating_capacity',' ');
+		$aircraft->mode_s_code=Input::get('mode_s_code',' ');
+		$aircraft->ac_deactivation_date=Input::get('ac_deactivation_date',' ');
+		$aircraft->ac_deactivation_month=Input::get('ac_deactivation_month',' ');
+		$aircraft->ac_deactivation_year=Input::get('ac_deactivation_year',' ');
+		$aircraft->ac_deactivation_basis=Input::get('ac_deactivation_basis',' ');
+		$aircraft->ac_deactivation_control_number=Input::get('ac_deactivation_control_number',' ');
+		$aircraft->system_of_airwothiness=Input::get('system_of_airwothiness',' ');
+		$aircraft->ac_status_memo=Input::get('ac_status_memo',' ');
+		$aircraft->ac_exemption=Input::get('ac_exemption',' ');
 
 		$ac_upload=parent::fileUpload('ac_upload','air_ac_upload');
 		$aircraft->ac_upload=$ac_upload;
 		
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -428,7 +444,7 @@ class AircraftController extends \BaseController {
 				'ac_upload' =>$ac_upload,				
 											
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -437,8 +453,8 @@ class AircraftController extends \BaseController {
 	public function saveApproval(){
 		$aircraft=new AircraftCAAApprovalInfo;
 		
-		$aircraft->aircraft_MM=Input::get('aircraft_MM');
-		$aircraft->aircraft_MSN=Input::get('aircraft_MSN');
+		$aircraft->aircraft_MM=Input::get('aircraft_MM',' ');
+		$aircraft->aircraft_MSN=Input::get('aircraft_MSN',' ');
 		
 		$aircraft->type_of_approval=Input::get('type_of_approval');
 		$aircraft->approval_effective_date=Input::get('approval_effective_date');
@@ -456,9 +472,12 @@ class AircraftController extends \BaseController {
 		$approval_upload=parent::fileUpload('approval_upload','air_approval_upload');
 		$aircraft->approval_upload=$approval_upload;
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -485,7 +504,7 @@ class AircraftController extends \BaseController {
 				'approval_upload' =>$approval_upload,				
 				
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -516,9 +535,12 @@ class AircraftController extends \BaseController {
 		$owner_upload=parent::fileUpload('owner_upload','air_owner_upload');
 		$aircraft->owner_upload=$owner_upload;
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
+
+		$aircraft->created_at=date('Y-m-d H:i:s');
+		$aircraft->updated_at=date('Y-m-d H:i:s');
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -546,7 +568,7 @@ class AircraftController extends \BaseController {
 				'owner_lessor' => Input::get('owner_lessor'),		
 				'owner_upload' =>$owner_upload,		
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -577,9 +599,12 @@ class AircraftController extends \BaseController {
 
 
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
-		$aircraft->soft_delete='0';		
+		$aircraft->soft_delete='0';	
+
+		$aircraft->created_at=date('Y-m-d H:i:s');		
+		$aircraft->updated_at=date('Y-m-d H:i:s');		
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -608,7 +633,7 @@ class AircraftController extends \BaseController {
 				'lesse_upload' =>$lesse_upload,				
 				
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -644,9 +669,12 @@ class AircraftController extends \BaseController {
 		
 
 
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';		
+
+		$aircraft->created_at=date('Y-m-d H:i:s');		
+		$aircraft->updated_at=date('Y-m-d H:i:s');		
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -676,12 +704,9 @@ class AircraftController extends \BaseController {
 				'insurer_expiration_date' => Input::get('insurer_expiration_date'),				
 				'insurer_expiration_month' => Input::get('insurer_expiration_month'),				
 				'insurer_expiration_year' => Input::get('insurer_expiration_year'),
-
-				'insurer_upload' =>$insurer_upload,				
-							
-				
+				'insurer_upload' =>$insurer_upload,		
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -732,9 +757,12 @@ class AircraftController extends \BaseController {
 		$equip_upload=parent::fileUpload('equip_upload','air_equip_upload');
 		$aircraft->equip_upload=$equip_upload;
 		
-		$aircraft->approve='0';
+		$aircraft->approve='1';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';		
+
+		$aircraft->created_at=date('Y-m-d H:i:s');		
+		$aircraft->updated_at=date('Y-m-d H:i:s');		
 		
 		$aircraft->save();
 		return Redirect::back()->with('massage','Information Added Successfully!');
@@ -785,7 +813,7 @@ class AircraftController extends \BaseController {
 				'equip_upload' =>$equip_upload,				
 				
 					
-				'updated_at' =>time()	
+				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
 		
@@ -793,47 +821,47 @@ class AircraftController extends \BaseController {
 	}
 	//End Save Data
 	//Approve
-	public function approve($table,$id){
+	public function approve($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
 			   'approve' =>'1',
 			   'updated_at' =>time()	
 			));
-	   return Redirect::back()->with('message', 'Data Approved !!');
+	   return Redirect::back()->with('message', 'Approval Information Updated !!');
 	}
-	public function notApprove($table,$id){
+	public function notApprove($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
 			   'approve' =>'0',
 			   'updated_at' =>time()	
 			));
-	   return Redirect::back()->with('message', 'Data Approved !!');
+	   return Redirect::back()->with('message', 'Approval Information Updated !!');
 	}
 	//End Approve
 	//warning
-	public function warning($table,$id){
+	public function warning($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
 			   'warning' =>'1',
 			   'updated_at' =>time()	
 			));
-	   return Redirect::back()->with('message', 'Data Approved !!');
+	   return Redirect::back()->with('message', 'Warning Data updated!!');
 	}
-	public function removeWarning($table,$id){
+	public function removeWarning($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
 			   'warning' =>'0',
 			   'updated_at' =>time()	
 			));
-	   return Redirect::back()->with('message', 'Data Approved !!');
+	   return Redirect::back()->with('message', 'Warning Data updated!!');
 	}
 	//End warning
 	//soft delete
-	public function softDelete($table,$id){
+	public function softDelete($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
@@ -842,7 +870,7 @@ class AircraftController extends \BaseController {
 			));
 	   return Redirect::back()->with('message', 'Data Deleted Softly !!');
 	}
-	public function undoSoftDelete($table,$id){
+	public function undoSoftDelete($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->update(array(
@@ -853,7 +881,7 @@ class AircraftController extends \BaseController {
 	}
 	//End soft delete
 	//Permanent delete
-	public function permanentDelete($table,$id){
+	public function permanentDelete($table,$id,$pageId=''){
 		 DB::table($table)
             ->where('id',$id)
             ->delete();
@@ -923,6 +951,17 @@ class AircraftController extends \BaseController {
 					->get();
 		return View::make('aircraft.index')
 		->with('PageName','Aircraft List')
+		->with('aircrafts',$aircrafts);
+	}
+	public function myAircraftList(){
+	$org=Auth::User()->Organization();
+		 $aircrafts=DB::table('aircraft_primary_info')
+					->where('aircraft_operator','=',$org)
+					->where('soft_delete','<>','1')
+					->orderBy('aircraft_operator')
+					->get();
+		return View::make('aircraft.myAircraftList')
+		->with('PageName','My Aircraft List')
 		->with('aircrafts',$aircrafts);
 	}
 }

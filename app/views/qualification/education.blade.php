@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
- <section class="content widthController">
+ <section class="content contentWidth">
  
  
                     <div class="row">
@@ -20,7 +20,7 @@
 										<tr>                                           
                                             <th colspan='2' >Academic Qualification   #{{++$a_sl}}
 											
-											<a href="{{'deleteAccademic/'.$acca->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
+											<a onclick=" return confirm('Wanna Delete?')" href="{{'deleteAccademic/'.$acca->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
 											<a data-toggle="modal" data-target="#{{'acca'.$acca->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
@@ -64,6 +64,16 @@
                                             <td>Specialization</td>
                                             <td>{{$acca->specialization}}</td>                                        
                                         </tr>
+                                        <tr>
+                                            <td>Certificate</td>
+                                            <td>
+                                            	  @if($acca->certificate!='Null'){{HTML::link('files/employee/'.$acca->certificate,'Certificate ',array('target'=>'_blank'))}}
+                                                    @else
+                                                        {{HTML::link('#','No Certificate Provided')}}
+                                                    @endif
+
+                                            </td>                                        
+                                        </tr>
                                     </tbody></table>
 									@endforeach
                                 </div><!-- /.box-body -->
@@ -92,7 +102,7 @@
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
                
-				{{Form::open(array('url' => 'qualification/saveAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+				{{Form::open(array('url' => 'qualification/saveAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>'true'))}}
 					
 					<div class="form-group required">
                                         
@@ -159,6 +169,17 @@
 														</div>
 													</div>
 					</div>
+					<div class="form-group required">
+                                           
+											{{Form::label('certificate', ' Provide Certificate', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											
+
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+											
+											</div>
+											
+                    </div>
 					
 					
 					
@@ -175,7 +196,7 @@
     </div>
 	</div>
 </section>
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth" >
  
  
                     <div class="row">
@@ -333,8 +354,9 @@
                     <!-- The form is placed inside the body of modal -->
                    
 					
-					{{Form::open(array('url' => 'qualification/updateAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+					{{Form::open(array('url' => 'qualification/updateAccademic', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>'true'))}}
 						{{Form::hidden('id', $acca->id)}}
+						{{Form::hidden('old_certificate', $acca->certificate)}}
 						<div class="form-group required">
                                         
 											{{Form::label('level', 'Level [highest degree first]', array('class' => 'col-xs-4 control-label'))}}
@@ -399,13 +421,26 @@
 													</div>
 					</div>
 					
-					
+					<div class="form-group required">
+                                           
+											{{Form::label('certificate', ' Provide Updated Certificate', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											  @if($acca->certificate!='Null'){{HTML::link('files/employee/'.$acca->certificate,'Certificate ',array('target'=>'_blank'))}}
+                                                    @else
+                                                        {{HTML::link('#','No Certificate Provided')}}
+                                                    @endif
+                                                    
+											{{Form::file('certificate',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
+											
+											</div>
+											
+                    </div>
 					
                     
 
                     <div class="form-group">
-                        <div class="col-xs-5 col-xs-offset-3">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="">
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
                         </div>
                     </div>
 					

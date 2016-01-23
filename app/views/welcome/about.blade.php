@@ -6,28 +6,17 @@
         <ul id="myTab" class="nav nav-tabs">
    <li class="active">
       <a href="#home" data-toggle="tab">
-       About AAIMS
+      About {{CommonFunction::getCompanySetupDetails()->short_name}}
       </a>
    </li>
-   <li><a href="#mission" data-toggle="tab">Mission</a></li>
-   <li><a href="#REGULATIONS" data-toggle="tab">REGULATIONS</a></li>
+   <li style="display: none"><a href="#mission" data-toggle="tab">Mission</a></li>
+   <li style="display: none"><a href="#REGULATIONS" data-toggle="tab">REGULATIONS</a></li>
   
 </ul>
 <div id="myTabContent" class="tab-content">
    <div class="tab-pane fade in active" id="home" style="padding:20px;">
-     <p>Aviation safety is a term encompassing the theory, investigation, and categorization of flight failures, and the prevention of such failures through regulation, education, and training. It can also be applied in the context of campaigns that inform the public as to the safety of air travel. Aviation Safety Oversight Reporting, Tracking & Management, which are key to the seamless backbone of a modern CAA system, separately or as a bundle, 11 databases specifically designed to support the safety oversight obligations. These databases are very interactive, providing notifications and standard reporting and document issuance making an electronic CAA. The AAIMS databases are "regulations-neutral." They are designed to work with any country's regulations, based on ICAO Annex (1,2,6,7,8,13,18 &19). </p>
-	 <ul>
-<li>1.	Airlines, Maintenance Organization and training center certification & management Database </li>
-<li>2.	Pilot, Flight engineers & Air traffic Controllers Management </li>
-<li>3.	Document control, file tracking & management system</li>
-<li>4.	Safety oversight reporting system </li>
-<li>5.	Aircraft certification & management database</li>
-<li>6.	Employee management database</li>
-<li>7.	OJT & Formal Training database</li>
-<li>8.	Electronic library</li>
-<li>9.	Wildlife strike database</li>
-<li>10.	Aircraft accident & Incident investigation Database </li>
-<li>11.	Aerodrome & ANS inspection database</li>
+     <p class='padding text-justify'> {{nl2br(CommonFunction::getCompanySetupDetails()->about)}} </p>
+    
 
 </ul>
 

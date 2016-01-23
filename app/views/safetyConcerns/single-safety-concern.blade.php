@@ -1,22 +1,59 @@
 @extends('layout')
 @section('content')
 
-<span style='display:none'>
-{{$role=Auth::User()->Role()}}
-</span>
-<style>
+
+<section class='content widthController'> 
+<?php $sia_number='';?>       
+					<div class="row" >
+						<div class="col-md-12 " style="/*position: fixed; z-index: 999999*/">
+						&nbsp &nbsp <a  class="hidden-print" href="#scDescription" style="color:green" >[ SC Description] </a>
+
+						&nbsp &nbsp <a  class="hidden-print" href="#correctiveAction" style="color:green" >[ Corrective Action] </a> 
+
+						&nbsp &nbsp <a  class="hidden-print" href="#finalization" style="color:green" >[ Finalization] </a> 
+
+						&nbsp &nbsp <a  class="hidden-print" href="#approval" style="color:green" >[ approval] </a> 
+						</div>
+					</div>
 	
-</style>
-<section class='content widthController'>        
-						
-				
-				
+
 	@foreach($safetyConcernDatas as $sc)
-	@include('safetyConcerns.menu')
-	@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'entry'))
-	@yield('menuSingleSafetyConcern')	
-	@endif
-	@endforeach
+	<!--Menu-->				
+	<span class='hidden-print disNon'>
+		@if('true'==CommonFunction::hasPermission('sc_followup',Auth::user()->emp_id(),'access'))
+		<p class="text-center col-md-6">
+		{{ HTML::linkAction('safetyConcernsController@followUp', 'Follow up',array('safety_issue_number'=>$sc->safety_issue_number ), array('class' => 'btn btn-primary btn-block')) }}
+		</p>
+		@endif
+		@if('true'==CommonFunction::hasPermission('sc_forwarding',Auth::user()->emp_id(),'access'))
+		<p class="text-center col-md-6">
+		    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#forwardingForm" >Forwarding</button>    
+		</p>
+		@endif
+		@if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'access'))
+		<p class="text-center col-md-6">
+		    <button class="btn btn-primary btn-block " data-toggle="modal" data-target="#correctiveIssue" >Add New Corrective Action</button>	
+		</p>
+		@endif
+		
+		<p class="text-center disNon">
+		    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#legalOpenion" >Opinion Of Legal Department</button> 
+		</p>
+		@if('true'==CommonFunction::hasPermission('sc_finalization',Auth::user()->emp_id(),'access'))
+		<p class="text-center col-md-6">
+		    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#finzalization" >Finalization</button>  
+		</p>
+		@endif
+		@if('true'==CommonFunction::hasPermission('sc_approval',Auth::user()->emp_id(),'access'))
+		<p class="text-center col-md-6">
+		    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#approvalForm" >Approval</button>    
+		</p>
+		@endif
+		</span>
+	<!--End Menu-->
+@endforeach
+	
+
 	<div class="row" >
                         <!-- left column -->
                         <div class="col-md-12">
@@ -38,7 +75,7 @@
 					
                         <tbody>
 						   <tr>
-                                <th>									
+                                <th class="col-md-3">									
 									Approval Status
 								</th>
                                 <td>
@@ -76,27 +113,20 @@
 										No Corrective Action Is Given.
 									@endif</td>
                             </tr>
-							<tr>
-                                <th>									
-									Legal Opinion
-								</th>
-                                <td>
-								@foreach($legalOpinions as $opinion)
-								@if($legalOpinions)
-										Some Legal Opinion Is Given.
-								@else
-									No Legal Opinion Is Given.
-								@endif
-								@endforeach
-								</td>
-                            </tr>
+							
 							<tr>
                                 <th>									
 									Remaining Day('s)
 								</th>
                                 <td>
 								@foreach($safetyConcernDatas as $sc)
-								{{CommonFunction::remaingDay($sc->target_date)}} days
+								<?php $day=CommonFunction::remaingDay($sc->target_date);?>
+								@if($day<0)
+									<span style="color: red">{{$day}} day(s)</span>
+								@else 
+									<span style="color: green">{{$day}} day(s)</span>
+								@endif
+							
 								@endforeach
 								</td>
                             </tr>
@@ -113,7 +143,7 @@
 					
 	</div>
 	@foreach($safetyConcernDatas as $sc)
-	<div class="row" >
+	<div class="row" id="scDescription">
                         <!-- left column -->
                         <div class="col-md-12">
                             <!-- general form elements -->
@@ -133,13 +163,13 @@
 				
                     <table class="table table-bordered">
                         <tbody>
-						    <tr>                
+						    <tr class='hidden-print'>                
 								<td colspan='2'>
 									@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_safety_concern',$sc->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_safety_concern',$sc->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									@endif
 									@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_safety_concern',$sc->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_safety_concern',$sc->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								    @endif
 									@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#editIssueSafety{{$sc->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -149,10 +179,10 @@
 								</td>
 						    </tr>
 						    <tr>
-                                <th>								
+                                <th class="col-md-3">								
 									SIA Number
 								</th>
-                                <td>{{$sc->sia_number}}</td>
+                                <td>{{$sia_number=$sc->sia_number}}</td>
                             </tr>
                                             
 							<tr>
@@ -162,6 +192,11 @@
                                 <td>{{$sc->safety_issue_number}}</td>
                             </tr>                                          
 							
+                            <tr>
+                                <td class="col-md-4">Title</td>
+                                <td >{{$sc->title}}</td>
+                            </tr>
+                          	
                             <tr>
                                 <th>Finding Number</th>
                                 <td>{{$sc->finding_number}}</td>
@@ -178,11 +213,33 @@
                             </tr>
                             <tr>
                                 <th>Safety Concern related to CE</th>
-                                <td>{{$sc->sc_critical_element}}</td>
+                                <td>
+									@if($elements=CommonFunction::updateMultiSelection('sc_safety_concern', 'id',$sc->id,'sc_critical_element'))
+                                               @if($elements!=null)
+                                                    @foreach($elements as $key=>$value)
+                                                        {{$value}},
+                                                    @endforeach
+                                               
+                                                @endif
+					                @else
+					                    No CE Added!!
+					                @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th>Safety Concern related to Critical Area</th>
-                                <td>{{$sc->sc_area}}</td>
+                                <td>
+									@if($elements=CommonFunction::updateMultiSelection('sc_safety_concern', 'id',$sc->id,'sc_area'))
+                                               @if($elements!=null)
+                                                    @foreach($elements as $key=>$value)
+                                                        {{$value}},
+                                                    @endforeach
+                                               
+                                                @endif
+					                @else
+					                    No Area Added!!
+					                @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th>Type Of Concern</th>
@@ -266,36 +323,45 @@
                                 <th>Answer</th>
                                 <td>{{$sc->answer}}</td>
                             </tr>
-                            <tr>
+                           
+                            <tr class="smsBackground">
                                 <th>Risk Statement</th>
                                 <td>{{$sc->risk_statement}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Risk Probability</th>
                                 <td>{{$sc->risk_Probability}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Risk Severity</th>
                                 <td>{{$sc->risk_severity}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Severity Statement</th>
                                 <td>{{$sc->cvr_statement}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Risk Assessment from Matrix Index</th>
                                 <td>{{$sc->risk_assesment_from_matrix}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Determine Risk & Type of Action</th>
                                 <td>{{$sc->risk_action}}</td>
                             </tr>
-                            <tr>
+                            <tr class="smsBackground">
                                 <th>Risk Management</th>
                                 <td>{{$sc->risk_management}}</td>
                             </tr>
-                            
-                          
+                           
+                          <tr>
+					   		<td colspan="2">
+					   			<i>Initialized By : {{$sc->row_creator}} | 
+					   			Initialized at : {{$sc->created_at}} | 
+					   			Last Updated By : {{$sc->row_updator}} | 
+					   			Updated at : {{$sc->updated_at}}</i>
+					   		</td>
+					   		
+					   	</tr>
                         </tbody>
                     </table>
 				
@@ -310,7 +376,7 @@
 	@endforeach
 				
 				
-	<div class="row" >
+	<div class="row" id="correctiveAction">
                         <!-- left column -->
                         <div class="col-md-12">
                             <!-- general form elements -->
@@ -318,7 +384,12 @@
 							<div class="box-header table_toggle expand">
 									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Corrective Action</h3>
 									<div class="man pull-right">-</div>												
-							</div>							 
+							</div>	
+							@if(!$correctiveActions)
+							@if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'entry'))
+										&nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#correctiveIssue">[Add Corrective Action] </a> 
+							@endif	
+							@endif					 
                 <!-- /.box-header -->
 					
 					<div class="box-body">
@@ -330,27 +401,47 @@
 					{{$num=0}}
 					</div>
                         <tbody>
-						    <tr>               
+						    <tr class='hidden-print'>               
 								<th colspan='2' style='color:#72C2E6'>Corrective Action #{{++$num}}
 
-									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									 @if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'par_delete'))
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
-									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_corrective_action', $action->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									 @if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'sof_delete'))
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_corrective_action', $action->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
+									 @if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'approve'))
+
+									{{ HTML::linkAction('AircraftController@approve', '',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									
+									{{ HTML::linkAction('AircraftController@notApprove', '',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif
+									@if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'worning'))	
+										{{ HTML::linkAction('AircraftController@removeWarning', '',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@warning', '',array('sc_corrective_action',$action->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+									@endif
 										
 									
-									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'update'))
+									 @if('true'==CommonFunction::hasPermission('sc_corrective_action',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#editCorrectiveIssue{{$action->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
 								</th>
 								
-						    </tr>               
+						    </tr>  
+						      @if($action->approve=='0')
+					<tr>
+						<th  colspan='2'> {{AircraftPrimaryInfo::notApproved($action)}}</th>	
+					 </tr>
+					 @endif
+					 @if($action->warning=='1')
+					 <tr  >
+					 <th colspan='2'>{{AircraftPrimaryInfo::warning($action)}}	</th>
+					 </tr>  
+					 @endif             
 							<tr>
-                                <th>									
+                                <th class="col-md-3">									
 									Corrective Action
 								</th>
                                 <td>{{$action->currective_action}}</td>
@@ -373,7 +464,7 @@
                                 <td>{{$action->regulation_mitigation_date.' '.$action->regulation_mitigation_month.' '.$action->regulation_mitigation_year}}</td>
                             </tr>
 							 <tr>
-                                <th>Job Aid File</th>
+                                <th>Provided File</th>
                                 <td>
 								@if($action->corrective_action_file!='Null'){{HTML::link('files/sc_corrective_action_file/'.$action->corrective_action_file,'Document',array('target'=>'_blank'))}}
 								@else
@@ -381,6 +472,15 @@
 								@endif
 								</td>
                             </tr>
+                            <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$action->row_creator}} | 
+						   			Initialized at : {{$action->created_at}} | 
+						   			Last Updated By : {{$action->row_updator}} | 
+						   			Updated at : {{$action->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
 						</tbody>
 					 @endforeach
 					 @else
@@ -402,7 +502,7 @@
 					
 					
 	</div>
-	<div class="row" >
+	<div class="row" id="finalization">
                         <!-- left column -->
                         <div class="col-md-12">
                             <!-- general form elements -->
@@ -410,7 +510,12 @@
 							<div class="box-header table_toggle expand">
 									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Finalization Info</h3>
 									<div class="man pull-right">-</div>												
-							</div>							 
+							</div>	
+							@if(!$finalization)	
+							@if('true'==CommonFunction::hasPermission('sc_finalization',Auth::user()->emp_id(),'entry'))
+										&nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#finzalization">[Add Finalization] </a> 
+							@endif	
+							@endif					 
                 <!-- /.box-header -->
 					
 					<div class="box-body">
@@ -422,14 +527,14 @@
 					{{$num=0}}
 					</div>
                         <tbody>
-						    <tr>               
+						    <tr class='hidden-print'>               
 								<th colspan='2' style='color:#72C2E6'>
 
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_finalization',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_finalization',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_finalization', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_finalization', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 										
 									
@@ -442,7 +547,7 @@
 								
 						    </tr>               
 							<tr>
-                                <th>									
+                                <th class="col-md-3">									
 									Final Resolution Date
 								</th>
                                 <td>{{date('d F Y', strtotime($info->final_resolution_date))}}</td>
@@ -472,6 +577,15 @@
                                 <th>Closing Note</th>
                                 <td>{{$info->closing_note}}</td>
                             </tr>
+                            <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+						   		
+						   	</tr>
 							 
 						</tbody>
 					 @endforeach
@@ -495,7 +609,7 @@
 					
 	</div>
 				
-	<div class="row" >
+	<div class="row" id="approval">
                         <!-- left column -->
                         <div class="col-md-12">
                             <!-- general form elements -->
@@ -504,7 +618,13 @@
 									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Approval Information</h3>									
 									<div class="man pull-right">-</div>			
 									
-							</div>							 
+							</div>	
+						@if(!$approvalInfos)	 
+							@if('true'==CommonFunction::hasPermission('sc_approval',Auth::user()->emp_id(),'entry'))
+										&nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="
+										#approvalForm">[Approval] </a> 
+							@endif		
+						@endif			 
                 <!-- /.box-header -->
 					
 					<div class="box-body">
@@ -517,22 +637,24 @@
                         <tbody>
 						    <tr>               
 								<th colspan='2' style='color:#72C2E6'>Approval Info. #{{++$num}}
+								<span class='hidden-print'>
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_approval_info',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_approval_info',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_approval_info',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_approval_info',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#editapprovalInfos{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
+									</span>
 								</th>
 								
 						    </tr>        
 							<tr>
-                                <th>									
+                                <th class="col-md-3">									
 									Approved By
 								</th>
                                 <td>{{$info->approved_by}}</td>
@@ -593,24 +715,27 @@
 					@if($legalOpinions)
 					@foreach($legalOpinions as $opinion)
                         <tbody>
-						    <tr>               
+						    <tr >               
 								<th colspan='2' style='color:#72C2E6'>Legal Opinion #{{++$num}}
+
+						    	<span  class='hidden-print'>
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_legal_openion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_legal_openion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_legal_openion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_legal_openion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									@if('true'==CommonFunction::hasPermission('sc_issue_safety_concern',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#updatelegalOpenion{{$opinion->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
+									 </span>
 								</th>
 								
 						    </tr>        
 							<tr>
-                                <th>									
+                                <th class="col-md-3">									
 									Legal Opinion
 								</th>
                                 <td>{{$opinion->legal_openion}}</td>
@@ -646,7 +771,7 @@
 					</div>
 					
 	</div>
-				
+	@if('true'==CommonFunction::hasPermission('sc_forwarding',Auth::user()->emp_id(),'access'))			
 	<div class="row" >
                         <!-- left column -->
                         <div class="col-md-12">
@@ -695,9 +820,9 @@
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 								</td>
-								<td>{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_forwarding',$forwarding->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}</td>
+								<td>{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sc_forwarding',$forwarding->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}</td>
 								<td>
-								{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_forwarding',$forwarding->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+								{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sc_forwarding',$forwarding->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								</td>
 								@endif
                                 
@@ -714,8 +839,10 @@
 					</div>
 						
 	</div>
+	@endif
 				
-              
+           @include('common')
+            @yield('print')    
 	</section>
 	
 			@include('safetyConcerns.entryForm')

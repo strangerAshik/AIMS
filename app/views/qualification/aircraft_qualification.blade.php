@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
  
-<section class="content" style="max-width:760px;margin:0 auto;">
+<section class="content contentWidth">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
@@ -19,7 +19,7 @@
 						{{Employee::notApproved($info)}}	
                             <tr>
                                 <th colspan='2'>Aircraft Qualification  #{{++$a_sl}}
-                                    <a href="{{'deleteAirQualification/'.$info->id}}" style='color:red;float:right;padding:5px;'>
+                                    <a onclick=" return confirm('Wanna Delete?')" href="{{'deleteAirQualification/'.$info->id}}" style='color:red;float:right;padding:5px;' >
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                      <a data-toggle="modal" data-target="#{{'AC'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -32,7 +32,7 @@
                                 <td >{{$info->active}}</td>
                             </tr>
                             <tr>
-                                <td>Qualification Type</td>
+                                <td>License Type</td>
                                 <td>{{$info->qualification_type}}</td>
                             </tr>
                             <tr>
@@ -48,32 +48,26 @@
                                 <td>{{$info->aircraft_msm}}</td>
                             </tr>
                             <tr>
-                                <td>Completion Date </td>
+                                <td>License Issue Date</td>
                                 <td>{{$info->completion_date." ".$info->completion_month." ".$info->completion_year}}</td>
                             </tr>
+							
 							<tr>
-                                <td>Status</td>
-                                <td>{{$info->status}}</td>
-                            </tr>
-							<tr>
-                                <td>Training Institute</td>
+                                <td>Organization</td>
                                 <td>{{$info->institute}}</td>
                             </tr>
 							<tr>
-                                <td>Instructor name</td>
+                                <td>Issuing Authority</td>
                                 <td>{{$info->instructor}}</td>
                             </tr>
 							<tr>
-                                <td>Certificate Issued</td>
+                                <td>License Validation</td>
                                 <td>{{$info->proof}}</td>
                             </tr>
-							<tr>
-                                <td>Management Certification</td>
-                                <td>{{$info->certification}}</td>
-                            </tr>
+							
 							<tr>
                                             <td>
-												PDF Document :
+												Uploaded Evidence :
 											</td>
                                             <td>
 										@if($info->pdf!='Null'){{HTML::link('files/AircraftQualification/'.$info->pdf,'Document',array('target'=>'_blank'))}}
@@ -122,9 +116,9 @@
                         </div>
 						<div class="form-group required">
                                         
-											{{Form::label('qualification_type', 'Qualification Type', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('qualification_type', 'License Type', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('qualification_type', array('' => '--Select--', 'Aircraft Initial' => 'Aircraft Initial','Aircraft Recurrent'=>'Aircraft Recurrent','Flight Proficiency '=>'Flight Proficiency','Recency of Experience '=>'Recency of Experience','Aircraft System'=>'Aircraft System','Recurrent Qualification'=>'Recurrent Qualification'), null,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('qualification_type', array('' => '--Select--', 'PPL' => 'PPL','CPL'=>'CPL','ATPL'=>'ATPL','FI'=>'FI','B1'=>'B1','B2'=>'B2','CA'=>'CA','ATC'=>'ATC','Navigator'=>'Navigator'), null,array('class'=>'form-control','id'=>'category','required'=>''))}}
 											</div>
 											
 						</div>
@@ -136,27 +130,27 @@
 											{{Form::text('total_hours','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('aircraft_mm', 'Aircraft MM', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_mm','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_mm','', array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
 											
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('', 'Aircraft MSN', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_msm','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_msm','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
 						<div class="form-group required">
 												
-													{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('completion_date', 'License Issue Date', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -172,17 +166,10 @@
 														</div>
 													</div>
 						</div>
-						<div class="form-group ">
-                                        
-											{{Form::label('status', 'Status', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::select('status', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT','Workshop'=>'Workshop'), null,array('class'=>'form-control','id'=>'category'))}}
-											</div>
-											
-						</div>
+						
 						<div class="form-group ">
                                            
-											{{Form::label('institute', 'Training Institute', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('institute', 'Organization', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 											{{Form::text('institute','', array('class' => 'form-control','placeholder'=>''))}}
@@ -190,7 +177,7 @@
                         </div>
 						<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Issuing Authority', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>''))}}
@@ -199,7 +186,7 @@
 						
 						 <div class="form-group required">
                                            
-											{{Form::label('', 'Certificate Issued', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('', 'License Validation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 										<div class="radio">
@@ -211,20 +198,13 @@
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), null,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
+				
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload PDF Document: ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Evidence: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>
@@ -251,7 +231,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">ADD CAA EMPLOYEE AIRCRAFT QUALIFICATION</h4>
+                    <h4 class="modal-title">Update CAA EMPLOYEE AIRCRAFT QUALIFICATION</h4>
                 </div>
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
@@ -273,9 +253,9 @@
                         </div>
 						<div class="form-group required">
                                         
-											{{Form::label('qualification_type', 'Qualification Type', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('qualification_type', 'License Type', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('qualification_type', array('' => '--Select--', 'Aircraft Initial' => 'Aircraft Initial','Aircraft Recurrent'=>'Aircraft Recurrent','Flight Proficiency '=>'Flight Proficiency','Recency of Experience '=>'Recency of Experience','Aircraft System'=>'Aircraft System','Recurrent Qualification'=>'Recurrent Qualification'), $info->qualification_type,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('qualification_type', array('' => '--Select--', 'PPL' => 'PPL','CPL'=>'CPL','ATPL'=>'ATPL','FI'=>'FI','B1'=>'B1','B2'=>'B2','CA'=>'CA','ATC'=>'ATC','Navigator'=>'Navigator'), $info->qualification_type ,array('class'=>'form-control','id'=>'category','required'=>''))}}
 											</div>
 											
 						</div>
@@ -287,27 +267,27 @@
 											{{Form::text('total_hours',$info->total_hours, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('aircraft_mm', 'Aircraft MM', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_mm',$info->aircraft_mm, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_mm',$info->aircraft_mm, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                         
 											{{Form::label('', 'Aircraft MSN', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											{{Form::text('aircraft_msm',$info->aircraft_msm, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('aircraft_msm',$info->aircraft_msm, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
 						</div>
 						<div class="form-group required">
 												
-													{{Form::label('completion_date', 'Completion Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('completion_date', 'License Issue Date', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -323,34 +303,27 @@
 														</div>
 													</div>
 						</div>
-						<div class="form-group ">
-                                        
-											{{Form::label('status', 'Status', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::select('status', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT','Workshop'=>'Workshop'), $info->status ,array('class'=>'form-control','id'=>'category','required'=>''))}}
-											</div>
-											
-						</div>
+						
 						<div class="form-group ">
                                            
-											{{Form::label('institute', 'Training Institute', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('institute', 'Organization', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('institute', $info->institute , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('institute', $info->institute , array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
                         </div>
 						<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Issuing Authority', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
                         </div>
 						
 						 <div class="form-group required">
                                            
-											{{Form::label('', 'Certificate Issued', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('', 'License Validation', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
 										<div class="radio">
@@ -362,20 +335,13 @@
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), $info->certification ,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
+					
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload PDF Document: ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Updated Evidence: ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>

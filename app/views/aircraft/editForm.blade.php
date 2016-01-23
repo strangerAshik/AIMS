@@ -18,14 +18,15 @@
                                            
 											{{Form::label('assigned_inspector', 'Assigned Inspector ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('assigned_inspector', $inspectors,$primary->assigned_inspector,array('class'=>'form-control'))}}
+											<?php $inspector=CommonFunction::getInspectorList();?>
+											{{Form::select('assigned_inspector', $inspector,$primary->assigned_inspector,array('class'=>'form-control'))}}
 											</div>
 											
                     </div><div class="form-group required">
                                            
 											{{Form::label('serial_number', 'Serial Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('serial_number',$primary->serial_number, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('serial_number',$primary->serial_number, array('class' => 'form-control','placeholder'=>'i.e Boeing-737NG-123456','required'=>''))}}
 											</div>
 											
                     </div>
@@ -203,6 +204,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 
 });
 </script>
+
 @stop
 
 @section('editTCIForm')
@@ -427,7 +429,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('tc_upload') }}
+							  {{ Form::file('tc_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					
@@ -577,7 +579,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('stc_upload') }}
+							  {{ Form::file('stc_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					
@@ -680,7 +682,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('exemption_upload') }}
+							  {{ Form::file('exemption_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
                     {{Form::hidden('old_exemption_upload',$exemption->exemption_upload)}}
@@ -846,7 +848,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('registration_upload') }}
+							  {{ Form::file('registration_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					
@@ -1046,7 +1048,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('ac_upload') }}
+							  {{ Form::file('ac_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					<div class="form-group">
@@ -1189,7 +1191,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('approval_upload') }}
+							  {{ Form::file('approval_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					<div class="form-group">
@@ -1342,7 +1344,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('owner_upload') }}
+							  {{ Form::file('owner_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					<div class="form-group">
@@ -1484,7 +1486,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('lesse_upload') }}
+							  {{ Form::file('lesse_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					<div class="form-group">
@@ -1663,7 +1665,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('insurer_upload') }}
+							  {{ Form::file('insurer_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					
@@ -1748,14 +1750,14 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
                                            
 											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											
-											{{Form::select('location',array(
+											{{Form::text('location',$equipment->location,array('class' => 'form-control','placeholder'=>''))}}
+											{{--Form::select('location',array(
 									''=>'--Select--',
 									'KBHM-Birmingham International'=>'KBHM-Birmingham International',
 									'KATL-Atlanta-Harts-field International'=>'KATL-Atlanta-Harts-field International',
 									'KCHA-Chattanooga'=>'KCHA-Chattanooga',
 									'KMIA- Miami International'=>'KMIA- Miami International'
-													),$equipment->location,array('class'=>'form-control','required'=>''))}}
+													),$equipment->location,array('class'=>'form-control','required'=>''))--}}
 											</div>
 											
                     </div>
@@ -1977,7 +1979,7 @@ $('#state_registration').selectize({ create: true, sortField: {field: 'text',dir
 							@endif
 							 </div>
 							<div class="col-xs-6">
-							  {{ Form::file('equip_upload') }}
+							  {{ Form::file('equip_upload',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 							</div>
                     </div>
 					<div class="form-group">

@@ -16,6 +16,7 @@ class QualificationPersonal extends Migration {
 			//personal info
 			$table->increments('id');
 			$table->string('emp_id');
+			$table->string('caa_id');
 			$table->string('title');
 			$table->string('first_name');
 			$table->string('middle_name');

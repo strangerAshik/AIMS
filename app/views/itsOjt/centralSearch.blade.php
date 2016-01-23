@@ -30,30 +30,70 @@
 					
 		<div class="box-body table-responsive">					
                    
-             <table id="example" class="table table-bordered table-striped">
+             <table id="example" class="table table-bordered table-striped display nowrap"  cellspacing="0" width="100%">
+                  
                     <thead>
-                    	<tr>                    		
+                    	
+                        <tr>
+                        	
                     		<th class="text-center">Emp. Name</th>
+                    		<th class="text-center">Speciality</th>
                     		<th class="text-center">Formal Course</th>
                     		<th class="text-center">OJT Task</th>
                     		<th class="text-center">Level-1</th>
                     		<th class="text-center">Level-2</th>
                     		<th class="text-center">Level-3</th>                    		
-                    		<th class="text-center">OJTD & Details</th>                    		
+                    		<th class="text-center">OJTD & Details</th>                      		
                     	</tr>
+                    	<tr id="filterrow">    
+                    	               		
+                    		<th class="text-center">Emp. Name</th>
+                    		<th class="text-center">Speciality</th>
+                    		<th class="text-center">Formal Course</th>
+                    		<th class="text-center">OJT Task</th>
+                    		<th class="text-center">Level-1</th>
+                    		<th class="text-center">Level-2</th>
+                    		<th class="text-center">Level-3</th>                    		
+                    		<th class="text-center">OJTD & Details</th>                      		
+                    	</tr>
+                    	
+                    
                     </thead>
+                    <tfoot>
+                    	<tr>
+                    		
+                    		<th class="text-center">Emp. Name</th>
+                    		<th class="text-center">Speciality</th>
+                    		<th class="text-center">Formal Course</th>
+                    		<th class="text-center">OJT Task</th>
+                    		<th class="text-center">Level-1</th>
+                    		<th class="text-center">Level-2</th>
+                    		<th class="text-center">Level-3</th>
+                    		
+                    		<th class="text-center">OJTD & Details</th>
+                    		
+                    	</tr>
+                    </tfoot>
 									 
 					<tbody>
+
 							   @foreach($itsAssignedFormal as $info)
 							   <!--itscn,emp_tracker-->
 							   <?php $allJobTask=CommonFunction::getOjtTask($info->itscn);?>					   <!--job task-->
 							   <!--info(itscn,emp_tracker),job task-->
 								   @foreach ($allJobTask as $task)
+								   <?php $name=CommonFunction::getEmployeeName($info->emp_tracker); ?>
+								   @if($name)
 								   <tr>
-								 
+								        
 								   		<td class="text-center"><!--Emp Name-->
-								   			{{CommonFunction::getEmployeeName($info->emp_tracker)}}
-								   	    </td>
+								   		
+								   			
+								   			
+								   				 {{$name }}
+								   			
+								   	    </td> 
+								   	    <td class="text-center"> {{$speciality=CommonFunction::getEmployeeSpeciality($info->emp_tracker)}}</td>
 
 								   		<td class="text-center"><!--Course No-->
 								   			{{ HTML::linkAction('itsOjtController@singleFormalCourse',$info->itscn,array($info->itscn), array('class' => '','title'=>CommonFunction::getFormalCourseTitle($info->itscn),'target'=>'_blink')) }}
@@ -68,12 +108,12 @@
 												
 													<?php $validityFormal= time() - strtotime($status->validity_date)?>
 													@if($validityFormal<0)
-													<i>Validity Till : </i>{{$status->validity_date}}	<br>
-													<i>Manager : </i>{{$status->manager}}  <br>
+													<i>Validity Till : </i><br>{{$status->validity_date}}	<br>
+													<i>Manager : </i><br>{{$status->manager}}  <br>
 													@else 
 													<span class="due">
-													<i>Validity Expired : </i>{{$status->validity_date}}	<br>
-													<i>Manager Was: </i>{{$status->manager}}  <br>
+													<i>Validity Expired : </i><br>{{$status->validity_date}}	<br>
+													<i>Manager Was: </i><br>{{$status->manager}}  <br>
 													</span>
 												
 													@endif
@@ -90,18 +130,19 @@
 											
 				                    		@if(!$ojtL1)
 					                    		Not Done 
+					                    		<?php $validityLevel1=40;?>
 					                    		
 					                    	@else 
 				                    			@foreach($ojtL1 as $status)
-														{{-- <span style="font-weight: bold;">Completion Date : </span>{{$status->completion_date}}	<br> --}}
+													
 														<?php $validityLevel1= time() - strtotime($status->validity_date)?>
 														@if($validityLevel1<0)
-														<i>Validity Till : </i>{{$status->validity_date}}	<br>
-														<i>Manager : </i>{{$status->manager}}  <br>
+														<i>Validity Till : </i><br>{{$status->validity_date}}	<br>
+														<i>Manager : </i><br>{{$status->manager}}  <br>
 														@else 
 														<span class="due">
-														<i>Validity Expired : </i>{{$status->validity_date}}	<br>
-														<i>Manager Was: </i>{{$status->manager}}  <br>
+														<i>Validity Expired : </i><br>{{$status->validity_date}}	<br>
+														<i>Manager Was: </i><br>{{$status->manager}}  <br>
 														</span>
 														
 														@endif
@@ -117,18 +158,19 @@
 		                    		@if(!$ojtL2)
 				                    		
 					                    		Not Done
+					                    		<?php $validityLevel2=40;?>
 					                    	
 			                    	@else 
 		                    			@foreach($ojtL2 as $status)
 												{{-- <span style="font-weight: bold;">Completion Date : </span>{{$status->completion_date}}	<br> --}}
 												<?php $validityLevel2= time() - strtotime($status->validity_date)?>
 												@if($validityLevel2<0)
-												<i>Validity Till : </i>{{$status->validity_date}}	<br>
-												<i>Manager : </i>{{$status->manager}}  <br>
+												<i>Validity Till : </i><br><br>{{$status->validity_date}}	<br>
+												<i>Manager : </i><br>{{$status->manager}}  <br>
 												@else 
 												<span class="due">
-												<i>Validity Expired : </i>{{$status->validity_date}}	<br>
-												<i>Manager Was: </i>{{$status->manager}}  <br>
+												<i>Validity Expired : </i><br>{{$status->validity_date}}	<br>
+												<i>Manager Was: </i><br>{{$status->manager}}  <br>
 												</span>
 												
 												@endif
@@ -144,17 +186,18 @@
 		                    		
 		                    		@if(!$ojtL3)                    			
 			                    		 Not Done
+			                    		 <?php $validityLevel3=40;?>
 		                    		@else 
 		                    			@foreach($ojtL3 as $status)
 												{{-- <span style="font-weight: bold;">Completion Date : </span>{{$status->completion_date}}	<br> --}}
 													<?php $validityLevel3= time() - strtotime($status->validity_date)?>
 												@if($validityLevel3<0)
-												<i>Validity Till : </i>{{$status->validity_date}}	<br>
-												<i>Manager : </i>{{$status->manager}}  <br>
+												<i>Validity Till : </i><br>{{$status->validity_date}}	<br>
+												<i>Manager : </i><br>{{$status->manager}}  <br>
 												@else 
 												<span class="due">
-												<i >Validity Expired : </i>{{$status->validity_date}}	<br>
-												<i>Manager Was: </i>{{$status->manager}}  <br>
+												<i >Validity Expired :<br> </i>{{$status->validity_date}}	<br>
+												<i>Manager Was: </i><br>{{$status->manager}}  <br>
 												
 												</span>
 												
@@ -166,40 +209,32 @@
 								   		</td>
 								   		<td class="text-center">
 								   		 OJTD :
-									@if($validityFormal<0 && $validityLevel1<0 && $validityLevel2<0 && $validityLevel3<0)
-									 <span class="inspector"><?php $ojtd='i'?>Inspector</span>
-									@elseif($formalStatus && $ojtL1 && $ojtL2 && $ojtL3 )
-									  <span class="due"><?php $ojtd='ii'?>Refresher Due</span>
-									@else
-									 <span class="trainee"><?php $ojtd='iii'?>Trainee</span>
-									
-									@endif
+								 <?php $speciality=CommonFunction::getEmployeeSpeciality($info->emp_tracker);?>
+								
+								   	
+								   			@if($validityFormal<0 && $validityLevel1<0 && $validityLevel2<0 && $validityLevel3<0)
+											 <span class="inspector"><?php $ojtd='i'?>Inspector</span>
+											@elseif($formalStatus && $ojtL1 && $ojtL2 && $ojtL3 )
+											  <span class="due"><?php $ojtd='ii'?>Refresher Due</span>
+											@else
+											 <span class="trainee"><?php $ojtd='iii'?>Trainee</span>
+											@endif
+								   		
+											
 											
 
 											</br>
 								   			{{ HTML::linkAction('itsOjtController@trineeSingleOjtCourse', 'View Details',array($info->itscn,$task->its_job_task_no,$info->emp_tracker,$ojtd), array('class' => '')) }}
 
 								   		</td>
-								   </tr>	
+								   </tr>
+								   @endif	
 								   @endforeach
 							   @endforeach
 							  
                        
                     </tbody>
-					<tfoot>
-                    	<tr>
-                    		
-                    		<th class="text-center">Emp. Name</th>
-                    		<th class="text-center">Formal Course</th>
-                    		<th class="text-center">OJT Task</th>
-                    		<th class="text-center">Level-1</th>
-                    		<th class="text-center">Level-2</th>
-                    		<th class="text-center">Level-3</th>
-                    		
-                    		<th class="text-center">OJTD & Details</th>
-                    		
-                    	</tr>
-                    </tfoot>
+					
 					
                     </table>
 					
@@ -207,7 +242,11 @@
 				
 		</div>
 	</div>
+
 </div>
+<script type="text/javascript">
+
+</script>
 </section>
 						
 				

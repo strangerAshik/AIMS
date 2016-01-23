@@ -29,7 +29,7 @@ class ItsOjtCourseOjt extends Migration {
 			$table->string('caa_forms');
 			$table->string('guidance_materials_referance',5000);
 			$table->string('task_description',5000);
-			$table->string('job_performance_subtasks',5000);
+			$table->longText('job_performance_subtasks',15000);
 
 			$table->string('row_creator');
 			$table->string('row_updator');

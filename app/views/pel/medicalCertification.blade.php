@@ -22,10 +22,10 @@
                               <th colspan='2'>
 								<span class='hidden-print'> Medical Certification{{++$num}}
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'par_delete'))	
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_medical_certification',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('pel_medical_certification',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							  @endif
 							  @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'sof_delete'))	
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_medical_certification',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('pel_medical_certification',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
 									
 									

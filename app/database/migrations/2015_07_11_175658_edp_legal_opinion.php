@@ -18,7 +18,7 @@ class EdpLegalOpinion extends Migration {
 
 			$table->string('edp_number');
 			
-			$table->string('legal_openion',700);
+			$table->longText('legal_openion',700);
 			
 			$table->string('row_creator');
 			$table->string('creator_emp_id');

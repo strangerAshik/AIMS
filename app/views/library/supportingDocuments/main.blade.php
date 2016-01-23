@@ -12,12 +12,13 @@ Library Main page,
                       
 						
 						<div class="row">
-					@if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'entry'))	
-                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
+					@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'access'))	
+
+                        <div class="col-md-4">
                             <!-- small box -->
 						<div class="small-box bg-aqua " >
 							<div class="inner">
-								<h4 style='font-weight:bold;'>New Supporting Document</h4>
+								<h4 style='font-weight:bold;'>Add New Supporting Document</h4>
 							</div>
 							
 							<a class="small-box-footer" href="{{URL::to('library/newSupportingDocuments');}}">
@@ -26,8 +27,8 @@ Library Main page,
 						</div>
                         </div><!-- ./col -->
                     @endif
-						
-                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
+						@if('true'==CommonFunction::hasPermission('library_supporting_docs',Auth::user()->emp_id(),'access'))
+                        <div class="col-md-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua " >
                                 <div class="inner">
@@ -40,8 +41,9 @@ Library Main page,
 							</a>
                             </div>
                         </div><!-- ./col -->
-                        @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'entry'))
-                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
+                        @endif
+                        @if('true'==CommonFunction::hasPermission('library_report',Auth::user()->emp_id(),'access'))
+                        <div class="col-md-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua " >
                                 <div class="inner">

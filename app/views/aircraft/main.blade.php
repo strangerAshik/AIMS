@@ -11,7 +11,21 @@ aircraft landing page,
                       
 						
 						<div class="row">
-						@if('true'==CommonFunction::hasPermission('airaft_list',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('aircraft_my_list',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
+                            <!-- small box -->
+                        <div class="small-box bg-aqua " >
+                            <div class="inner">
+                                <h4 style='font-weight:bold;'>My Aircraft</h4>
+                            </div>
+                            
+                            <a class="small-box-footer" href="{{URL::to('aircraft/myAircraftList');}}">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                        </div><!-- ./col -->
+                        @endif
+						@if('true'==CommonFunction::hasPermission('airaft_admin_list',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
 						<div class="small-box bg-aqua " >
@@ -40,7 +54,7 @@ aircraft landing page,
                             </div>
                         </div><!-- ./col -->
                         @endif
-                        @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'report'))
+                        @if('true'==CommonFunction::hasPermission('aircraft_report',Auth::user()->emp_id(),'report'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua " >

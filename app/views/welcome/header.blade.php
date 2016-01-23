@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-<title>ASRTM</title>
+<title>{{CommonFunction::getCompanySetupDetails()->short_name}}</title>
 <!--Favicon-->
  <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" >
 
@@ -92,7 +92,7 @@
 	<!--{{HTML::image('img/logo.png','User',array('class'=>'img-circle  pull-right','id'=>'logo-main','width'=>'80'))}}	-->
 	</div>
 	<div class='col-md-9' >
-	<h3 class='title'>Aviation Safety Reporting Tracking Management</h3>
+	<h3 class='title'>{{CommonFunction::getCompanySetupDetails()->full_name}}-{{CommonFunction::getCompanySetupDetails()->short_name}}</h3>
 	</div>
   </div>
   
@@ -103,17 +103,18 @@
 <!-- Sample menu definition -->
 <nav  class="navbar navbar-default">
 <ul id="main-menu" class="sm sm-blue">
-  <li><a href="{{URL::to('/')}}">ASRTM</a></li>
+  <li><a href="{{URL::to('/')}}">{{CommonFunction::getCompanySetupDetails()->short_name}}</a></li>
   <li><a href="{{URL::to('about')}}">About</a></li>
-  <li><a href="{{URL::to('faq')}}">Help & FAQ</a></li>
+  <!--<li><a href="{{URL::to('faq')}}">Help & FAQ</a></li>-->
   <li><a href="{{URL::to('contact')}}">Contact</a></li>
   <li><a href="#" data-toggle="modal" 
    data-target="#myModal">Login</a></li>
-  <span class='pull-right' style='margin:15px 10px 0px 0px;color:#fff;font-weight:bold'>{{gmdate('D, d M Y H:i:s T', time())}}</span>
+  <span class='pull-right' style='margin:15px 10px 0px 0px;color:#fff;font-weight:bold'><?php date_default_timezone_set('UTC');?>{{date('Y h:i:s A')}} UTC</span>
   
 </ul>
 
 </nav>
+
 <div class='row'>
 <div class='col-md-4'>
 @if(Session::has('Warning'))

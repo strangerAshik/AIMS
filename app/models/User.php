@@ -24,25 +24,26 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     'emp_id'=>'required|min:2|unique:users',
     'email'=>'required|email|unique:users',
     'designation'=>'required',
-    'password'=>'required|alpha_num|between:2,12|confirmed',
-    'password_confirmation'=>'required|alpha_num|between:2,12'
+    'password'=>'required|alpha_num|between:5,30|confirmed',
+    'password_confirmation'=>'required|alpha_num|between:5,30'
     );
 	public static $rules_user_update= array(
     'name'=>'required|min:2',
     'emp_id'=>'required|min:2',
     'email'=>'required|email',
     'designation'=>'required',
-    'password'=>'alpha_num|between:2,12|confirmed',
-    'password_confirmation'=>'alpha_num|between:2,12'
+    'password'=>'alpha_num|between:5,30|confirmed',
+    'password_confirmation'=>'alpha_num|between:5,30'
     );
 	public static $rule_changePass=array(
-	'password'=>'required|alpha_num|between:2,12|confirmed',
-    'password_confirmation'=>'required|alpha_num|between:2,12'
+	'password'=>'required|alpha_num|between:5,30|confirmed',
+    'password_confirmation'=>'required|alpha_num|between:5,30'
 	);
 	//end rules
 	
 	//function 
 	public function getId()	{ return $this->id;	}
+	public static function getUserId(){ return DB::table('users')->where('name','employee1')->pluck('emp_id');}
 	public function getName(){return $this->name;}
 	public function emp_id(){return $this->emp_id;}
 	public function photo(){return $this->photo;}

@@ -8,11 +8,19 @@
 				<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#legalOps">Opinion Of Legal Department</button>
 				</p>
 				@endif
+			@if(!$approvalInfos)
 				@if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'entry'))
 				<p class="text-center col-md-6">
 				<button class="btn btn-primary btn-block"   data-toggle="modal" data-target="#approvalForm">Approval</button>
 				</p>
 				@endif
+			@else 
+				@if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'entry'))
+				<p class="text-center col-md-6">
+				<button class="btn btn-primary btn-block"  disabled="" data-toggle="modal" data-target="#">Approval</button>
+				</p>
+				@endif
+			@endif
 </div>
 <!--EDP descripton-->
 <div class="row" >
@@ -27,16 +35,16 @@
 							<span class='hidden-print'>
 								@if('true'==CommonFunction::hasPermission('edp',Auth::user()->emp_id(),'par_delete'))
 
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_primary',$info->sia_number), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('edp_primary',$info->id,$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
 								@if('true'==CommonFunction::hasPermission('edp',Auth::user()->emp_id(),'sof_delete'))	
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('edp_primary',$info->sia_number), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@softDelete', 'S.D',array('edp_primary',$info->id,$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
 								@if('true'==CommonFunction::hasPermission('edp',Auth::user()->emp_id(),'approve'))
 
-									{{ HTML::linkAction('AircraftController@approve', '',array('edp_primary',$info->sia_number), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@approve', '',array('edp_primary',$info->id,$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('edp_primary',$info->sia_number), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('BaseController@notApprove', '',array('edp_primary',$info->id,$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
 								@endif
 								
 								@if('true'==CommonFunction::hasPermission('edp',Auth::user()->emp_id(),'update'))
@@ -64,6 +72,7 @@
 			   <tr><th>Finding Number</th><td>{{$info->finding_number}}</td></tr>
 			   <tr><th>SC Number</th><td>{{$info->sc_number}}</td></tr>
 			   <tr><th>EDP Number</th><td>{{$info->edp_number}}</td></tr>
+			   <tr><th>Title</th><td>{{$info->title}}</td></tr>
 			   <tr><th>Severity Level</th><td>{{$info->severity_level}}</td></tr>
 			   <tr><th>Explanation</th><td>{{$info->severity_explanation}}</td></tr>
 			   <tr><th>Likelihood Level</th><td>{{$info->likelihood_level}}</td></tr>
@@ -120,7 +129,14 @@
 								@endif
 			   </td></tr>
 			   
-		
+				 <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$info->row_creator}} | 
+						   			Initialized at : {{$info->created_at}} | 
+						   			Last Updated By : {{$info->row_updator}} | 
+						   			Updated at : {{$info->updated_at}}</i>
+						   		</td>
+				</tr>
 			
 			</tbody>
 					 
@@ -156,17 +172,19 @@
                         <tbody>
 						    <tr>               
 								<th colspan='2' style='color:#72C2E6'>Legal Opinion #{{++$num}}
+								<span class='hidden-print'>
 									 @if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_legal_opinion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_legal_opinion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('edp_legal_opinion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('edp_legal_opinion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									@if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#updatelegalOpenion{{$opinion->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
+								</span>
 								</th>
 								
 						    </tr>        
@@ -188,7 +206,14 @@
 								</th>
                                 <td>{{$opinion->created_at}}</td>
                             </tr>
-							
+							 <tr>
+						   		<td colspan="2">
+						   			<i>Initialized By : {{$opinion->row_creator}} | 
+						   			Initialized at : {{$opinion->created_at}} | 
+						   			Last Updated By : {{$opinion->row_updator}} | 
+						   			Updated at : {{$opinion->updated_at}}</i>
+						   		</td>
+							</tr>
 						</tbody>
 					 @endforeach
 					 @else
@@ -229,17 +254,20 @@
                         <tbody>
 						    <tr>               
 								<th colspan='2' style='color:#72C2E6'>Approval Info. #{{++$num}}
+								<span class='hidden-print'>
+
 									 @if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('edp_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('edp_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									@if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'update'))
 										 <a data-toggle="modal" data-target="#updateApprovalInfos{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
+								</span>
 								</th>
 								
 						    </tr>        
@@ -283,7 +311,8 @@
 					</div>
 						</div>
 					</div>
-				
+			 @include('common')
+            @yield('print') 	
 	</div>
 @include('edp.entryForm')
 @yield('legalOps')

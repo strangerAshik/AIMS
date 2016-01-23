@@ -86,49 +86,51 @@
 							 <div class="box-header col-md-6">
 									<h3 class="box-title">User Permission</h3>
 							 </div>	
-							 						
+			@foreach ($modules as $module) 
+		 		
 				{{Form::open(array('url' => 'updateUserPermission', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
 					
 					<div class="box-body">
-					{{Form::hidden('emp_id',$empId)}}
+                    
                     <table class="table table-bordered">
                         <tbody>
 
                   
-                     @foreach ($modules as $module) 
-
-                    <tr > 
-                    <td class='col-md-5 col-xl-5 col-sm-12'>
+                  
+                    <tr id="{{$module->module_name}}"> 
+                    <td class='col-md-4'>
+                    {{Form::hidden('emp_id',$empId)}}
+                    {{Form::hidden('module_name',$module->module_name)}}
                     {{Form::label('module', $module->module_name, array('class' => 'col-xs-4 control-label pull-left'))}}
                     </td>
-                    <td>
+                    <td class="col-md-7">
 
-                    <div class="col-xs-8 pull-right">                    
+                                   
                    
                     @if($module->access=='true')       
                     {{Form::hidden($module->module_name.'_'.'access','false')}}             
-                    {{Form::checkbox($module->module_name.'_'.'access', 'true',true)}}Access</br>
+                    {{Form::checkbox($module->module_name.'_'.'access', 'true',true)}}Access
                     @else
                     {{Form::hidden($module->module_name.'_'.'access','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'access', 'true',false)}}Access</br>
+                    {{Form::checkbox($module->module_name.'_'.'access', 'true',false)}}Access
 					@endif
                     					
 					@if( $module->entry=='true')
 					{{Form::hidden($module->module_name.'_'.'entry','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'entry', 'true',true)}}Entry</br>
+                    {{Form::checkbox($module->module_name.'_'.'entry', 'true',true)}}Entry
                     @else
                     {{Form::hidden($module->module_name.'_'.'entry','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'entry', 'true',false)}}Entry</br>
+                    {{Form::checkbox($module->module_name.'_'.'entry', 'true',false)}}Entry
 					@endif
 
-					@if( $module->update=='true')
-					{{Form::hidden($module->module_name.'_'.'update','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'update', 'true',true)}}Update</br>
+                    @if( $module->update=='true')
+                    {{Form::hidden($module->module_name.'_'.'update','false')}}
+                    {{Form::checkbox($module->module_name.'_'.'update', 'true',true)}}Update
                     @else
                     {{Form::hidden($module->module_name.'_'.'update','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'update', 'true',false)}}Update</br>
-					@endif
-					
+                    {{Form::checkbox($module->module_name.'_'.'update', 'true',false)}}Update
+                    @endif
+
 					@if( $module->approve=='true')
 					{{Form::hidden($module->module_name.'_'.'approve','false')}}
                     {{Form::checkbox($module->module_name.'_'.'approve', 'true',true)}}Approve</br>
@@ -136,58 +138,49 @@
                     {{Form::hidden($module->module_name.'_'.'approve','false')}}
                     {{Form::checkbox($module->module_name.'_'.'approve', 'true',false)}}Approve</br>
 					@endif
-
+					
 					@if( $module->worning=='true')
 					{{Form::hidden($module->module_name.'_'.'worning','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'worning', 'true',true)}}Worning</br>
+                    {{Form::checkbox($module->module_name.'_'.'worning', 'true',true)}}Warning
                     @else
                     {{Form::hidden($module->module_name.'_'.'worning','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'worning', 'true',false)}}Worning</br>
+                    {{Form::checkbox($module->module_name.'_'.'worning', 'true',false)}}Warning
 					@endif
 
 					@if( $module->sof_delete=='true')
 					{{Form::hidden($module->module_name.'_'.'sof_delete','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'sof_delete', 'true',true)}}S.Delete</br>
+                    {{Form::checkbox($module->module_name.'_'.'sof_delete', 'true',true)}}S.Delete
                     @else
                     {{Form::hidden($module->module_name.'_'.'sof_delete','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'sof_delete', 'true',false)}}S.Delete</br>
+                    {{Form::checkbox($module->module_name.'_'.'sof_delete', 'true',false)}}S.Delete
 					@endif
 					@if( $module->par_delete=='true')
 					{{Form::hidden($module->module_name.'_'.'par_delete','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'par_delete', 'true',true)}}P.Delete</br>
+                    {{Form::checkbox($module->module_name.'_'.'par_delete', 'true',true)}}P.Delete
                     @else
                     {{Form::hidden($module->module_name.'_'.'par_delete','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'par_delete', 'true',false)}}P.Delete</br>
+                    {{Form::checkbox($module->module_name.'_'.'par_delete', 'true',false)}}P.Delete
 					@endif
 					@if( $module->report=='true')
 					{{Form::hidden($module->module_name.'_'.'report','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'report', 'true',true)}}Report</br>
+                    {{Form::checkbox($module->module_name.'_'.'report', 'true',true)}}Report
                     @else
                     {{Form::hidden($module->module_name.'_'.'report','false')}}
-                    {{Form::checkbox($module->module_name.'_'.'report', 'true',false)}}Report</br>
-					@endif
-
-                    </div>
+                    {{Form::checkbox($module->module_name.'_'.'report', 'true',false)}}Report
+					@endif                   
                     </td>
+
+                    <td class="col-md-1"><button type="submit" class="btn btn-primary">Update</button></td>
                     </tr>
                     
 
             
-                    @endforeach
-                    <tr>
-                    	<td colspan="2">
-                    		 <div class="form-group">
-                       
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Update Permission</button>
-                       
-                    </div>                    		
-                    	</td>
-                    </tr>
                     </tbody>
                     </table>
                     </div>
-                   
+                                 
 					{{Form::close()}}
+                @endforeach
                	</div>
                 <!-- /.box-body -->
                                

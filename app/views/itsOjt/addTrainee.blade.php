@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layoutTable')
 @section('content')
 <section class="content contentWidth">
 	
@@ -44,7 +44,7 @@
 												<td>{{$info->hire_date}}</td>
 												<td>{{$info->current_position}}</td>
 																					
-												<th><a class="btn btn-primary"href={{'individualTrainingOjt/'.$info->emp_tracker}}>Details</a></th>
+												<th><a class="btn btn-primary"href={{'singleTrainee/'.$info->emp_tracker}}>Details</a></th>
 										</tr>
 										@endforeach
 										@endif

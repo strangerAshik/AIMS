@@ -28,16 +28,32 @@
 										</thead>
 										
 										<tbody>
-										
+										<?php $num=0;?>
+										@foreach($allReport as $info)
 											 <tr>
-												<td class='text-centre'>1</td>
-												<td class='text-centre'>01 January 2015</td>
-												<td class='text-centre'>test@gmail.com</td>
-												<td class='text-centre'>Test Test</td>
-												<td class='text-centre'>Action Taken</td>
-												<td class='text-centre'>Approved</td>
-												 <td><a  class="btn btn-primary" href="singleReport/id">Details</a></td>
+												<td class='text-centre'>{{++$num}}</td>
+												<td class='text-centre'>{{$info->created_at}}</td>
+												<td class='text-centre'>{{$info->email}}</td>
+												<td class='text-centre'>{{$info->title}}</td>
+												<td class='text-centre'>
+													<?php $actionStatus=CommonFunction::actionStatus($info->id);?>
+													@if($actionStatus)
+														<span style="color:green">Taken</span>
+													@else 
+														<span style="color:red">Not Taken</span>
+													@endif
+												</td>
+												<td class='text-centre'>
+												<?php $approvalStatus=CommonFunction::approvalStatus($info->id);?>
+												@if($approvalStatus)
+													<span style="color:green">	Approvaed</span>
+												@else 
+													<span style="color:red">Not Approved</span>
+												@endif
+												</td>
+												 <td><a  class="btn btn-primary" href="singleReport/{{$info->id}}">Details</a></td>
 											</tr>
+										@endforeach
 										</tbody>
 									</table>
 								</div>

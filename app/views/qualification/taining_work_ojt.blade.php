@@ -1,11 +1,11 @@
 @extends('layout')
 @section('content')
- <section class="content" style="max-width:760px;margin:0 auto;">
+ <section class="content contentWidth">
                     <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">Training/ Workshop/ OJT  </h3>
+                                    <h3 class="box-title">Training/ Workshop & Seminar / OJT  </h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 								@foreach($infos as $info)
@@ -13,8 +13,8 @@
                                         <tbody>
 										{{Employee::notApproved($info)}}	
 										<tr>                                           
-                                            <th colspan='2'>Training/ Workshop/ OJT  #{{++$a_sl}}
-											<a href="{{'deleteTraining/'.$info->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
+                                            <th colspan='2'>Training/ Workshop & Seminar / OJT  #{{++$a_sl}}
+											<a onclick=" return confirm('Wanna Delete?')"  href="{{'deleteTraining/'.$info->id}}" style='color:red;float:right;padding:5px;'><span class="glyphicon glyphicon-trash"></span></a>
 											<a data-toggle="modal" data-target="#{{'training'.$info->id}}" href='' style='color:green;float:right;padding:5px;'>
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </a>
@@ -31,10 +31,10 @@
 												<td>Type of Training</td><td>{{$info->type_of_training}}</td>
 											</tr>
 											<tr>
-												<td>Type of Training</td><td>{{$info->training_course}}</td>
+												<td>Training Course / Number</td><td>{{$info->training_course}}</td>
 											</tr>
 											<tr>
-												<td>Subject</td><td>{{$info->subject}}</td>
+												<td>Subject / Specialization</td><td>{{$info->subject}}</td>
 											</tr>
 										@endif
 										@if($info->category=='OJT')
@@ -44,7 +44,7 @@
 											
 											
 										@endif
-										@if($info->category=='Workshop')
+										@if($info->category=='Seminar / Workshop / Meeting / Conference')
 											<tr>
 												<td>Topic</td><td>{{$info->topic}}</td>
 											</tr>
@@ -64,7 +64,7 @@
 										<tr>
                                            
                                             <td>
-											Instructor(s) With Level:
+											Instructor(s):
 											</td>
                                             <td>
                                                {{$info->instructor}}
@@ -83,7 +83,7 @@
                                         </tr>
 										<tr>
                                             <td>												
-												Address:
+												Location:
 											</td>
                                             <td>
                                                {{$info->location}}
@@ -100,27 +100,28 @@
                                             </td>
                                             
                                         </tr>
+										
 										<tr>
                                             <td>
-												Management Certification:
+												Start Date:
 											</td>
                                             <td>
-                                                {{$info->certification}}
+                                                {{$info->start_date}} 
                                             </td>
                                             
                                         </tr>
 										<tr>
                                             <td>
-												Duration:
+												End Date:
 											</td>
                                             <td>
-                                                {{$info->duration}}
+                                                {{$info->end_date}} 
                                             </td>
                                             
                                         </tr>
 										<tr>
                                             <td>
-												PDF Document :
+												Uploaded Evidence:
 											</td>
                                             <td>
 										@if($info->pdf!='Null'){{HTML::link('files/TrainingWorkshopOJT/'.$info->pdf,'Document',array('target'=>'_blank'))}}
@@ -155,7 +156,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Training/ Workshop/ OJT </h4>
+                <h4 class="modal-title">Training/ Workshop & Seminar/ OJT </h4>
             </div>
 
             <div class="modal-body">
@@ -169,13 +170,13 @@
                                         
 											{{Form::label('category', 'Category', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('category', array('' => '--Select--', 'Training' => 'Training', 'Seminar' => 'Seminar','OJT'=>'OJT','Workshop'=>'Workshop'), null,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('category', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT', 'Seminar / Workshop / Meeting / Conference' => 'Seminar / Workshop / Meeting / Conference'), null,array('class'=>'form-control','id'=>'category','required'=>''))}}
 											</div>
 											
                     </div>
 					<!--IF training -->
 					<div id='training' style='display:none;'>
-					<div class="form-group required">
+					<div class="form-group ">
                                         
 											{{Form::label('type_of_training', 'Type of Training', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -183,17 +184,17 @@
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('training_course', 'Training Course', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('training_course', 'Training Course / Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('training_course','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('subject', 'Subject', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('subject', 'Subject / Specialization', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('subject','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
@@ -203,7 +204,7 @@
 					<!--end training -->
 					<!--If workshop / seminar -->
 					<div id='workshop' style='display:none;'> 
-					<div class="form-group required">
+					<div class="form-group ">
                                            
 											{{Form::label('topic', 'Topic', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -216,7 +217,7 @@
 					</div>
 					<!--If OJT -->
 					<div id='ojt' style='display:none;'> 
-						<div class="form-group required required">
+						<div class="form-group  ">
                                            
 											{{Form::label('training_task', 'Training Task', array('class' => 'col-xs-4 control-label '))}}
 											<div class="col-xs-6">
@@ -227,38 +228,67 @@
 					</div>
 					<!--End OJT -->
 					<!--Start Common content-->
-					<div class="form-group required">											
-											{{Form::label('duration', 'Duration', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('duration','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
+					
+					<div class="form-group required">												
+
+													{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('start_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
 					</div>
-					<div class="form-group required">
+					
+					<div class="form-group required">												
+
+													{{Form::label('end_date', 'End Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('end_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('end_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('end_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
+					</div>
+
+					<div class="form-group ">
                                            
 											{{Form::label('major_area', 'Major Area', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('major_area','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('major_area','', array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
 											
                     </div>
 					<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor(s) With Level', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Instructor(s) Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'i.e Inspector Name [Level] '))}}
+											{{Form::text('instructor','', array('class' => 'form-control','placeholder'=>'i.e Inspector Name  '))}}
 											</div>
 											
                     </div>
-					<div class="form-group  required">
+					<div class="form-group  ">
                                            
 											{{Form::label('institute', 'Institute', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('institute','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('institute','', array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
 											
                     </div>
 					<div class="form-group " >											
-											{{Form::label('location', 'Address', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('location','', array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 											</div>
@@ -278,20 +308,12 @@
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), null,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload PDF Document: ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Evidence ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>
@@ -326,18 +348,20 @@
                 {{Form::open(array('url'=>'qualification/updateTrainingWorkOJT','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form','files'=>true))}}
 						{{Form::hidden('id', $info->id)}}
 						{{Form::hidden('old_file', $info->pdf)}}
+						{{Form::hidden('category', $info->category)}}
 					
 					<div class="form-group required">
                                         
 											{{Form::label('category', 'Category', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::select('category', array('' => '--Select--', 'Training' => 'Training', 'Seminar' => 'Seminar','OJT'=>'OJT','Workshop'=>'Workshop'), $info->category,array('class'=>'form-control','id'=>'category','required'=>''))}}
+											{{Form::select('categorys', array('' => '--Select--', 'Training' => 'Training','OJT'=>'OJT', 'Seminar / Workshop / Meeting / Conference' => 'Seminar / Workshop / Meeting / Conference'), $info->category,array('class'=>'form-control','id'=>'category','required'=>'','disabled'=>'disabled'))}}
 											</div>
 											
                     </div>
 					<!--IF training -->
-					<div id='training' style='display:none;'>
-					<div class="form-group required">
+					@if($info->category=='Training')
+					<div id='training' >
+					<div class="form-group">
                                         
 											{{Form::label('type_of_training', 'Type of Training', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -345,27 +369,29 @@
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('training_course', 'Training Course', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('training_course', 'Training Course / Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('training_course',$info->training_course, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
-					<div class="form-group required">
+					<div class="form-group ">
                                            
-											{{Form::label('subject', 'Subject', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('subject', 'Subject / Specialization', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('subject',$info->subject, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
 					</div>
+					@endif
 					<!--end training -->
 					<!--If workshop / seminar -->
-					<div id='workshop' style='display:none;'> 
-					<div class="form-group required">
+					@if($info->category=='Seminar / Workshop / Meeting / Conference')
+					<div id='workshop' > 
+					<div class="form-group ">
                                            
 											{{Form::label('topic', 'Topic', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -376,9 +402,11 @@
 					
 					<!--end workshop / seminar -->
 					</div>
+					@endif
 					<!--If OJT -->
-					<div id='ojt' style='display:none;'> 
-						<div class="form-group required">
+					@if($info->category=='OJT')
+					<div id='ojt' > 
+						<div class="form-group ">
                                            
 											{{Form::label('training_task', 'Training Task', array('class' => 'col-xs-4 control-label '))}}
 											<div class="col-xs-6">
@@ -387,46 +415,75 @@
 											
 						</div>
 					</div>
+					@endif
 					<!--End OJT -->
 					<!--Start Common content-->
-					<div class="form-group required">											
-											{{Form::label('duration', 'Duration', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::text('duration',$info->duration, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
-											</div>
+					<div class="form-group required">												
+
+													{{Form::label('start_date', 'Start Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('start_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('start_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('start_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
 					</div>
-					<div class="form-group required">
+					
+					<div class="form-group required">												
+
+													{{Form::label('end_date', 'End Date', array('class' => 'col-xs-4 control-label'))}}										
+
+													<div class="row">
+														<div class="col-xs-2">
+														{{Form::select('end_date',$dates,date('d'),array('class'=>'form-control','required'=>''))}}
+														</div>
+														<div class="col-xs-3">
+														{{Form::select('end_month',$months,date('F'),array('class'=>'form-control','required'=>''))}}
+														</div>														
+														<div class="col-xs-2">
+															{{Form::select('end_year',$years,date('Y'),array('class'=>'form-control','required'=>''))}}
+														</div>
+													</div>
+					</div>
+					
+					<div class="form-group ">
                                            
 											{{Form::label('major_area', 'Major Area', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('major_area',$info->major_area, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('major_area',$info->major_area, array('class' => 'form-control','placeholder'=>''))}}
 											</div>
 											
                     </div>
 					<div class="form-group ">
                                            
-											{{Form::label('instructor', 'Instructor(s) With Level', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('instructor', 'Instructor(s) Name', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>'i.e Inspector Name [Level] '))}}
+											{{Form::text('instructor',$info->instructor, array('class' => 'form-control','placeholder'=>'i.e Inspector Name '))}}
 											</div>
 											
                     </div>
 					
-					<div class="form-group  required">
+					<div class="form-group  ">
                                            
 											{{Form::label('institute', 'Institute', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('institute',$info->institute, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('institute',$info->institute, array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
 											
                     </div>
 					<div class="form-group " >											
-											{{Form::label('location', 'Address', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('location',$info->location, array('class' => 'form-control','placeholder'=>'','size'=>'30x3'))}}
 											</div>
 					</div>
-				    <div class="form-group required">
+				    <div class="form-group">
                                            
 											{{Form::label('', 'Certificate Issued', array('class' => 'col-xs-4 control-label'))}}
 											
@@ -440,20 +497,13 @@
 								</div>
                         </div>
 					
-					<div class="form-group ">											
-											{{Form::label('certification', 'Management Certification', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-										
-											{{Form::select('certification', array('' => '--Select--', 'Verified'=>'Verified','Non verified'=>'Non verified'), $info->certification,array('class'=>'form-control'))}}
-											</div>
-											
-					</div>
+					
 					<div class="form-group ">
                                            
                                             
-											 {{ Form::label('pdf', 'Upload Updated Document ',array('class'=>'control-label col-xs-4')) }}
+											 {{ Form::label('pdf', 'Upload Updated Evidence ',array('class'=>'control-label col-xs-4')) }}
 											 <div class="col-xs-6">
-											 {{ Form::file('pdf') }}
+											 {{ Form::file('pdf',array("accept"=>"image/*,application/pdf",'class'=>'fileupload')) }}
 											 
 											 
 											 </div>
@@ -486,7 +536,7 @@ $(document).ready(function(){
 		 $("#workshop").hide();
 		 $("#ojt").hide();		 
 		 } 
-	 else if(content=='Seminar'){
+	 else if(content=='Seminar / Workshop / Meeting / Conference'){
 		$("#training").hide();
 		 $("#workshop").show();
 		 $("#ojt").hide();	 
@@ -496,11 +546,7 @@ $(document).ready(function(){
 		 $("#workshop").hide();
 		 $("#ojt").show();
 	 }
-	 else if(content=='Workshop'){
-		 $("#training").hide();
-		 $("#workshop").show();
-		 $("#ojt").hide();
-	 }
+	
 	 else{
 		  $("#training").hile();
 		 $("#workshop").hide();

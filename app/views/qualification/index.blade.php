@@ -1,7 +1,7 @@
 
-@extends('layoutTable')
+@extends('layoutMT')
 @section('content')
-<section class='content widthController'>
+<section class='content contentWidth'>
 
          <div class="row">
                         <div class="col-md-12">
@@ -13,7 +13,7 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 								
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="example" class="table table-bordered table-striped">
 										<thead>
 											<tr>
 												<th>Emp ID</th>
@@ -21,7 +21,7 @@
 												<th>Email</th>
 												<th>Mobile</th>
 												<th>Role</th>
-												<th>View Details</th>
+												<th>Details</th>
 											</tr>
 										</thead>
 										
@@ -35,7 +35,7 @@
 												<td class='text-centre'>{{$emp->role}}</td>
 												
 												<td class='text-centre'>
-												<a target="b_link" href="comp_view/{{$emp->emp_id}}">view Details</a>
+												<a target="b_link" href="comp_view/{{$emp->emp_id}}">view</a>
 												</td>
 												
 											</tr>

@@ -2,6 +2,7 @@
 
 class CommonFunction extends \Eloquent {
 	protected $fillable = [];
+ 
   //depricated
 	static function dDays($day,$month,$year){
 	 $months=[
@@ -59,7 +60,26 @@ class CommonFunction extends \Eloquent {
 		//End Multiple selection update
 	   
    }
+static function isItMe($members,$emp_id){
 
+  //$user = new User(); return  $emp_id = $user->emp_id();
+
+ $teamMembers=[];
+ $existance=0;
+ if($members!=null){
+    foreach ($members as $key => $value) {
+       if (($pos = strpos($value, "-")) !== FALSE) { 
+            $teamMembers[] = substr($value, $pos+1); 
+        }
+    }   
+
+    }
+  
+  if (in_array($emp_id,$teamMembers))
+    return 'true';
+    return 'false';
+
+}
    static function listsOfColumn($tableName,$columnName){
    // $options='options';
     $select=array(''=>'--Select--');
@@ -73,14 +93,14 @@ class CommonFunction extends \Eloquent {
    	->pluck($colName);
 
    }
-   static function getOptions($dropdownName){
+   static function getOptions($dropdownName,$select='Select'){
     $tableName='dropdown_option_management';
     $options='options';
-    $select=array(''=>'--Select--');
-    $options=DB::table($tableName)->where('dropdown_names',$dropdownName)
+   
+    $options=array(''=>'--'.$select.'--')+DB::table($tableName)->where('dropdown_names',$dropdownName)
           ->where('soft_delete','<>','1')
           ->lists($options,$options);
-    $options=array_merge($select,$options);
+    
     return $options;
    }
    static function pelLicenseType($empId){
@@ -89,7 +109,11 @@ class CommonFunction extends \Eloquent {
     ->pluck('license_type');
 }
 static function getInspectorList(){
-  return DB::table('users')->where('role','Inspector')->lists('name');
+ 
+  return array(''=>'--Select Inspector--')+DB::table('users')->select(DB::raw('concat (name,"-",emp_id) as full_name,id'))->where('organization','CAAB HQ')->lists('full_name', 'full_name');
+}
+static function getInspectorListWithId(){
+  return DB::table('users')->where('organization','CAAB HQ')->get();
 }
 static function pelList(){
   return DB::table('users')->where('role','Inspector')->get();
@@ -100,6 +124,10 @@ static function InspectorListWithID(){
 
 static function inspectionHappend($sia_number){
 return DB::table('sia_action')->where('sia_number',$sia_number)->count();
+//  return 0;
+}
+static function getTeamMembers($sia_number){
+return DB::table('sia_program')->where('sia_number',$sia_number)->pluck('team_members');
 //  return 0;
 }
 static function stateOfReg(){
@@ -131,10 +159,10 @@ static function toDayProgram(){
 
 static function listOfProgarm(){
 
-    $undefineSurveillance=array('SIA_Not_Programed_'.time()=>'SIA_Not_Programed_'.time(),'Volanteer_'.time()=>'Volanteer_'.time());
-    $listOfProgarm=DB::table('sia_program')->orderBy('date','desc')->lists('sia_number','sia_number');
+    $undefineSurveillance=array('not_programed_'.time()=>'not_programed_'.time(),'voluntary_'.time()=>'voluntary_'.time());
+    $listOfProgarm=$undefineSurveillance+DB::table('sia_program')->orderBy('date','desc')->lists('sia_number','sia_number');
     
-    return  $listOfProgarm=array_merge($listOfProgarm,$undefineSurveillance);
+    return  $listOfProgarm;//=array_merge($listOfProgarm,$undefineSurveillance);
 }
 
 static function notActionedSiaNumbers(){
@@ -144,7 +172,14 @@ static function notActionedSiaNumbers(){
   
 }
 static function siaActionListedSiaNumber(){
-  return $siaNumbers=DB::table('sia_action')->orderBy('id','desc')->lists('sia_number','sia_number');
+  return $siaNumbers=array(''=>'--Select SIA Number--')+DB::table('sia_action')->orderBy('id','desc')->lists('sia_number','sia_number');
+}
+
+static function getFindingListOfThisSia($sia_number){
+  return $siaNumbers=[''=>'--Select Finding Number--']+DB::table('sia_findings')->where('sia_number',$sia_number)->lists('title','finding_number');
+}
+static function getScListOfThisSia($sia_number){
+  return $siaNumbers=[''=>'--Select SC Number--']+DB::table('sc_safety_concern')->where('sia_number',$sia_number)->lists('title','safety_issue_number');
 }
 
 static function aircraftMmsList(){
@@ -176,6 +211,9 @@ static function edpCount($sia_number){
 static function getEdpList(){
   return $info=DB::table('edp_primary')->orderBy('id','desc')->lists('edp_number','edp_number');
 }
+static function getEdpListOfThisSia($sia_number){
+  return $info=array(''=>'No EDP Selected')+DB::table('edp_primary')->where('sia_number',$sia_number)->lists('edp_number','edp_number');
+}
 
 static function programStatus($sia_number){
   return $info=DB::table('sia_approval')->where('sia_number',$sia_number)->count();
@@ -183,11 +221,10 @@ static function programStatus($sia_number){
 
 
 static function getFindingList(){
-  $select=array('#'=>'--Select Finding Number--');
+  
+  return $info=array(' '=>'--Select Finding Number--') + DB::table('sia_findings')->orderBy('id','desc')->lists('finding_number','finding_number');
 
-  $info=DB::table('sia_findings')->orderBy('id','desc')->lists('finding_number','finding_number');
-
-  return array_merge( $select,$info);
+  
 }
 static function getFindingNumber($sc_number){
   return $info=DB::table('sia_findings')->where('sia_number',$sc_number)->count();
@@ -527,6 +564,8 @@ static function  getFormalCourseTitle ($its_course_number){
 static function  getOjtTask ($its_course_number){
  return $ojtTasks=DB::table('itsojt_course_ojt')
                 ->where('its_course_number',$its_course_number)
+                ->orderBy('its_course_number')
+                ->orderBy('its_job_task_no')
                 ->get();
 }
 //get tainee name form itsojt_trainee using emp_tracker
@@ -535,6 +574,13 @@ static function  getEmployeeName ($emp_tracker){
  return $emp_name=DB::table('itsojt_trainee')
                 ->where('emp_tracker',$emp_tracker)
                 ->pluck('employee_name');
+}
+//get tainee Speciality form itsojt_trainee using emp_tracker
+
+static function  getEmployeeSpeciality ($emp_tracker){
+ return $emp_name=DB::table('itsojt_trainee')
+                ->where('emp_tracker',$emp_tracker)
+                ->pluck('employees_speciality');
 }
 
 //get assigned course of particular employee
@@ -551,7 +597,68 @@ static function assingedFormalCourses($emp_tracker){
         ->get();
 }
 
+/*******************VOluntary Reporting**********************/
+static function actionStatus($id){
+  return DB::table('voluntary_reporting_action')->where('report_id',$id)->get();
+}
 
+static function approvalStatus($id){
+  return DB::table('voluntary_reporting_approval')->where('report_id',$id)->get();
+}
+
+/***********************EDP***********************************/
+
+static function isEdpLegalOpenionGiven($edpNumber){
+return DB::table('edp_legal_opinion')->where('edp_number',$edpNumber)->count();
+}
+
+static function isEdpApproved($edpNumber){
+return DB::table('edp_approval')->where('edp_number',$edpNumber)->count();
+}
+/***********************Notification*************************/
+
+static function getSiaNumberInfo($siaNum){
+  return DB::table('sia_program')->where('sia_number',$siaNum)->first();
+}
+static function getSiaNumberInfoTest($siaNum){
+  return DB::table('sia_program')->where('sia_number',$siaNum)->get();
+}
+static function getFindingInfo($findingNumber){
+  return DB::table('sia_findings')->where('finding_number',$findingNumber)->first();
+}
+static function getScNumberInfo($ScNumber){
+  $data=DB::table('sc_safety_concern')
+            ->join('sia_program', 'sc_safety_concern.sia_number', '=', 'sia_program.sia_number')
+            ->join('sia_findings', 'sc_safety_concern.finding_number', '=', 'sia_findings.finding_number')
+            ->select(
+                  'sc_safety_concern.safety_issue_number','sc_safety_concern.finding_number', 'sc_safety_concern.sia_number', 'sc_safety_concern.title as scTitle',
+                  'sc_safety_concern.target_date','sc_safety_concern.risk_assesment_from_matrix','sia_program.org_name','sia_findings.title as findingTitle'
+                  
+                  )
+            ->first();
+
+  return $data;
+}
+
+
+static function getEdpNumberInfo($edpNumber){
+  $data=DB::table('edp_primary')
+            ->join('sia_program', 'edp_primary.sia_number', '=', 'sia_program.sia_number')
+            ->join('sia_findings', 'edp_primary.finding_number', '=', 'sia_findings.finding_number')
+            ->select(
+                  'edp_primary.edp_number','edp_primary.sia_number','edp_primary.finding_number', 'edp_primary.title as edpTitle',
+                  'sia_program.org_name','sia_findings.title as findingTitle'
+                  
+                  )
+            ->first();
+
+  return $data;
+}
+/**************Company Setup*********************/
+static function getCompanySetupDetails(){
+
+  return DB::table('company_setup')->orderBy('id','desc')->first();
+}
 
 
 

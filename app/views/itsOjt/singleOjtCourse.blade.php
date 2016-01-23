@@ -26,25 +26,26 @@
 						 <td colspan="2">
 							
 								 <span class='hidden-print'>
-                                  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
+								 
+                                  @if('true'==CommonFunction::hasPermission('its_formal_course_and_job_task',Auth::user()->emp_id(),'par_delete'))
 
-									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-trash hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-trash hidden-print','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									@endif
-								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
-									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-trash hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
+								@if('true'==CommonFunction::hasPermission('its_formal_course_and_job_task',Auth::user()->emp_id(),'sof_delete'))
+									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-trash hidden-print','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif	
 									
-								 @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
+								 @if('true'==CommonFunction::hasPermission('its_formal_course_and_job_task',Auth::user()->emp_id(),'approve'))
 
-									{{ HTML::linkAction('AircraftController@approve', '',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@approve', '',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
 									
-									{{ HTML::linkAction('AircraftController@notApprove', '',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@notApprove', '',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-ok hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
 								@endif
-								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))	
-									{{ HTML::linkAction('AircraftController@removeWarning', '',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
-									{{ HTML::linkAction('AircraftController@warning', '',array('ItsOjt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
+								@if('true'==CommonFunction::hasPermission('its_formal_course_and_job_task',Auth::user()->emp_id(),'worning'))	
+									{{ HTML::linkAction('AircraftController@removeWarning', '',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
+									{{ HTML::linkAction('AircraftController@warning', '',array('itsojt_course_ojt',$info->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
 									@endif
-								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
+								@if('true'==CommonFunction::hasPermission('its_formal_course_and_job_task',Auth::user()->emp_id(),'update'))
 
 									 <a data-toggle="modal" data-target="#ojtEdit{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil hidden-print" aria-hidden="true"></span>
@@ -115,7 +116,7 @@
 						</tr>   
 						<tr>
 							<th class="col-md-3">									
-								Associative FAA Job Task No
+								Associative CAA Job Task No
 							</th>
 							<td>{{$info->associative_faa_job_task_no}}</td>
 						</tr>
@@ -172,9 +173,14 @@
 						</div>
 
 		
-	@endforeach				
+	@endforeach	
+	
+	@include('common')
+	@yield('print')				
 </div>
 </section>
 
+@include('itsOjt.editForm')
+@yield('ojtEdit')
 
 @stop

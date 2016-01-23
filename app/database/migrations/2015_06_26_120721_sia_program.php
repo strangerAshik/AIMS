@@ -18,11 +18,16 @@ class SiaProgram extends Migration {
 			$table->string('sia_number');
 			$table->string('org_name');
 			$table->string('event');
-			$table->string('specific_purpose');
+			$table->longText('specific_purpose');
 			$table->string('date');
+			$table->string('end_date');
 			$table->string('time');
-			$table->string('team_members');
-			$table->string('remarks',1000);
+			$table->string('location');
+			$table->longText('team_members');
+			$table->longText('remarks',1000);
+			
+			$table->string('approve');
+			$table->string('warning');
 			$table->string('row_creator');
 			$table->string('row_updator');
 			$table->string('soft_delete');
