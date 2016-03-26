@@ -34,17 +34,32 @@
                                                      {{nl2br($info->doc_authors)}}
                                                 </td>
                                                 <td>{{$info->doc_published_year}}</td>
-                                                <td>ISBN: {{$info->doc_isbn}} <br/>
+                                                <td>
+                                                 @if($info->doc_isbn)
+                                                ISBN: {{$info->doc_isbn}} <br/>
+                                                @endif
+                                                @if($info->doc_series)
                                                 Series:  {{$info->doc_series}}<br/>
+                                                @endif
+                                                @if($info->doc_edition)
                                                 Edition:  {{$info->doc_edition}}<br/>
+                                                @endif
+                                                @if($info->doc_part)
                                                 Part : {{$info->doc_part}}<br/>
+                                                @endif
+                                                @if($info->doc_volume)
                                                 Volume :  {{$info->doc_volume}}<br/>
+                                                @endif
+                                                @if($info->doc_amendment)
                                                 Amendment:  {{$info->doc_amendment}}<br/>       
-                                                Tags:  {{nl2br($info->doc_tags)}}
-                                                    <br/> 
-                                                    <br/>       
+                                                @endif
+                                                @if($info->doc_tags)
+                                                Tags: {{nl2br($info->doc_tags)}}
+                                                @endif
                                     </td>
-                                                <td>Supporting Website(s): {{$info->doc_url}}</br>
+                                                <td>@if($info->doc_url)
+                                                Supporting Website(s): <a target="_blank" href="http://{{$info->doc_url}}" >Link</a></br>
+                                                @endif
                                                 Supported Doc:                              
                                                     @if($info->doc_upload!='Null'){{HTML::link('files/lib_supporting_docs/'.$info->doc_upload,'Document',array('target'=>'_blank'))}}
                                                     @else

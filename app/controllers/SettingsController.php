@@ -561,6 +561,7 @@ class SettingsController extends \BaseController {
 		$modules =DB::table('module_names')->where('soft_delete','<>','1')->orderBy('module_name')->lists('module_name');
 		return View::make('settings/index')
 		->with('PageName','Settings')
+		->with('active','settings')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -576,6 +577,7 @@ class SettingsController extends \BaseController {
 		->where('id',Auth::user()->getId())->get();
 		return View::make('settings/myProfile')
 					->with('PageName','My Profile')
+					->with('active','settings')
 					->with('userInfos',$userInfos)
 					;
 	}
@@ -624,6 +626,7 @@ class SettingsController extends \BaseController {
 
 		return View::make('settings/viewUsers')
 		->with('PageName','View Users')
+		->with('active','settings')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -679,6 +682,7 @@ class SettingsController extends \BaseController {
 					//EDP
 							'edp',
 							'edp_approval',
+							'edp_list',
 							'edp_legal_opinion',
 
 					//Employee
@@ -691,6 +695,7 @@ class SettingsController extends \BaseController {
 							'my_sia',
 							'sia_board',
 							'sia_program',
+							'sia_single_program',//new 20 Feb 2016							
 							'sia_program_list',
 							'sia_inspector_associate_sia',				
 							'sia_action',
@@ -844,6 +849,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						//'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -889,6 +895,7 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									//'my_sia',//----[Note:service Provider]
 									//'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -913,6 +920,25 @@ class SettingsController extends \BaseController {
 										'update'=>'true',
 										'approve'=>'false',
 										'worning'=>'false',
+										'sof_delete'=>'false',
+										'par_delete'=>'false',
+										'report'=>'false'
+									));
+						}
+					//sia extention
+						$sia=array(									
+									'sia_corrective_action',									
+							      );
+						foreach ($sia as $moduleName) {
+							DB::table('module_user_permission')
+									->where('user_id',$emp_id)
+									->where('module_name',$moduleName)
+									->update(array(
+										'access'=>'true',
+										'entry'=>'false',
+										'update'=>'false',
+										'approve'=>'true',
+										'worning'=>'true',
 										'sof_delete'=>'false',
 										'par_delete'=>'false',
 										'report'=>'false'
@@ -1112,7 +1138,7 @@ class SettingsController extends \BaseController {
 									));
 						}
 					//edps
-						$edps=['edp','edp_approval','edp_legal_opinion'];
+						$edps=['edp','edp_list','edp_approval','edp_legal_opinion'];
 						foreach ($edps as $moduleName) {
 							DB::table('module_user_permission')
 									->where('user_id',$emp_id)
@@ -1155,6 +1181,8 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									'my_sia',//Note:service Provider
 									'sia_program',
+									'sia_single_program',//new 20 Feb 2016							
+									'sia_single_program',
 									'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -1380,6 +1408,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						'edp_list',
 						'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -1426,6 +1455,7 @@ class SettingsController extends \BaseController {
 									//Note:service Provider
 									//'my_sia',
 									'sia_program',
+									'sia_single_program',//new 20 Feb 2016							
 									'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -1649,6 +1679,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						//'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -1695,6 +1726,7 @@ class SettingsController extends \BaseController {
 									//Note:service Provider
 									//'my_sia',
 									'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -1918,6 +1950,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -1964,6 +1997,7 @@ class SettingsController extends \BaseController {
 									//Note:service Provider
 									//'my_sia',
 									'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -2186,6 +2220,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						'edp_list',
 						//'edp_approval',
 						'edp_legal_opinion'
 						];
@@ -2231,6 +2266,7 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									//'my_sia',//----[Note:service Provider]
 									//'sia_program',
+									'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -2454,6 +2490,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -2499,6 +2536,7 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									//'my_sia',//----[Note:service Provider]
 									//'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -2721,6 +2759,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -2766,6 +2805,7 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									//'my_sia',//----[Note:service Provider]
 									'sia_program',
+									'sia_single_program',//new 20 Feb 2016							
 									'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -2990,6 +3030,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						//'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -3035,6 +3076,7 @@ class SettingsController extends \BaseController {
 									//'sia_board',
 									//'my_sia',//----[Note:service Provider]
 									//'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									'sia_inspector_associate_sia',				
 									'sia_action',
@@ -3258,6 +3300,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						//'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -3304,6 +3347,7 @@ class SettingsController extends \BaseController {
 									//Note:service Provider
 									'my_sia',
 									//'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									//'sia_inspector_associate_sia',				
 									//'sia_action',
@@ -3527,6 +3571,7 @@ class SettingsController extends \BaseController {
 					//edps
 						$edps=[
 						'edp',
+						//'edp_list',
 						//'edp_approval',
 						//'edp_legal_opinion'
 						];
@@ -3573,6 +3618,7 @@ class SettingsController extends \BaseController {
 									//[Note:service Provider]
 									'my_sia',
 									//'sia_program',
+									//'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									//'sia_inspector_associate_sia',				
 									//'sia_action',
@@ -3905,6 +3951,7 @@ class SettingsController extends \BaseController {
 		->get();
 		return View::make('settings.module')
 		->with('PageName','Module Names')
+		->with('active','settings')
 		->with('modules',$modules)
 
 		;
@@ -3973,6 +4020,7 @@ class SettingsController extends \BaseController {
 		$organizations=DB::table('users')->orderBy('organization')->lists('organization');
 		return View::make('settings.singleUser')
 				->with('PageName','Single User')
+				->with('active','settings')
 				->with('userInfos',$userInfos)
 				->with('modules',$modules)
 				->with('moduleNames',$moduleNames)
@@ -3990,6 +4038,7 @@ class SettingsController extends \BaseController {
 				->get();
 		return View::make('settings.dropDownManagement')
 			->with('PageName','Drop-down Mangement')
+			->with('active','settings')
 			->with('dropdownList',$dropdownList)
 			;
 	}
@@ -4029,6 +4078,7 @@ class SettingsController extends \BaseController {
 		//$getOptions=DB::table('dropdown_option_management')->get();
 		return View::make('settings.singleDropdown')
 				->with('PageName','Single Dropdown')
+				->with('active','settings')
 				->with('getOptions',$getOptions)
 				->with('dropdown_names',$dropdown_names)
 				->with('core_module_names',$core_module_names)
@@ -4059,6 +4109,7 @@ class SettingsController extends \BaseController {
 				->get();
 		return View::make('settings.checkListManagement')
 			->with('PageName','Checklist Mangement')
+			->with('active','settings')
 			->with('checklists',$checklists)
 			;
 	}
@@ -4101,6 +4152,7 @@ class SettingsController extends \BaseController {
 		//$getOptions=DB::table('dropdown_option_management')->get();
 		return View::make('settings.singleChecklist')
 				->with('PageName','Single Checklist')
+				->with('active','settings')
 				->with('questions',$questions)
 				->with('checklist_name',$name)
 				->with('checklist_type',$type)
@@ -4133,5 +4185,14 @@ class SettingsController extends \BaseController {
 
 		
 	}
+
+public function userDelete($id){
+	$deleteUser=DB::table('users')->where('emp_id',$id)->delete();
+	$deletePermission=DB::table('module_user_permission')->where('user_id',$id)->delete();
+	return Redirect::to('viewUsers')->with('message','User Deleted.');
+
+
+
+}
 	
 }

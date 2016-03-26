@@ -20,7 +20,10 @@ class OrganizationController extends \BaseController {
 	public function main()
 	{
 		return View::make('organization.main')
-		->with('PageName','Organization Dashbord');
+		->with('PageName','Organization Dashbord')
+		->with('active','organization')
+
+		;
 	}
 public function organizationList(){
 
@@ -29,6 +32,7 @@ $infos=DB::table('org_primary')
 			->get();
 	return View::make('organization.listOrg')
 		->with('PageName','Organization List')
+		->with('active','organization')
 		->with('infos',$infos);
 }
 public function myOrganization(){
@@ -39,6 +43,7 @@ $infos=DB::table('org_primary')
 			->get();
 	return View::make('organization.myOrg')
 		->with('PageName','My Organization')
+		->with('active','organization')
 		->with('infos',$infos);
 }
 
@@ -48,7 +53,9 @@ $infos=DB::table('org_primary')
 		$organizations =DB::table('users')->lists('organization');
 		return View::make('organization.newOrg')
 		->with('organizations',$organizations)
-		->with('PageName','New Organization');
+		->with('PageName','New Organization')
+		->with('active','organization')
+		;
 	}
  
 
@@ -200,6 +207,7 @@ $org_docs=DB::table('org_document_list')
 			->get();
 		return View::make('organization.singleOrg')
 		->with('PageName','Single Organization')
+		->with('active','organization')
 		->with('orgPrimary',$orgPrimary)
 		->with('dates',parent::dates())
 		->with('months',parent::months())

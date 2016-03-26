@@ -14,19 +14,59 @@ class PublicController extends \BaseController {
 		->where('soft_delete','<>','1')
 		->where('doc_status','=','Public')
 		->orderBy('doc_type')
-		->get();
-	
+		->get();				
+		return View::make('library.supportingDocuments.viewPublic')
+		->with('PageName','Private Supporting View')
+		->with('dates',parent::dates())
+		->with('toDay',date("d F Y"))
+		->with('months',parent::months())
+		->with('years_from',parent::years_from())
+		->with('years',parent::years())
+		->with('allDocs',$allDocs);
+	}
+
+	public function sendMessage(){
+
+		$name=Input::get('name');
+		$email=Input::get('email');
+		$phone=Input::get('phone');
+		$subject=Input::get('subject');
+		$message=Input::get('message');
+
+		$to = "support@asrtmcaab.com, md.ashikuzzaman.ashik@gmail.com";
+		$subject =$subject;
+
+		$message = "
+		<html>
+		<head>
+		<title>$subject</title>
+		</head>
+		<body>
+		<p>$message</p>
+		<table>
+		<tr>
+		<th>Name: $name</th>
+		<th>Phone: $phone</th>
+		<th>Email: $email</th>
+		</tr>
 		
+		</table>
+		</body>
+		</html>
+		";
+
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// More headers
+		$headers .= 'From: <contact@asrtmcaab.com>' . "\r\n";
 		
-		
-			return View::make('library.supportingDocuments.viewPublic')
-			->with('PageName','Private Supporting View ')
-			->with('dates',parent::dates())
-			->with('toDay',date("d F Y"))
-			->with('months',parent::months())
-			->with('years_from',parent::years_from())
-			->with('years',parent::years())
-			->with('allDocs',$allDocs);
+
+		mail($to,$subject,$message,$headers);
+
+		return Redirect::back()->with('message','Message Send!');
+
 	}
 
 	/**

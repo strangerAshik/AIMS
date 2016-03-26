@@ -17,6 +17,8 @@ class EdpController extends \BaseController {
 		->with('years_from',parent::years_from())
 		->with('years',parent::years())
 		->with('PageName','Single EDP')
+		->with('active','sia')
+
 		->with('edpDetails',$edpDetails)
 		->with('edpNumber',$edpNumber)
 		->with('approvalInfos',$approvalInfos)
@@ -167,6 +169,22 @@ class EdpController extends \BaseController {
 			'created_at'=>date('Y-m-d H:i:s'),
 			'updated_at'=>date('Y-m-d H:i:s'),	
 			));
+		//file upload
+		//getting mother id
+		 $motherId=DB::table('edp_legal_opinion')->orderBy('id','desc')->first();
+		 $upload_file=parent::fileUpload('doc','documents');
+		//Save to document table
+			DB::table('documents')->insert(array(
+				
+				'table_name'=>'edp_legal_opinion',
+				'mother_id'=>$motherId->id,
+				'calling_id'=>$upload_file,
+				
+				
+				'created_at'=>date('Y-m-d H:i:s'),
+				'updated_at'=>date('Y-m-d H:i:s'),
+				));
+
 		return Redirect::back()->with('message','Leagal Opinion Saved !');
 	}
 	public function updateLegalOpinion(){
@@ -179,6 +197,20 @@ class EdpController extends \BaseController {
 			'updater_emp_id'=>Auth::user()->getId(),
 			'updated_at'=>date('Y-m-d H:i:s'),	
 			));
+		//document update
+		//mother id
+		$motherId=Input::get('id');
+		$document=parent::updateFileUpload('old_doc','doc','documents');
+		//update to document table
+			DB::table('documents')
+			->where('table_name','edp_legal_opinion')
+			->where('mother_id',$motherId)
+			->update(array(
+				'calling_id'=>$document,
+				'updated_at'=>date('Y-m-d H:i:s'),
+				));
+
+			
 		return Redirect::back()->with('message','Leagal Opinion Updated !');
 	}
 	public function saveApproval(){

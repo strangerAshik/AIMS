@@ -5,7 +5,9 @@ class LibraryController extends \BaseController {
 	public function main()
 	{
 		return View::make('library.supportingDocuments.main')
-		->with('PageName','Supporting Doc Main');
+		->with('PageName','Supporting Doc Main')
+		->with('active','e_library')
+		;
 	}
 	//report
 	public function report(){
@@ -33,6 +35,7 @@ class LibraryController extends \BaseController {
 		
 		return View::make('library.supportingDocuments.newSupportingDocuments')
 		->with('PageName','New Supporting Doc ')
+		->with('active','e_library')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -161,6 +164,7 @@ class LibraryController extends \BaseController {
 		
 			return View::make('library.supportingDocuments.viewPrivate')
 			->with('PageName','Private Supporting View ')
+			->with('active','e_library')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -187,6 +191,7 @@ class LibraryController extends \BaseController {
 		
 			return View::make('library.supportingDocuments.viewPublic')
 			->with('PageName','Private Supporting View ')
+			->with('active','e_library')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())

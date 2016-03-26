@@ -141,6 +141,8 @@ Route::group(array('before'=>'auth'),function(){
 	Route::post('changePasswordIndividual/{id}','SettingsController@changePasswordIndividual');
 	
 	Route::get('permissionUpdate','SettingsController@permissionUpdate');
+	//delete user with module privillage
+	Route::get('userDelete/{emp_id}','SettingsController@userDelete');
 
 });
 Route::group(array('before'=>'auth'),function(){
@@ -495,6 +497,7 @@ Route::group(array('prefix'=>'library','before'=>'auth'),function(){
 
 
 Route::get('libraryPublicView','PublicController@SDpublicView');
+Route::post('sendMessage','PublicController@sendMessage');
 
 
 Route::group(array('prefix'=>'organization','before'=>'auth'),function(){
@@ -692,6 +695,10 @@ Route::group(array('prefix'=>'certification','before'=>'auth'),function(){
 	Route::get('singleDocs/{docNo}','CertificationController@singleDocs');
 	Route::get('singleFinding/{FN}','CertificationController@singleFinding');
 	Route::get('followup/{cerNo}','CertificationController@followup');
+	//all phasecs
+	Route::get('allPhases','CertificationController@allPhases');
+	Route::get('phase1','CertificationController@phase1');
+	Route::get('timelines','CertificationController@timelines');
 });
 
 /*Action Entry */
@@ -771,7 +778,9 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 	Route::get('singleInspectorSia','SurveillanceController@singleInspectorSia');
 	Route::get('singleInspectorSiaDateToDate','SurveillanceController@singleInspectorSiaDateToDate');
 	
-	Route::get('siaBoard','SurveillanceController@siaBoard');
+	Route::get('noticeBoard','SurveillanceController@noticeBoard');
+
+	Route::get('allEdp','SurveillanceController@allEdp');
 
 	//notification of sia
 
@@ -781,6 +790,9 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 	Route::get('siaAprovalWaiting','SurveillanceController@siaAprovalWaiting');
 	Route::get('scAprovalWaiting','SurveillanceController@scAprovalWaiting');
 	Route::get('edpAprovalWaiting','SurveillanceController@edpAprovalWaiting');
+		//	20 Feb 2016
+	Route::get('pendingSmsApproval','SurveillanceController@pendingSmsApproval');
+	Route::get('pendingFindingCorrectiveActionList','SurveillanceController@pendingFindingCorrectiveActionList');
 
 
 

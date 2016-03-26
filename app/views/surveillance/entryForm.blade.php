@@ -50,11 +50,11 @@
 											</div>
 											
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group required">
                                            
 											{{Form::label('specific_purpose', 'Specific Purpose', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('specific_purpose','', array('class' => 'form-control','placeholder'=>'','size'=>'4x2'))}}
+											{{Form::textarea('specific_purpose','', array('class' => 'form-control','placeholder'=>'','size'=>'4x2','required'=>''))}}
 											</div>
 											
                     </div>
@@ -107,22 +107,22 @@
 											
                     </div>
                 
-					<div class="form-group ">
+					<div class="form-group required">
                                            
 											{{Form::label('location', 'Location', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('location','', array('class' => 'form-control','placeholder'=>''))}}
+											{{Form::text('location','', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div>
                    
                     
-                    <div class="form-group ">
+                    <div class="form-group required">
                                         
 											{{Form::label('team_members', 'Team Members', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
-											<select   id="team_members"  multiple name="team_members[]" class="demo-default" >
+											<select   id="team_members"  required multiple name="team_members[]" class="demo-default"  title="Team Member(s) Not Added">
 												<option value="">Select Team Lead First...</option>
 												@foreach($inspectors as $inspector)
 												<option  value="{{$inspector->name.'-'.$inspector->emp_id}}">{{$inspector->name.'-'.$inspector->emp_id}}</option>
@@ -444,7 +444,7 @@ var eventHandler = function(name) {
 											<div class="col-xs-6">
 											<?php $options=SurveillanceCommon::flightNumber();?>
 
-											{{ Form::select('flight_number',$options,null, ['class' => 'demo-default','id'=>'flight_number','placeholder'=>'Select Or Add Flight Number']) }}	
+											{{ Form::select('flight_number',$options,null, ['class' => 'demo-default','id'=>'flight_number','placeholder'=>'i.e AA 123']) }}	
 											
 											</div>
 											
@@ -454,7 +454,8 @@ var eventHandler = function(name) {
 											{{Form::label('departure_airfield ', 'Departure Airfield', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=SurveillanceCommon::departureAirfield();?>
-											{{ Form::select('departure_airfield',$options,null, ['class' => 'demo-default','id'=>'departure_airfield','placeholder'=>'Select Or Add Departure Airfield']) }}
+											{{ Form::select('departure_airfield',$options,null, ['class' => 'demo-default','id'=>'departure_airfield','placeholder'=>'i.e VGHS-Hazrat Shahjalal International Airport']) }}
+											<a href="https://www.world-airport-codes.com/" target="_blank">Help: world Airport Code</a>
 											</div>
 											
                     </div>
@@ -463,7 +464,7 @@ var eventHandler = function(name) {
 											{{Form::label('arrival_airfield ', 'Arrival Airfield', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=SurveillanceCommon::arrivalAirfield();?>
-											{{ Form::select('arrival_airfield',$options,null, ['class' => 'demo-default','id'=>'arrival_airfield','placeholder'=>'Select Or Add Arrival Airfield']) }}	
+											{{ Form::select('arrival_airfield',$options,null, ['class' => 'demo-default','id'=>'arrival_airfield','placeholder'=>'i.e OMAA-Abu Dhabi International Airport']) }}	
 																						
 											</div>
 											
@@ -519,8 +520,8 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 
                     <div class="form-group ">
                                         
-											{{Form::label('other_personal_inspected', 'Any Other personal
-Inspected ', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('other_personal_inspected', 'Other personal Involved
+', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 												{{Form::textarea('other_personal_inspected','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
 											</div>
@@ -952,7 +953,7 @@ var eventHandler = function(name) {
 					
 					<div class="form-group ">
                                            
-											{{Form::label('corrective_action_plan', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('corrective_action_plan', 'Correction Action Recommendation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('corrective_action_plan','', array('class' => 'form-control','placeholder'=>'',''=>'','size'=>'4x1'))}}
 											</div>
@@ -1083,7 +1084,7 @@ var eventHandler = function(name) {
 					
 					<div class="form-group ">
                                            
-											{{Form::label('corrective_action_plan', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('corrective_action_plan', 'Correction Action Recommendation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('corrective_action_plan','', array('class' => 'form-control','placeholder'=>'',''=>'','size'=>'4x1'))}}
 											</div>
@@ -1262,7 +1263,7 @@ var eventHandler = function(name) {
 					
 					<div class="form-group required ">
                                         
-											{{Form::label('currective_action', 'Corrective Action', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('currective_action', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('currective_action','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
 											</div>
@@ -1271,7 +1272,7 @@ var eventHandler = function(name) {
 					
 					<div class="form-group ">
                                            
-											{{Form::label('revived_date', 'Revived Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('revived_date', 'CAP Initiated On', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('revived_date', $dates,'0',array('class'=>'form-control',''=>''))}}

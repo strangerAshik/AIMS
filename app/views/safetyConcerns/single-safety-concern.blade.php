@@ -113,7 +113,7 @@
 										No Corrective Action Is Given.
 									@endif</td>
                             </tr>
-							
+							@if(!$correctiveActions)
 							<tr>
                                 <th>									
 									Remaining Day('s)
@@ -130,6 +130,7 @@
 								@endforeach
 								</td>
                             </tr>
+                            @endif
 							
 						</tbody>
 					 

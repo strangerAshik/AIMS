@@ -10,7 +10,9 @@ class voluntaryReportingController extends \BaseController {
 	public function main()
 	{
 		return View::make('voluntaryReporting.main')
-			->with('PageName','Voluntary Reporting');
+			->with('PageName','Voluntary Reporting')
+			->with('active','voluntary_reporting')
+			;
 	}
 
 
@@ -24,6 +26,7 @@ class voluntaryReportingController extends \BaseController {
 		$allReport=DB::table('voluntary_reporting')->where('soft_delete','<>','1')->orderBy('id','desc')->get();
 		return View::make('voluntaryReporting.voluntaryReportingList')
 			->with('PageName','Voluntary Reporting List')
+			->with('active','voluntary_reporting')
 			->with('allReport',$allReport)
 
 			;
@@ -42,6 +45,7 @@ class voluntaryReportingController extends \BaseController {
 		$approvalInfo=DB::table('voluntary_reporting_approval')->where('soft_delete','<>','1')->where('report_id',$id)->orderBy('id','desc')->get();
 		return View::make('voluntaryReporting.singleReport')
 			->with('PageName','Single Report')
+			->with('active','voluntary_reporting')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years_from())
@@ -55,7 +59,44 @@ class voluntaryReportingController extends \BaseController {
 
 	public function saveReport(){
 		$file=parent::fileUpload('file','voluntaryReporting');
+		//email
+		/*
+		$title=Input::get('title');
+		$email=Input::get('email');
+		$report=Input::get('report');
+		
+		$to = "support@asrtmcaab.com, md.ashikuzzaman.ashik@gmail.com";
+		$subject =$title;
 
+		$message = "
+		<html>
+		<head>
+		<title>$title</title>
+		</head>
+		<body>
+		<p>$message</p>
+		<table>
+		<tr>
+		
+		<th>Email: $email</th>
+		<th>Report: $report</th>
+		</tr>
+		
+		</table>
+		</body>
+		</html>
+		";
+
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// More headers
+		$headers .= 'From: <contact@asrtmcaab.com>' . "\r\n";
+		
+
+		mail($to,$subject,$message,$headers);
+		*/
 
 		DB::table('voluntary_reporting')->insert(
 					array(

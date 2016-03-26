@@ -45,8 +45,8 @@
 									@foreach ($ojtTasks as $info)
 									<tr>
 								<!--Formal Course -->
-										<td>
-										{{'['.$info->its_course_number.'] ' .$data->its_course_title}}<br>
+										<td >
+										{{'['.$info->its_course_number.'] ' .$data->its_course_title}} |
 										<?php $formalStatus=CommonFunction::formalCourseStatus($data->its_course_number,$emp_tracker);?>
                     		 <?php $validityFormal=0;?> 
                     		@if(!$formalStatus)
@@ -58,19 +58,21 @@
 										<?php $validityFormal= time() - strtotime($status->validity_date)?>
 
 										@if($validityFormal<0)
+										<span style="color:#FFF">
 
-										<i>Validity Till : </i>{{$status->validity_date}}	<br>
+										<i>Validity Till : </i>{{$status->validity_date}}	|
 
 										<i>Manager : </i>{{$status->manager}}  <br>
+										</span>
 
 										@else 
 
 										 <?php $validityFormal=1;?> 
 
-										<span class="due">
+										<span style="color:#FFF">
 
 
-										<i>Validity Expired : </i>{{$status->validity_date}}	<br>
+										<i style="color:red">Validity Expired : </i>{{$status->validity_date}}	|
 
 										<i>Manager Was: </i>{{$status->manager}}  <br>
 

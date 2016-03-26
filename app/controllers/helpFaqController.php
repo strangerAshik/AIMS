@@ -11,6 +11,7 @@ class helpFaqController extends \BaseController {
 	{
 		return View::make('helpFaq.main')
 		->with('PageName','Help And FAQ')
+		->with('active','help_faq')
 		;
 	}
 
@@ -25,6 +26,7 @@ class helpFaqController extends \BaseController {
 		$recentQuestion=DB::table('help_faq_question')->orderBy('id','desc')->limit(5)->get();
 		return View::make('helpFaq.addQuestion')
 		->with('PageName','Ask Question')
+		->with('active','help_faq')
 		->with('recentQuestion',$recentQuestion)
 		;
 	}
@@ -42,6 +44,7 @@ class helpFaqController extends \BaseController {
 		$ans=DB::table('help_faq_ans')->where('question_id',$id)->where('soft_delete','<>','1')->get();
 		return View::make('helpFaq.singleQuestion')
 		->with('PageName','Single Question')
+		->with('active','help_faq')		
 		->with('question',$question)
 		->with('ans',$ans)
 		;
@@ -60,6 +63,7 @@ class helpFaqController extends \BaseController {
 
 		return View::make('helpFaq.faqBank')
 		->with('PageName','Question Bank')
+		->with('active','help_faq')
 		->with('question',$question)
 		
 		;

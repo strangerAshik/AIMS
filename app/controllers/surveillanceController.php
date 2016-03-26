@@ -6,22 +6,23 @@ class SurveillanceController extends \BaseController {
 	public function main()
 	{
 		return View::make('surveillance.main')
-		->with('PageName','Action Main');
+		->with('PageName','Action Main')
+		->with('active','sia')
+		;
 	}
-public function centralSearch()
+   public function centralSearch()
 	{
 		$actionList=DB::table('sia_action')->where('soft_delete','<>','1')->orderBy('id','desc')->get();
 		return View::make('surveillance.centralSearch')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
-
 			->with('toDay',date("d F Y"))
-			
 			->with('years_from',parent::years_from())
 			
 		->with('actionList',$actionList)
 		->with('PageName','Central Search')
+		->with('active','sia')
 		->with('from','1 January 2015')
 		->with('to',date('d F Y'));
 	}
@@ -35,6 +36,7 @@ public function centralSearch()
 		
 		return View::make('surveillance.newActionEnrty')
 		->with('PageName','New Action Entry')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -53,6 +55,7 @@ public function centralSearch()
 		$actionList=DB::table('sia_action')->where('soft_delete','<>','1')->orderBy('id','desc')->get();
 		return View::make('surveillance.surveillanceList')
 		->with('PageName','Executed Program List')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -70,6 +73,7 @@ public function centralSearch()
 
 		return View::make('surveillance.mySia')
 		->with('PageName','Executed Program List')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -109,6 +113,7 @@ public function centralSearch()
 	
 		return View::make('surveillance.mySia')
 		->with('PageName','Executed Program List DTD')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -148,9 +153,10 @@ public function centralSearch()
 		$actionList=DB::table('sia_action')->where('soft_delete','<>','1')->whereBetween('date',array($from,$to))->get();
 		$rf=Input::get('rquerstFrom');	
 		if($rf=='cs'){
-		
+		//go to central search 
 		return View::make('surveillance.centralSearch')
 			->with('PageName','Executed Program List DTD')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -162,8 +168,10 @@ public function centralSearch()
 		}
 		else
 			{
+		//go to Executed program list
 		return View::make('surveillance.surveillanceList')
 			->with('PageName','Executed Program List DTD')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -180,6 +188,7 @@ public function centralSearch()
 		$prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->orderBy('created_at','desc')->where('date',date("Y-m-d"))->get();
 		return View::make('surveillance.todayTaskList')
 		->with('PageName','Today Task List')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -191,6 +200,7 @@ public function centralSearch()
 	public function inspectionCheckList(){
 		return View::make('surveillance.inspectionCheckList')
 		->with('PageName','Inspection Check List')
+		->with('active','sia')
 		;
 	
 	}
@@ -206,6 +216,7 @@ public function centralSearch()
 	public function report($module='surveillance'){
 		return View::make($module.'.report')
 		->with('PageName','Report')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -240,6 +251,7 @@ public function centralSearch()
 		//$thisYear=Input::get('thisYear');
 		return View::make($module.'.report')
 		->with('PageName','Report')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -281,6 +293,10 @@ public function centralSearch()
 		$pel_numbers=serialize(Input::get('pel_numbers'));
 		$critical_element=serialize(Input::get('critical_element'));
 		$sia_by_area=serialize(Input::get('sia_by_area'));
+		//Check whether this action is already taken or not
+		$existance=DB::table('sia_action')->where('sia_number',Input::get('sia_number'))->count();
+		//Insert data
+		if($existance==0){
 		DB::table('sia_action')->insert(
 					array(
 							'program_type'=>Input::get('program_type',' '),
@@ -338,6 +354,9 @@ public function centralSearch()
 				);
 		//return Redirect::back()->with('message','Action is Saved!');
 		return Redirect::to(URL::previous() . "#ActionDetails")->with('message', 'Action is Saved!');
+		}
+		else 
+		return Redirect::to(URL::previous() . "#ActionDetails")->with('message', 'Action Already Noted!');
 	}
 	public function updateSms(){
 		$id=Input::get('id');
@@ -467,6 +486,7 @@ public function centralSearch()
 		$prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->orderBy('created_at','desc')->paginate(10);
 		return View::make('surveillance.newProgram')
 				->with('PageName','New Program')
+				->with('active','sia')
 				->with('organizations',$organizations)
 				->with('dates',parent::dates())
 				->with('toDay',date("d F Y"))
@@ -488,7 +508,7 @@ public function centralSearch()
 
 
 		$team_members=serialize(Input::get('team_members'));
-		DB::table('sia_program')->insert(
+		$save=DB::table('sia_program')->insert(
 					array(
 							'sia_number'=>Input::get('sia_number',' '),
 							'org_name'=>Input::get('org_name',' '),
@@ -509,7 +529,10 @@ public function centralSearch()
 							'updated_at'=>date('Y-m-d H:i:s')
 						)
 				);
+		if($save==true)
 		return Redirect::back()->with('message','Program Saved!');
+		else
+			return Redirect::back()->with('error','Program Not Saved!');
 	}
 	public function updateProgram(){
 		$date=Input::get('date').' '.Input::get('month').' '.Input::get('year');
@@ -561,6 +584,7 @@ public function centralSearch()
 		$prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->orderBy('date')->get();
 		return View::make('surveillance.programList')
 			->with('PageName','Program List')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -583,6 +607,7 @@ public function centralSearch()
 			$prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->orderBy('date')->get();
 		return View::make('surveillance.singleInspectorSia')
 			->with('PageName','Program List')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -610,6 +635,7 @@ public function centralSearch()
 		 $prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->whereBetween('date',array($from,$to))->get();
 		return View::make('surveillance.programList')
 			->with('PageName','Program List')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -638,6 +664,7 @@ public function centralSearch()
 		 $prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->whereBetween('date',array($from,$to))->get();
 		return View::make('surveillance.singleInspectorSia')
 			->with('PageName','Program List')
+			->with('active','sia')
 			->with('dates',parent::dates())
 			->with('toDay',date("d F Y"))
 			->with('months',parent::months())
@@ -657,17 +684,24 @@ public function centralSearch()
 				}
 
 	public function singleProgram($sia_number){
+
 		$programDetails=DB::table('sia_program')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
+
 		$actionDetails=DB::table('sia_action')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
+
 		$safetyCons=DB::table('sc_safety_concern')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
+
 		$edps=DB::table('edp_primary')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
+
 		$approvalInfo=DB::table('sia_approval')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
+
 		$inspectors=CommonFunction::InspectorListWithID();
 		$organizations=CommonFunction::organizations();
 		$findings=DB::table('sia_findings')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
 		$sms=DB::table('sia_sms')->where('soft_delete','<>','1')->where('sia_number',$sia_number)->get();
 		return View::make('surveillance.singleProgram')
 					->with('PageName','Single Program')
+					->with('active','sia')
 					->with('dates',parent::dates())
 					->with('toDay',date("d F Y"))
 					->with('months',parent::months())
@@ -690,6 +724,7 @@ public function centralSearch()
 		$correctiveActions=DB::table('sia_corrective_action')->where('soft_delete','<>','1')->where('sia_number','=',$sia_number)->get();
 		return View::make('surveillance.correctiveAction')
 					->with('PageName','SIA Corrective Action')
+					->with('active','sia')
 					->with('dates',parent::dates())
 					->with('toDay',date("d F Y"))
 					->with('months',parent::months())
@@ -702,6 +737,7 @@ public function centralSearch()
 					;
 	}
 	public function saveCorrectiveAction(){
+		//CAP Initiated On==Revaiv Date
 		$revived_date=Input::get('revived_date').' '.Input::get('revived_month').' '.Input::get('revived_year');
 		$timestamp = strtotime($revived_date);
 		$revived_date =date('Y-m-d', $timestamp);
@@ -723,7 +759,7 @@ public function centralSearch()
 
 				'row_creator'=>Auth::user()->getName(),
 				'row_updator'=>Auth::user()->getName(),
-				'approve'=>'1',
+				'approve'=>'0',
 				'warning'=>0,
 				'soft_delete'=>0,
 			));
@@ -762,6 +798,7 @@ public function centralSearch()
 		$folloUpInfos=DB::table('sia_follow_up')->where('soft_delete','<>','1')->where('sia_number','=',$sia_number)->get();
 		return View::make('surveillance.followUp')
 					->with('PageName','SIA Follow Up')
+					->with('active','sia')
 					->with('sia_number',$sia_number)
 					->with('folloUpInfos',$folloUpInfos)
 					;
@@ -925,7 +962,7 @@ public function centralSearch()
 	}
 /*Notification board of SIA view page*/
 	
-	public function siaBoard(){
+	public function noticeBoard(){
 		// Program : Execution Date Exceed
 			 $totalSiaNumber=DB::table('sia_program')->where('date','<',date('Y-m-d'))->lists('sia_number');
 			 $executedSiaNumber=DB::table('sia_action')->lists('sia_number');
@@ -991,21 +1028,33 @@ public function centralSearch()
 
 		//SIA:waiting for SIA Approval 	
 				//SMS sia_number list
-		 	 	 	$smsSiaNumberList=DB::table('sia_sms')->lists('sia_number');
+		 	 	 	$smsSiaNumberList=DB::table('sia_sms')->where('approve','1')->lists('sia_number');
 				//Approval sia_number list
 		 	 	 	$approvalSiaNumberList=DB::table('sia_approval')->lists('sia_number');
 				//Not Approve Sia List
 		 	 	 	$notApprovalSiaList=array_diff($smsSiaNumberList,$approvalSiaNumberList);
 		 	 	  $pendingSiaApproval=count($notApprovalSiaList);
 
-		return View::make('surveillance.siaBoard')
+		//SIA:SMS waiting For Approval 	
+				//SMS sia_number list
+		 	 	 	$smsApprovalPendingList=DB::table('sia_sms')->where('approve','0')->lists('sia_number');
+		 	 	    $pendingSmsApproval=count($smsApprovalPendingList);
+		//Findign:finding corrective action waiting For Approval 	
+				//corrective finding number list
+		 	 	 	$pendingCorrectiveActionList=DB::table('sia_corrective_action')->where('approve','0')->lists('finding_number');
+		 	 	    $pendingCorrectiveActionList=count($pendingCorrectiveActionList);
+
+		return View::make('surveillance.noticeBoard')
 		->with('PageName','SIA Board')
+		->with('active','sia')
 		->with('numberOfNotExecutedSia',$numberOfNotExecutedSia)
 		->with('exceedDateFindingNumbers',$exceedDateFindingNumbers)
 		->with('exceedDateScNumbers',$exceedDateScNumbers)
 		->with('pendingSiaApproval',$pendingSiaApproval)
 		->with('pendingApprovalScNumber',$pendingApprovalScNumber)
 		->with('pendingApproveEdpNumber',$pendingApproveEdpNumber)
+		->with('pendingSmsApproval',$pendingSmsApproval)
+		->with('pendingCorrectiveActionList',$pendingCorrectiveActionList)
 		
 		;
 	}
@@ -1019,6 +1068,7 @@ public function centralSearch()
 
 		return View::make('surveillance.notiExecutionDateExceed')
 						->with('PageName','Execution Date Exceed List')
+						->with('active','sia')
 						->with('notExecuted',$notExecuted)
 						
 				;
@@ -1053,6 +1103,7 @@ public function centralSearch()
 
 		return View::make('surveillance.notiFindingTargetTimeExceed')
 						->with('PageName','Finding Date Exceed List')
+						->with('active','sia')
 						->with('exceedDateArray',$exceedDateArray)
 				;
 	}
@@ -1079,6 +1130,7 @@ public function centralSearch()
 		
 		return View::make('surveillance.notiScTargetTimeExceed')
 						->with('PageName','SC Date Exceed List')
+						->with('active','sia')
 						->with('scExceedDateArray',$scExceedDateArray)
 				;
 	}
@@ -1088,7 +1140,7 @@ public function centralSearch()
 		
 		//SIA:waiting for SIA Approval 	
 				//SMS sia_number list
-		 	 	 	$smsSiaNumberList=DB::table('sia_sms')->lists('sia_number');
+		 	 	 	$smsSiaNumberList=DB::table('sia_sms')->where('approve','1')->lists('sia_number');
 				//Approval sia_number list
 		 	 	 	$approvalSiaNumberList=DB::table('sia_approval')->lists('sia_number');
 				//Not Approve Sia List
@@ -1097,6 +1149,7 @@ public function centralSearch()
 
 		return View::make('surveillance.notiSiaAprovalWaiting')
 						->with('PageName','SIA Approval Wating List')
+						->with('active','sia')
 						->with('notApprovalSiaList',$notApprovalSiaList)
 				;
 	}
@@ -1111,6 +1164,7 @@ public function centralSearch()
 		 	 	 	$notApprovalScList=array_diff($scFinalizeList,$scApproval);
 		return View::make('surveillance.notiScAprovalWaiting')
 						->with('PageName','SC Approval Wating List')
+						->with('active','sia')
 						->with('notApprovalScList',$notApprovalScList)
 				;
 	}
@@ -1126,9 +1180,42 @@ public function centralSearch()
 		
 		return View::make('surveillance.notiEdpAprovalWaiting')
 						->with('PageName','EDP Approval Wating List')
+						->with('active','sia')
 						->with('notApproveEdp',$notApproveEdp)
 				;
 	}
 	
+/*SMS pending approval list*/
+	public function pendingSmsApproval(){
+		//SMS sia_number list
+		 	 	 	$smsApprovalPendingList=DB::table('sia_sms')->where('approve','0')->lists('sia_number');
+		
+		return View::make('surveillance.notiSmsApprovalwaiting')
+						->with('PageName','SMS Approval Wating List')
+						->with('active','sia')
+						->with('smsApprovalPendingList',$smsApprovalPendingList)
+				;
+	}
+/*SMS pending approval list*/
+	public function pendingFindingCorrectiveActionList(){
+		//corrective finding number list
+		 	 	 	$pendingCorrectiveActionList=DB::table('sia_corrective_action')->where('approve','0')->lists('finding_number');
+		return View::make('surveillance.notiFindingCorrectiveActionwaiting')
+						->with('PageName','Finding Corrective Action Approval Wating List')
+						->with('active','sia')
+						->with('pendingCorrectiveActionList',$pendingCorrectiveActionList)
+				;
+	}
+/*All edp */
+	public function allEdp(){
+		$data=DB::table('edp_primary')->orderBy('id','desc')->get();
+
+		return View::make('surveillance.edpAll')
+				->with('PageName','All EDP')
+				->with('active','sia')
+				->with('data',$data)
+				;
+	}
 
 }
+

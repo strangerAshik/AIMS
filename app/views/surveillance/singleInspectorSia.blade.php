@@ -8,7 +8,7 @@
 
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title text-center text-primary">Inspector Associate Program List (All)</h3>
+                                    <h3 class="box-title text-center text-primary">Inspector Associated Program List (All)</h3>
                                 </div><!-- /.box-header -->
                                  <div class="content">
               <div class="row">
@@ -48,7 +48,7 @@
                                                 
                                                 
                                                 <th>Team members</th>
-                                                <th>Accomplish Status</th>
+                                                <th>Accomplishment Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>
@@ -65,7 +65,7 @@
                                                 
                                                 
                                                 <th>Team members</th>
-                                                <th>Accomplish Status</th>
+                                                <th>Accomplishment Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>

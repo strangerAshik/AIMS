@@ -328,18 +328,43 @@
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Add Opinion Of Legal Department </h4>
+            <h4 class="modal-title">Edit Opinion Of Legal Department </h4>
          </div>
          <div class="modal-body">
             <!-- The form is placed inside the body of modal -->
-            {{Form::open(array('url' => 'edp/updateLegalOpinion', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+            {{Form::open(array('url' => 'edp/updateLegalOpinion', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>true))}}
             {{Form::hidden('id',$opinion->id)}}
+             <?php $docs=CommonFunction::documentInfo('edp_legal_opinion',$opinion->id)?>
+            {{Form::hidden('old_doc',$docs)}} 
+           
             <div class="form-group required">
-               {{Form::label('legal_openion', 'Legal Openion', array('class' => 'col-xs-4 control-label'))}}
+               {{Form::label('legal_openion', 'Legal Opinion', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   {{Form::textarea('legal_openion',$opinion->legal_openion, array('class' => 'form-control','placeholder'=>'','size'=>'4x3','required'=>''))}}
                </div>
             </div>
+            
+            <div class="form-group ">
+                                     
+                              {{Form::label('doc', 'Uploaded Document', array('class' => 'col-xs-4 control-label'))}}
+                              <div class="col-xs-6">
+                              <?php $docs=CommonFunction::documentInfo('edp_legal_opinion',$opinion->id)?>
+            @if($docs!='Null'){{HTML::link('files/documents/'.$docs,'Document',array('target'=>'_blank'))}}
+                        @else
+                           {{HTML::link('#','No Document Provided')}}
+                        @endif
+                              </div>
+                              
+            </div>
+            <div class="form-group ">
+                                     
+                              {{Form::label('doc', 'Upload Updated Doc', array('class' => 'col-xs-4 control-label'))}}
+                              <div class="col-xs-6">
+                              {{Form::file('doc',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
+                              </div>
+                              
+            </div>
+
             <div class="form-group">
                <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
                {{Form::close()}}

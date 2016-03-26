@@ -51,7 +51,7 @@ class CommonFunction extends \Eloquent {
      
    }  
 //recommend
-   static function showMultiValues($table_name,$sia_number){
+static function showMultiValues($table_name,$sia_number){
 	   //Multiple selection update
 		$query =  DB::table($table_name) ->where( 'sia_number',$sia_number)->pluck('team_members');
 		if($query)return $dquery=unserialize($query);
@@ -215,8 +215,8 @@ static function getEdpListOfThisSia($sia_number){
   return $info=array(''=>'No EDP Selected')+DB::table('edp_primary')->where('sia_number',$sia_number)->lists('edp_number','edp_number');
 }
 
-static function programStatus($sia_number){
-  return $info=DB::table('sia_approval')->where('sia_number',$sia_number)->count();
+static function programStatus($sia_number){ 
+  return $info=DB::table('sia_approval')->where('sia_number',$sia_number)->where('soft_delete','<>','1')->count();
 }
 
 
@@ -596,7 +596,31 @@ static function assingedFormalCourses($emp_tracker){
         })
         ->get();
 }
+//Helper Function 
 
+  //Get the title of finding 
+  static function findingTitle($fNumber){
+    return DB::table('sia_findings')->where('finding_number',$fNumber)->pluck('title');
+  }
+  //get the title of safety concern
+  static function safetyTitle($scNumber){
+    return DB::table('sc_safety_concern')->where('safety_issue_number',$scNumber)->pluck('title');
+  }
+  //get org name using sia_number
+  static function siaOrg($siaNumber){
+    return DB::table('sia_program')->where('sia_number',$siaNumber)->pluck('org_name');
+  }
+  //getting sms detarmine risk using sia_number
+  static function smsRisk($siaNumber){
+    return DB::table('sia_sms')->where('sia_number',$siaNumber)->pluck('determine_risk');
+  }
+  //getting sms detarmine risk using sia_number
+  static function documentInfo($tableName,$motherId){
+    return DB::table('documents')
+    ->where('table_name',$tableName)
+    ->where('mother_id',$motherId)
+    ->pluck('calling_id');
+  }
 /*******************VOluntary Reporting**********************/
 static function actionStatus($id){
   return DB::table('voluntary_reporting_action')->where('report_id',$id)->get();
@@ -639,8 +663,6 @@ static function getScNumberInfo($ScNumber){
 
   return $data;
 }
-
-
 static function getEdpNumberInfo($edpNumber){
   $data=DB::table('edp_primary')
             ->join('sia_program', 'edp_primary.sia_number', '=', 'sia_program.sia_number')
@@ -652,6 +674,10 @@ static function getEdpNumberInfo($edpNumber){
                   )
             ->first();
 
+  return $data;
+}
+static function getSmsInfo($siaNumber){
+  $data=DB::table('sia_sms')->where('sia_number',$siaNumber)->first();
   return $data;
 }
 /**************Company Setup*********************/

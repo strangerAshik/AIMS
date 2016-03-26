@@ -511,7 +511,7 @@ $(document).ready(function(){
 											<div class="col-xs-6">
 											<?php $options=SurveillanceCommon::flightNumber();?>
 
-											{{ Form::select('flight_number',$options,$info->flight_number, ['class' => 'demo-default','id'=>'flight_number','placeholder'=>'Select Or Add Flight Number']) }}	
+											{{ Form::select('flight_number',$options,$info->flight_number, ['class' => 'demo-default','id'=>'flight_number','placeholder'=>'i.e AA 123']) }}	
 											
 											</div>
                     </div>
@@ -519,7 +519,7 @@ $(document).ready(function(){
                                         
 											{{Form::label('departure_airfield ', 'Departure Airfield', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-												{{Form::text('departure_airfield',$info->departure_airfield, array('class' => 'form-control','placeholder'=>''))}}
+												{{Form::text('departure_airfield',$info->departure_airfield, array('class' => 'form-control','placeholder'=>'Use ICAO Code i.e VGHS'))}}
 											</div>
 											
                     </div>
@@ -527,7 +527,7 @@ $(document).ready(function(){
                                         
 											{{Form::label('arrival_airfield ', 'Arrival Airfield', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-												{{Form::text('arrival_airfield',$info->arrival_airfield, array('class' => 'form-control','placeholder'=>''))}}
+												{{Form::text('arrival_airfield',$info->arrival_airfield, array('class' => 'form-control','placeholder'=>'Use ICAO Code i.e VGHS'))}}
 											</div>
 											
                     </div>
@@ -585,8 +585,7 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 
                     <div class="form-group ">
                                         
-											{{Form::label('other_personal_inspected', 'Any Other personal
-Inspected ', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('other_personal_inspected', 'Other personal Involved', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 												{{Form::textarea('other_personal_inspected',$info->other_personal_inspected, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
 											</div>
@@ -819,18 +818,18 @@ var $select = $('#locations').selectize({
 					
 						
 					
-					<div class="form-group required ">
+					<div class="form-group required">
                                         
-											{{Form::label('currective_action', 'Corrective Action', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('currective_action', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('currective_action',$action->currective_action, array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
 											</div>
 											
                     </div>
 					
-					<div class="form-group ">
+					<div class="form-group">
                                            
-											{{Form::label('revived_date', 'Revived Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('revived_date', 'CAP Initiated On', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 											<?php $date=CommonFunction::date($action->revived_date); ?>
 														<div class="col-xs-2">
@@ -939,7 +938,7 @@ $('#').selectize();
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Update Finding</h4>
+                <h4 class="modal-title">Edit Finding</h4>
             </div>
 
             <div class="modal-body">          
@@ -1005,7 +1004,7 @@ $('#').selectize();
 					
 					<div class="form-group ">
                                            
-											{{Form::label('corrective_action_plan', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('corrective_action_plan', 'Correction Action Recommendation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('corrective_action_plan',$info->corrective_action_plan, array('class' => 'form-control','placeholder'=>'',''=>'','size'=>'4x1'))}}
 											</div>

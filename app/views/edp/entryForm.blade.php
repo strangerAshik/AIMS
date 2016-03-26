@@ -11,16 +11,24 @@
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
                
-				{{Form::open(array('url' => 'edp/saveLegalOpinion', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form'))}}
+				{{Form::open(array('url' => 'edp/saveLegalOpinion', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>true))}}
 					
 				  
 					
 					{{Form::hidden('edp_number',$edpNumber)}}
 					<div class="form-group required">
                                         
-											{{Form::label('legal_openion', 'Legal Openion', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('legal_openion', 'Legal Opinion', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('legal_openion','', array('class' => 'form-control','placeholder'=>'','size'=>'4x3','required'=>''))}}
+											</div>
+											
+                    </div>
+					<div class="form-group ">
+                                        
+											{{Form::label('doc', 'Document', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+												{{Form::file('doc',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
 											</div>
 											
                     </div>

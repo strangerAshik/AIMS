@@ -8,21 +8,21 @@
 
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Today Task List</h3>
+                                    <h3 class="box-title">Today's Task List</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Date[Y-M-D]</th>
+                                               <!--  <th>Date[Y-M-D]</th> -->
                                                 <th>SIA/Tracking No</th>
                                                 <th>Event</th>
                                                 
                                                 <th>Time</th>
-                                                <th>Teammembers</th>
+                                                <th>Team Members</th>
                                                  <th>Location</th>
-                                                <th>Accomplished?</th>
+                                                <th>Accomplishment Status</th>
                                                
                                                 <th>Details</th>
                                             </tr>
@@ -32,7 +32,7 @@
                                         @foreach ($prgramList as $program)
                                             <tr>
                                                 <td>{{++$num}}</td>                                                
-                                                <td>{{$program->date}}</td>
+                                                <!-- <td>{{$program->date}}</td> -->
                                                 <td>{{$program->sia_number}}</td>
                                                 <td>{{$program->event}}</td>
                                                 <td>{{$program->time}}</td>
@@ -64,14 +64,14 @@
                                         <tfoot>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Date[Y-M-D]</th>
+                                                <!-- <th>Date[Y-M-D]</th> -->
                                                 <th>SIA/Tracking No</th>
                                                 <th>Event</th>
                                                 
                                                 <th>Time</th>
-                                                <th>Teammembers</th>
+                                                <th>Team Members</th>
                                                 <th>Location</th>
-                                                <th>Accomplished?</th>
+                                                <th>Accomplishment Status </th>
                                                 
                                                 <th>Details</th>
                                             </tr>

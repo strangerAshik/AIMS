@@ -20,7 +20,7 @@ class QualificationEmployment extends Migration {
 			$table->string('organisation_type');
 			$table->string('organisation_address');
 			$table->string('designation');
-			$table->string('responsibility');
+			$table->longText('responsibility');
 			$table->string('start_date');
 			$table->string('start_month');
 			$table->string('start_year');

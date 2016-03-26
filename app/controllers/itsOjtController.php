@@ -10,7 +10,9 @@ class itsOjtController extends \BaseController {
 	public function main()
 	{
 		return View::make('itsOjt/main')
-		->with('PageName','ITS OJT Main');
+		->with('PageName','ITS OJT Main')
+		->with('active','its')
+		;
 	}
 
 
@@ -26,6 +28,7 @@ class itsOjtController extends \BaseController {
 		$formalCourseList=['' => '--Select Formal Course--'] +DB::table('itsojt_course_formal')->where('soft_delete','<>','1')->orderBy('its_course_number')->lists('its_course_number','its_course_number');
 		return View::make('itsOjt/addCourse')
 		->with('PageName','Add Course')
+		->with('active','its')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -40,6 +43,7 @@ class itsOjtController extends \BaseController {
 		$ojtCourses=DB::table('itsojt_course_ojt')->where('soft_delete','<>','1')->orderBy('its_course_number')->orderBy('its_job_task_no')->get();
 		return View::make('itsOjt/courseList')
 		->with('PageName','Course List')
+		->with('active','its')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -60,6 +64,7 @@ class itsOjtController extends \BaseController {
 		
 		return View::make('itsOjt/assignCourseAndOjt')
 		->with('PageName','Assign Course and OJT')
+		->with('active','its')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -106,6 +111,7 @@ class itsOjtController extends \BaseController {
 		$courseDetails=DB::table('itsojt_course_formal')->where('soft_delete','<>','1')->where('its_course_number',$its_course_number)->get();
 		return View::make('itsOjt/singleFormalCourse')
 		->with('PageName','Single Formal Course')
+		->with('active','its')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -119,6 +125,7 @@ class itsOjtController extends \BaseController {
 		$courseDetails=DB::table('itsojt_course_ojt')->where('soft_delete','<>','1')->where('its_job_task_no',$its_job_task_no)->get();
 		return View::make('itsOjt/singleOjtCourse')
 		->with('PageName','Single OJT Course')
+		->with('active','its')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -296,6 +303,7 @@ class itsOjtController extends \BaseController {
 		$trainees=DB::table('itsojt_trainee')->where('soft_delete','<>','1')->orderBy('id','desc')->get();
 		return View::make('itsOjt/addTrainee')
 			->with('PageName','Add Trainee')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -382,6 +390,7 @@ class itsOjtController extends \BaseController {
 
 		return View::make('itsOjt/singleTrainee')
 					->with('PageName','Single Trainee')
+					->with('active','its')
 					->with('dates',parent::dates())
 					->with('months',parent::months())
 					->with('years',parent::years())
@@ -400,6 +409,7 @@ class itsOjtController extends \BaseController {
 		$trainees=DB::table('itsojt_trainee')->where('soft_delete','<>','1')->orderBy('id','desc')->get();
 		return View::make('itsOjt/addTrainingOjt')
 			->with('PageName','Add Traingin OJT')
+			->with('active','its')
 			->with('trainees',$trainees)
 			;
 	}
@@ -434,6 +444,7 @@ class itsOjtController extends \BaseController {
 
 		return View::make('itsOjt/individualTrainingOjt')
 			->with('PageName','Individual Training OJT')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -492,6 +503,7 @@ class itsOjtController extends \BaseController {
 		
 		return View::make('itsOjt/singleTrainingOjt')
 			->with('PageName','Single Training OJT')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -526,6 +538,7 @@ class itsOjtController extends \BaseController {
 
 		return View::make('itsOjt/trineeSingleFormalCourse')
 			->with('PageName','Trainee Single Formal Course')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -583,6 +596,7 @@ class itsOjtController extends \BaseController {
 		
 		return View::make('itsOjt/trineeSingleOjtCourse')
 			->with('PageName','Trainee Single Training OJT')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -720,6 +734,7 @@ class itsOjtController extends \BaseController {
 
 		return View::make('itsOjt/centralSearch')
 			->with('PageName','Individual Training OJT')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -743,6 +758,7 @@ class itsOjtController extends \BaseController {
 
 		return View::make('itsOjt/itsRecords')
 			->with('PageName','Individual ITS Records')
+			->with('active','its')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())

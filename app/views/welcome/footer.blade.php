@@ -51,7 +51,7 @@
 </div>
 
 <div class='container-fluid' style='color:#fff;background:#357CA5;padding:5px;'  >
-	<p style='padding:13px 0px 0px 99px;' ><span>Copywrite &copy; 2015 Soft Lab BD. All Right Reserved</span><span class="pull-right" style="padding-right:99px;"><i class="fa-3x fa-home fa-fw"> <i class="fa fa-camera-retro"></i>, <i class="fa fa-camera-retro"></i></span></p> 
+	<p style='padding:13px 0px 0px 99px;' ><span>Copywrite &copy; 2015 Soft Lab BD. All Right Reserved</span><span class="pull-right" style="padding-right:99px;"></span></p> 
 </div>
 <!-- Bootstrap -->
 <!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>-->

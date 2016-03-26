@@ -41,16 +41,20 @@
 					@if(Auth::check())	
                     <!--SIA-->
                     @if('true'==CommonFunction::hasPermission('sia',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='sia') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-fullscreen"></i> <span>SIA</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::to('surveillance/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>
+                                
+                                @if('true'==CommonFunction::hasPermission('sia_board',Auth::user()->emp_id(),'access'))
+                                <li><a href="{{URL::to('surveillance/noticeBoard');}}"><i class="fa fa-angle-double-right"></i>Notice Board</a></li>
+                                @endif
 
                                 @if('true'==CommonFunction::hasPermission('my_sia',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('surveillance/mySia');}}"><i class="fa fa-angle-double-right"></i>Service Provider SIA</a></li>
+                                <li><a href="{{URL::to('surveillance/mySia');}}"><i class="fa fa-angle-double-right"></i>{{Auth::user()->organization()}}'s SIA</a></li>
                                 @endif
                                  @if('true'==CommonFunction::hasPermission('sia_inspector_associate_sia',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('surveillance/singleInspectorSia');}}"><i class="fa fa-angle-double-right"></i>My SIA</a></li>
@@ -64,7 +68,7 @@
                                 @endif
 
                                  @if('true'==CommonFunction::hasPermission('execute_sia_program',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('surveillance/newActionEnrty');}}"><i class="fa fa-angle-double-right"> </i>Execute SIA Program</a></li>
+                                <li class="disNon"><a href="{{URL::to('surveillance/newActionEnrty');}}"><i class="fa fa-angle-double-right"> </i>Execute SIA Program</a></li>
                                 @endif
 
                                 @if('true'==CommonFunction::hasPermission('sia_program_list',Auth::user()->emp_id(),'access'))
@@ -88,6 +92,10 @@
                                 @if('true'==CommonFunction::hasPermission('sc_safety_concerns_list',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('safety/issuedList');}}"><i class="fa fa-angle-double-right"></i>Safety Concerns List </a></li>
                                 @endif
+                                 <!--EDP List-->
+                                @if('true'==CommonFunction::hasPermission('edp_list',Auth::user()->emp_id(),'access'))
+                                <li><a href="{{URL::to('surveillance/allEdp');}}"><i class="fa fa-angle-double-right"></i>EDP List </a></li>
+                                @endif
                                 
                                 
                               
@@ -98,7 +106,7 @@
                     
                     <!--Employee-->                       
 						@if('true'==CommonFunction::hasPermission('employee',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='employee') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-user"></i> <span>Employee</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -126,7 +134,7 @@
 						@endif
 					<!--Organization -->
                         @if('true'==CommonFunction::hasPermission('organization',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='organization') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-briefcase"></i> <span>Organizations</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -147,7 +155,7 @@
                         @endif
                     <!--Personnel Licensing -->
                         @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'access'))
-                        <li class="treeview ">
+                        <li class="treeview <?php if($active=='personnel_licensing') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-user"></i> <span>Personnel Licensing</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -174,7 +182,7 @@
 
                         <!--Aircraft-->
                         @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='aircraft') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-plane"></i> <span> Aircraft </span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -203,7 +211,7 @@
 
                         <!--ITS-->
                         @if('true'==CommonFunction::hasPermission('its',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='its') echo 'active';?>">
                             <a href="#">
                                 <i class="fa fa-briefcase"></i> <span> ITS </span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -245,7 +253,7 @@
 
                         <!--Library -->
                         @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview <?php if($active=='e_library') echo 'active';?>">
                             <a href="#">
                                 <i class="glyphicon glyphicon-book"></i> <span> E-Library </span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -271,7 +279,7 @@
 
                         <!--Voluntary Reporting-->
                         @if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'access'))
-                        <li class="treeview">
+                        <li class="treeview  <?php if($active=='voluntary_reporting') echo 'active';?>">
                             <a href="#">
                                 <i class="fa fa-users"></i> <span>Voluntary Reporting</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -289,7 +297,7 @@
 
                         <!--Help & FAQ -->
 						@if('true'==CommonFunction::hasPermission('help_faq',Auth::user()->emp_id(),'access'))
-						<li class="treeview">
+						<li class="treeview  <?php if($active=='help_faq') echo 'active';?>">
                             <a href="#">
                                 <i class="fa fa-question-circle"></i> <span>Help & FAQ </span>
                                 <i class="fa fa-angle-left pull-right"></i>

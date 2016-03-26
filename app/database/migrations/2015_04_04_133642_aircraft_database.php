@@ -38,6 +38,7 @@ class AircraftDatabase extends Migration {
 			$table->timestamps();
 			
 		});
+
 		Schema::create('aircraft_tc_info',function($table){
 			$table->increments('id');
 			$table->string('aircraft_MM');
@@ -307,6 +308,7 @@ class AircraftDatabase extends Migration {
 			$table->timestamps();
 			
 		});
+	
 		Schema::create('aircraft_equipment_review_info',function($table){
 			$table->increments('id');
 			$table->string('aircraft_MM');

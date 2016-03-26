@@ -47,10 +47,22 @@
                                              <td><a href="{{URL::to('surveillance/scAprovalWaiting')}}"><span class="label label-primary">View List</span></a></td>
                                         </tr>
                                         <tr>
-                                        	<td>6</td>
+                                            <td>6</td>
                                             <td>EDP : Approval Pending</td>           
                                             <td><span class="badge bg-red">{{$pendingApproveEdpNumber}}</span></td>
                                              <td><a href="{{URL::to('surveillance/edpAprovalWaiting')}}"><span class="label label-primary">View List</span></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>SIA : SMS Approval Pending</td>           
+                                            <td><span class="badge bg-red">{{$pendingSmsApproval}}</span></td>
+                                             <td><a href="{{URL::to('surveillance/pendingSmsApproval')}}"><span class="label label-primary">View List</span></a></td>
+                                        </tr>
+                                        <tr>
+                                        	<td>8</td>
+                                            <td>Finding : Corrective Action Approval Pending</td>           
+                                            <td><span class="badge bg-red">{{$pendingCorrectiveActionList}}</span></td>
+                                             <td><a href="{{URL::to('surveillance/pendingFindingCorrectiveActionList')}}"><span class="label label-primary">View List</span></a></td>
                                         </tr>
                                       
                                         

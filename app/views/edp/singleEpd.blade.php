@@ -4,9 +4,15 @@
 
 	<div class='row col-md-12 hidden-print'>
 				@if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'entry'))
+				@if(!$legalOpinions)
 				<p class="text-center col-md-6">
 				<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#legalOps">Opinion Of Legal Department</button>
 				</p>
+				@else
+				<p class="text-center col-md-6">
+				<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#" disabled="">Opinion Of Legal Department</button>
+				</p>
+				@endif
 				@endif
 			@if(!$approvalInfos)
 				@if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'entry'))
@@ -149,7 +155,7 @@
 						</div>
 					</div>
 					
-</div> 
+ 
 <!--Legal Opinion-->
 	<div class="row" >
                         <!-- left column -->
@@ -194,6 +200,13 @@
 								</th>
                                 <td>{{$opinion->legal_openion}}</td>
                             </tr>
+                             <tr><th>Document</th><td>
+                             <?php $docs=CommonFunction::documentInfo('edp_legal_opinion',$opinion->id)?>
+								@if($docs!='Null'){{HTML::link('files/documents/'.$docs,'Document',array('target'=>'_blank'))}}
+								@else
+									{{HTML::link('#','No Document Provided')}}
+								@endif
+			   </td></tr>
 							<tr>
                                 <th>									
 									Author Of Legal Opinion

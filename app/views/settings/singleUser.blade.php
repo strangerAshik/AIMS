@@ -7,15 +7,23 @@
                  <div class="col-md-12">
                             <!-- general form elements -->
                             <div class="box box-primary ">
+                        @foreach($userInfos as $info)
 							 <div class="box-header col-md-6">
 									<h3 class="box-title">User Details</h3>
 							 </div>	
 							 <div class="box-header col-md-6">
+                              <span class='hidden-print'>
+                    
+                             <a  href="{{URL::to('userDelete/'.$info->emp_id)}}" title="Permanent Delete" onclick=" return confirm('Wanna Delete?')">
+                                        <span class="glyphicon glyphicon-trash" style="color:red;float:right;padding:5px;" >Delete</span>
+                                    </a>
+                      
 							 <a data-toggle="modal" data-target="#profileView" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
+                                </span>
 							</div>						
-				@foreach($userInfos as $info)
+			
 					<div class="box-body">
 					
                     <table class="table table-bordered">

@@ -46,7 +46,7 @@
 												<td class='text-centre'>
 												<?php $approvalStatus=CommonFunction::approvalStatus($info->id);?>
 												@if($approvalStatus)
-													<span style="color:green">	Approvaed</span>
+													<span style="color:green">	Approved</span>
 												@else 
 													<span style="color:red">Not Approved</span>
 												@endif

@@ -7,6 +7,7 @@ class SafetyConcernsController extends \BaseController {
 		//return "Hello";
 		return View::make('safetyConcerns/main')
 		->with('PageName','Safety Concerns')
+		->with('active','sia')
 		->with('personnel',parent::getPersonnelInfo());
 	}
 
@@ -33,6 +34,7 @@ class SafetyConcernsController extends \BaseController {
 		
 		return View::make('safetyConcerns/newSafetyIssue')
 		->with('PageName','New Safety Concern')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -53,6 +55,7 @@ class SafetyConcernsController extends \BaseController {
 		//print_r($query);
 		return View::make('safetyConcerns/issuedList')
 		->with('PageName','Safety Concerns List')
+		->with('active','sia')
 		->with('sl','0')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
@@ -75,6 +78,7 @@ class SafetyConcernsController extends \BaseController {
 		//print_r($query);
 		return View::make('safetyConcerns/nonStandardIssuedList')
 		->with('PageName','Non Standard Issued List')
+		->with('active','sia')
 		->with('sl','0')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
@@ -94,6 +98,7 @@ class SafetyConcernsController extends \BaseController {
 
 		return View::make('safetyConcerns.new-inspection')
 		->with('PageName','New Inspection')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -122,6 +127,7 @@ class SafetyConcernsController extends \BaseController {
 		
 		return View::make('safetyConcerns.singleInspection')
 		->with('PageName','Single Inspection')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -173,6 +179,7 @@ class SafetyConcernsController extends \BaseController {
 		
 		return View::make('safetyConcerns.single-safety-concern')
 		->with('PageName','Single Safety concern')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -195,6 +202,7 @@ class SafetyConcernsController extends \BaseController {
 		$folloUpInfos=DB::table('sc_follow_up')->where('safety_issue_number','=',$sc_num)->get();
 		return View::make('safetyConcerns.follow-up')
 		->with('PageName','Single Inspection')
+		->with('active','sia')
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())

@@ -41,7 +41,7 @@
                   <button type="submit" class="btn btn-default">Submit</button>
                 {{Form::close()}}
                 </div>
-                 <h4 class="text-center text-success"> Recor Shown From <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
+                 <h4 class="text-center text-success"> Record Shown From <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
 </div>
 </div>
 

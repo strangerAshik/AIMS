@@ -79,7 +79,7 @@ function window.onload() {
                                             
                                         </tr> 
 										<tr>
-                                            <td>Corrective Action Plan</td>
+                                            <td>Corrective Action Recommendation</td>
                                             <td>{{$info->corrective_action_plan}}</td>
                                             
                                         </tr>
@@ -109,10 +109,10 @@ function window.onload() {
                                            <th colspan='2' style='color:green'>Corrective Action Taken
                                           <span class='hidden-print'>
 									 @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_corrective_action', $corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_corrective_action', $corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 								@if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'approve'))
 
@@ -145,11 +145,11 @@ function window.onload() {
 					 </tr>  
 					 @endif
 										<tr>
-                                            <td>Corrective Action</td>
+                                            <td>Corrective Action Plan</td>
                                             <td>{{$corr->currective_action}}</td>
                                         </tr>
 										<tr>
-                                            <td>Revived Date</td>
+                                            <td>CAP Initiated On</td>
                                             <td>{{$corr->revived_date}}</td>
                                         </tr>
 										<tr>

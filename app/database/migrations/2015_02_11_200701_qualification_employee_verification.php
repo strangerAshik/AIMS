@@ -24,7 +24,7 @@ class QualificationEmployeeVerification extends Migration {
 			$table->string('termination_month');
 			$table->string('termination_year');
 			$table->string('position');
-			$table->string('assigned_task');
+			$table->longText('assigned_task');
 			$table->string('assigned_by');
 			$table->string('note');
 			$table->string('verify',10);

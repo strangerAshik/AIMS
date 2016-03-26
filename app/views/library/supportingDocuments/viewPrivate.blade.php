@@ -25,9 +25,16 @@
                                                 <th>Published Year</th>
                                                  <th>Other Infos</th>        
                                                 <th>Docs</th>
-                                                 <th>P.D</th>                                              
-                                                <th>S.D</th>                                              
-                                                <th>Update</th>  
+                                                @if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'par_delete'))
+                                                 	<th>P.D</th>
+                                                 @endif
+                                                 
+												@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'sof_delete'))                
+                                                	<th>S.D</th>
+                                   				@endif         
+                                    			@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'update'))            
+                                                	<th>Update</th>
+                                        		@endif  
                                                    
                                             </tr>
                                         </thead>
@@ -39,16 +46,34 @@
                                                  <td>{{$info->doc_title}}</td>
                                                 <td>{{nl2br($info->doc_authors)}}</td>
                                                 <td>{{$info->doc_published_year}}</td>
-                                                <td>ISBN: {{$info->doc_isbn}} <br/>
+                                                <td>
+                                                @if($info->doc_isbn)
+                                                ISBN: {{$info->doc_isbn}} <br/>
+                                                @endif
+                                                @if($info->doc_series)
                                                 Series:  {{$info->doc_series}}<br/>
+                                                @endif
+                                                @if($info->doc_edition)
                                                 Edition:  {{$info->doc_edition}}<br/>
+                                                @endif
+                                                @if($info->doc_part)
                                                 Part : {{$info->doc_part}}<br/>
+                                                @endif
+                                                @if($info->doc_volume)
                                                 Volume :  {{$info->doc_volume}}<br/>
+                                                @endif
+                                                @if($info->doc_amendment)
                                                 Amendment:  {{$info->doc_amendment}}<br/>       
+                                                @endif
+                                                @if($info->doc_tags)
                                                 Tags: {{nl2br($info->doc_tags)}}
+                                                @endif
                                                     <br/>       
-                                    </td>
-                                                <td>Supporting Website(s): {{$info->doc_url}}</br>
+                                   				 </td>
+                                                <td>
+												@if($info->doc_url)
+                                                Supporting Website(s): <a target="_blank" href="http://{{$info->doc_url}}" >Link</a></br>
+                                                @endif
                                                 Supported Doc:                              
                                                     @if($info->doc_upload!='Null'){{HTML::link('files/lib_supporting_docs/'.$info->doc_upload,'Document',array('target'=>'_blank'))}}
                                                     @else
@@ -78,20 +103,7 @@
                                            </tr>
                                         @endforeach
                                         </tbody>
-                                        <tfoot>
-                                             <tr>
-                                               <th>Type</th>
-                                                <th>Title</th>
-                                                <th>Author</th>
-                                                <th>Published Year</th>
-                                                 <th>Other Infos</th>        
-                                                <th>Docs</th>
-                                                 <th>P.D</th>                                              
-                                                <th>S.D</th>                                              
-                                                <th>Update</th>  
-                                                
-                                            </tr>
-                                        </tfoot>
+                                
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->

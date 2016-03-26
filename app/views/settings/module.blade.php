@@ -1,5 +1,10 @@
 @extends('layoutMT')
 @section('content')
+<style type="text/css">
+	.modal-backdrop {
+  z-index:0!important;
+}
+</style>
 <section class='content widthController'>
 <p class="text-center">
     <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#addModule">New Module</button>

@@ -28,33 +28,41 @@
                                 </th>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td> 
+                                	
+										{{$info->active}}
+                                	
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="col-md-4">Name Of Assigned Task</td>
                                 <td >{{$info->name}}</td>
                             </tr>
+                            <tr>
+                                <td>Details of Task </td>
+                                <td>{{$info->assigned_task}}</td>
                            
                             <tr>
-                                <td>Date Of Entry</td>
+                            <tr>
+                                <td>Assigned By </td>
+                                <td>{{$info->assigned_by}}</td>
+                            </tr>
+                                <td>Date of Assigning</td>
                                 <td>{{$info->entry_date." ".$info->entry_month." ".$info->entry_year}}</td>
                             </tr>
-							<tr>
-                                <td>Active</td>
-                                <td> {{$info->active}}</td>
-                            </tr>
+							
                             <tr>
-                                <td>Posting / Release Date</td>
+                                <td>Date of Completion</td>
                                   <td>{{$info->termination_date." ".$info->termination_month." ".$info->termination_year}}</td>
                             </tr>
                             <tr>
                                 <td>Position </td>
                                 <td>{{$info->position}}</td>
                             </tr>
-							<tr>
-                                <td>Assigned Task </td>
-                                <td>{{$info->assigned_task}}</td>
-                            </tr><tr>
-                                <td>Assigned By </td>
-                                <td>{{$info->assigned_by}}</td>
+							
                             </tr>
+
 							<tr>
                                 <td>Note </td>
                                 <td>{{$info->note}}
@@ -94,9 +102,24 @@
 											</div>
                         </div>
 						
+						<div class="form-group " >											
+											{{Form::label('assigned_task', 'Details of Task', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('assigned_task','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
+											</div>
+					    </div>
+
+
+						<div class="form-group " >											
+											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('assigned_by','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
+											</div>
+					    </div>
+
 						<div class="form-group required">
 												
-													{{Form::label('entry_date', 'Date Of Entry', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('entry_date', 'Date Of Assigning', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -119,7 +142,7 @@
                                 <div class="col-xs-6">
 										<div class="radio">
 									 
-									  <label> <label> {{ Form::radio('active', 'Yes',true) }} &nbsp  Yes</label>
+									  <label> <label> {{ Form::radio('active','Yes', true) }} &nbsp  Yes</label>
 									 <label> {{ Form::radio('active', 'No') }} &nbsp  No</label>
 									</div>
 									
@@ -127,7 +150,7 @@
                         </div>
 						<div class="form-group">
 												
-													{{Form::label('termination_date', 'Posting / Release Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('termination_date', 'Date of Completion', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -154,18 +177,7 @@
 											{{Form::text('position','', array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group " >											
-											{{Form::label('assigned_task', 'Assigned Task', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('assigned_task','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
-											</div>
-					    </div>
-						<div class="form-group " >											
-											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('assigned_by','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',))}}
-											</div>
-					    </div>
+					
 						<div class="form-group " >											
 											{{Form::label('note', 'Note', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -206,10 +218,17 @@
 											{{Form::text('name',$info->name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
+
+						<div class="form-group " >											
+											{{Form::label('assigned_task', 'Details of Task', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('assigned_task',$info->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', ))}}
+											</div>
+					    </div>
 						
 						<div class="form-group required">
 												
-													{{Form::label('entry_date', 'Date Of Entry', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('entry_date', 'Date Of Assiging', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -232,15 +251,16 @@
                                 <div class="col-xs-6">
 										<div class="radio">
 									 
-									  <label> <label> {{ Form::radio('active', 'Yes') }} &nbsp  Yes</label>
-									 <label> {{ Form::radio('active', 'No') }} &nbsp  No</label>
+									  <label> {{ Form::radio('active', 'Yes',Input::old('active', $info->active == 'Yes'),array()) }} &nbsp  Yes</label>
+									 <label> {{ Form::radio('active', 'No',Input::old('active', $info->active == 'No'),array()) }} &nbsp  No</label>
+
 									</div>
 									
 								</div>
                         </div>
 						<div class="form-group">
 												
-													{{Form::label('termination_date', 'Posting / Release Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('termination_date', 'Date of Completion', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -267,12 +287,6 @@
 											{{Form::text('position', $info->position , array('class' => 'form-control','placeholder'=>'',))}}
 											</div>
                         </div>
-						<div class="form-group " >											
-											{{Form::label('assigned_task', 'Assigned Task', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('assigned_task',$info->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', ))}}
-											</div>
-					    </div>
 						<div class="form-group " >											
 											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">

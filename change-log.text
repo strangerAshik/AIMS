@@ -1,0 +1,90 @@
+Change Log: 19 Feb 2016
+SIA
+----------------------------------------------------------------
+Summary page
+
+Done 1. Sia Board to notice board- Done
+
+2. Safety Concern New Form: Risk Probability+Risk Severity 
+Risk Assessment from Matrix Index - remove
+5A formet provide in report and other place
+
+Done 7. Safety concern details: remaining date should not show if corrective action is not given 
+
+
+Done 3. Program manager should edit program
+
+Done 4. Single Program: if No edp , no safety concern -- disable those entry 
+
+Done 5. Corrective action plan  description==== finding description should change to c a recommendation
+
+Done 6. Service provider SIA should change to service provider name
+
+
+Done 8. Corrective action of finding should entry as disapproved 
+
+Done 9. Should have a notification for corrective action given and not checked 
+
+Done 10. Single program - safety concern - EDP finding title, sc tittle 
+
+Done 11. After only sms approval , whole program should go for Sia Notification for Approval
+
+Done 12. All sia program should view to every one except view details 
+
+Done 13. All Notification should view to every one except view details 
+
+Done 14. Remove Execute Sia program form menu
+
+Done 15. Executed Sia Program list should view to every one not details--- rolling
+
+Done 16. All EDP list -in main of SIA
+
+
+Done 16. Safety concern list 
+	+Organization -place Airport
+
+Done 17. Central Search and report 
+	central search finding, sc, edp link
+Done	+risk martix of sms
+Done	-time
+Done 18. EDP:Add legal opinion - add file upload
+
+
+Employee:
+------------------------------------------------
+Summary page
+Done 1. Employment details --- major responsibility char limitation
+
+Done 2. For ASRTM all employee data make approve in database 
+
+Done 3. Employee assignment - name of assign task -- char limit mention 
+
+Aircraft:
+-------------------------------------------------
+Summary page
+Done 1. aircraft primary info -- mms mns edit option enable 
+2. Aircraft short summary in aircraft main 
+
+ITS:
+-----------------------------------
+Summary page
+
+Done Library:
+----------------------------------
+1. Doc Title- Doc Type- 
+2. Add docs all drop down remove 
+3. Details page 
+
+Done Left Navigation Menu:
+----------------------------------
+menu Keep open after loading with new data
+
+
+
+
+
+
+
+
+
+

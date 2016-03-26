@@ -16,7 +16,7 @@
 			
 				@if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'entry'))
 				<p class="text-center col-md-4">
-				<button class="btn btn-primary btn-block"   data-toggle="modal" data-target="#approvalForm">Approval</button>
+				<button class="btn btn-primary btn-block"   data-toggle="modal" data-target="#updateStatus">Update Status</button>
 				</p>
 				@endif
 		
@@ -156,10 +156,10 @@
                             <div class="box box-primary">
                    
 							<div class="box-header table_toggle expand">
-									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Approval Details</h3> 
+									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Status Details</h3> 
 									<span class='hidden-print man pull-right'>-</span>
 							</div>	
-							&nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#approvalForm">[Add Approval Info] </a> 						 
+							&nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#updateStatus">[Add Status Info] </a> 						 
               
 					<div class="box-body">
 				
@@ -203,9 +203,10 @@
 				  
 					  
 					 
-					   <tr><th class="col-md-3">Approved By</th><td>Name</td></tr>
+					   <tr><th class="col-md-3">Changed By</th><td>Name</td></tr>
 					   <tr><th>Designation</th><td>Designation</td></tr>
-					   <tr><th>Approval Date</th><td>01 November 2016</td></tr>
+					   <tr><th>Change Date</th><td>01 November 2016</td></tr>
+					   <tr><th>Status</th><td>Approved</td></tr>
 					   
 					   <tr><th>Note</th><td>This is a demo note</td></tr>
 					   <tr>
@@ -381,12 +382,12 @@
     </div>
 </div>
 <!--Approval-->
-<div class="modal fade" id="approvalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Approval Form</h4>
+                <h4 class="modal-title">Change Status</h4>
             </div>
 
             <div class="modal-body">
@@ -404,7 +405,7 @@
 					
 					<div class="form-group required">
                                         
-											{{Form::label('approved_by', 'Approved By', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('approved_by', 'Changing By', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('approved_by', Auth::User()->getName() , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
@@ -422,7 +423,29 @@
 					
 					<div class="form-group required">
                                            
-											{{Form::label('approval_date', 'Approval Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('approval_date', 'Changing Date', array('class' => 'col-xs-4 control-label'))}}
+											<div class="row">
+											<?php 
+											$options=[
+													''=>'Select Status..',
+													'Submitted'=>'Submitted',
+													'Rejected'=>'Rejected',
+													'Issued'=>'Issued',
+													'On Review'=>'On Review',
+													'Accepted'=>'Accepted',
+													'Approved'=>'Approved',
+											];
+											?>
+														<div class="col-md-6">
+														{{Form::select('approval_date', $options , date('d') ,array('class'=>'form-control','required'=>''))}}
+														</div>
+														
+											</div>
+											
+                    </div>
+                    <div class="form-group required">
+                                           
+											{{Form::label('approval_date', 'Changing Date', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('approval_date', $dates , date('d') ,array('class'=>'form-control','required'=>''))}}

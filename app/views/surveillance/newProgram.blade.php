@@ -22,10 +22,10 @@
                                                 <th>Date</th>
                                                 <th>Time</th>
                                                 <th>SIA/Tracking No</th>
-                                                <th>Team Leaded</th>
+                                                <th>Team Leaded By</th>
                                                 <th>Organization</th>
                                                 <th>Event</th>                                              
-                                                <th>Accomplish Status</th>
+                                                <th>Execution Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>

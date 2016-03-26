@@ -4,8 +4,24 @@
 {{$role=Auth::User()->Role()}}
 </div>
 <section class='content contentWidth' >
-
-    <div class="row ">
+    <div class="row">
+                            <div class="col-md-12">
+                                <!-- Primary box -->
+                                <div class="box box-solid box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Summary</h3>
+                                        <div class="box-tools pull-right">
+                                            <button data-widget="collapse" class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></button>
+                                            <button data-widget="remove" class="btn btn-primary btn-sm"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                       <span>Total Employee:&nbsp &nbsp <span class="badge bg-primary"> 3</span></span> 
+                                    </div><!-- /.box-body -->
+                                </div><!-- /.box -->
+                            </div>
+                        </div>
+    
                       
 						
 						<div class="row">
@@ -222,7 +238,7 @@
                         </div><!-- ./col -->
                         @endif
                         
-                    </div>
+                    
 	</div>
 
 </section>

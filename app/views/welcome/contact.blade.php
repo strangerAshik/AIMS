@@ -2,25 +2,20 @@
 @yield('header')
 
     <div class="row container ">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="well well-sm">
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" method="POST" action="{{URL::to('sendMessage')}}">
                     <fieldset>
                         <legend class="text-center header">Contact us</legend>
                         <div class="form-group">
                             <div class="col-md-10 col-md-offset-1">
-                                <input id="fname" name="name" type="text" placeholder="First Name" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-10 col-md-offset-1">
-                                <input id="lname" name="name" type="text" placeholder="Last Name" class="form-control">
+                                <input id="lname" name="name" type="text" placeholder="Full Name" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-10 col-md-offset-1">
-                                <input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
+                                <input required="" id="email" name="email" type="text" placeholder="Email Address" class="form-control">
                             </div>
                         </div>
 
@@ -32,7 +27,13 @@
 
                         <div class="form-group">
                             <div class="col-md-10 col-md-offset-1">
-                                <textarea class="form-control" id="message" name="message" placeholder="Enter your massage for us here. We will get back to you within 2 business days." rows="7"></textarea>
+                                <input required=""  name="subject" type="text" placeholder="Subject" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-1">
+                                <textarea required="" class="form-control" id="message" name="message" placeholder="Massage" rows="7"></textarea>
                             </div>
                         </div>
 
@@ -46,25 +47,7 @@
             </div>
         </div>
     
-	  <div class="col-md-6">
-            <div>
-                <div class="panel panel-default">
-                    <div class="text-center header">Our Office</div>
-                    <div class="panel-body text-center">
-                    @if(CommonFunction::getCompanySetupDetails()->address)
-                        <h4>Address</h4>
-                        <div>
-                       {{CommonFunction::getCompanySetupDetails()->address}}<br>
-                    @endif
-                      {{CommonFunction::getCompanySetupDetails()->support_email}}<br />
-                        </div>
-                        <hr />
-                        <div id="map1" class="map">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+	
     </div>
 
 

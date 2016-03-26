@@ -6,6 +6,7 @@ class PelController extends \BaseController {
 	{
 		return View::make('pel.main')
 					->with('PageName','PEL Main')
+					->with('active','personnel_licensing')
 					;
 	}
 	public function pelList(){
@@ -16,6 +17,7 @@ class PelController extends \BaseController {
 
         return View::make('pel.pelList')
         		->with('PageName','PEL List')
+        		->with('active','personnel_licensing')
         		->with('pels',$pels)
         		;
 	}
@@ -29,6 +31,7 @@ class PelController extends \BaseController {
 
 		return View::make('pel.personalInfo')
 					->with('PageName','Personal Info')
+					->with('active','personnel_licensing')
 					->with('dates',parent::dates())
 					->with('months',parent::months())
 					->with('years',parent::years())
@@ -46,6 +49,7 @@ class PelController extends \BaseController {
 		->where('emp_id', '=', $id)->get();
 		return View::make('pel.academicQualification')
 					->with('PageName','Accademic Qali')
+					->with('active','personnel_licensing')
 					->with('year',parent::years())
 					->with('accas',$accas)
 					->with('thesis',$thesis)
@@ -220,6 +224,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 				->where('emp_id', '=', $id)->get();
 		return View::make('pel.languageProficiency')
 		->with('PageName','Language Proficiency')
+		->with('active','personnel_licensing')
 		->with('languages',$languages)	;
 	}
 
@@ -271,6 +276,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 	
 		return View::make('pel.designeeRecords')
 				->with('PageName','Designee Records')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -349,6 +355,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 				->where('emp_id', '=', Auth::user()->emp_id())->get();
 		return View::make('pel.medicalCertification')
 				->with('PageName','Medical Certification')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -430,6 +437,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 		->where('soft_delete','<>','1')->get();
 		return View::make('pel.licenseHistory')
 				->with('PageName','License History')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -499,6 +507,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 		->where('soft_delete','<>','1')->get();
 		return View::make('pel.logbookReview')
 				->with('PageName','Logbook Review')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -552,7 +561,9 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 	public function licenseInfoMain(){
 
 		return View::make('pel.licenseInfoMain')
-				->with('PageName','License Info Main');
+				->with('PageName','License Info Main')
+				->with('active','personnel_licensing')
+				;
 	}
 	public function simulator(){
 		$simulatorHistorys=DB::table('pel_simulator')
@@ -561,6 +572,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 			->get();
 		return View::make('pel.simulator')
 				->with('PageName','Simulator')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -632,6 +644,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 			->get();
 		return View::make('pel.general')
 				->with('PageName','PEL General')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -716,6 +729,7 @@ Thesis/Project/Internship/Dissertation Info Updated!!
 			->get();
 		return View::make('pel.trainingDetails')
 			->with('PageName','Trainging Details')
+			->with('active','personnel_licensing')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -803,6 +817,7 @@ public function ameLogDetails(){
 			->get();
 	return View::make('pel.ameLogDetails')
 				->with('PageName','AME Log Details')
+				->with('active','personnel_licensing')
 				->with('dates',parent::dates())
 				->with('months',parent::months())
 				->with('years',parent::years())
@@ -886,6 +901,7 @@ public function flyingDetails(){
 			->get();
 	return View::make('pel.flyingDetails')
 			->with('PageName','Flying Details')
+			->with('active','personnel_licensing')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())
@@ -1069,6 +1085,7 @@ public function compView($empId){
 	$organizations=DB::table('users')->orderBy('organization')->lists('organization','organization');
 	return View::make('pel.comprehensiveView')
 			->with('PageName','Com View')
+			->with('active','personnel_licensing')
 			->with('PersonalInfos',$PersonalInfos)
 			->with('accas',$accas)
 			->with('thesis',$thesis)
@@ -1093,6 +1110,7 @@ public function compView($empId){
 public function atcLogDetails(){
 	return View::make('pel.atcLogDetails')
 			->with('PageName','ATC Log Details')
+			->with('active','personnel_licensing')
 			->with('dates',parent::dates())
 			->with('months',parent::months())
 			->with('years',parent::years())

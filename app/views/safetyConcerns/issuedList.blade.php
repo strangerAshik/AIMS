@@ -14,14 +14,15 @@
                                     <table id="example" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                             <th>SIA Number</th>
-												<th>Finding Number</th>
-												<th>SC Number</th>
-												<th>Finding Date</th>												
-												<th>Place/Airport</th>
-												<th>Target Date</th>
-												<th>Approval</th>
-                                                <th>Details</th>
+                                            <th>SIA Number</th>
+                                            <th>Organization</th>
+											<th>Finding Number</th>
+											<th>SC Number</th>
+											<th>Finding Date</th>												
+											
+											<th>Target Date</th>
+											<th>Approval</th>
+                                            <th>Details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -29,10 +30,11 @@
                                         @foreach ($infos as $info)
                                             <tr>
                                                 <td>{{$info->sia_number}}</td>
-												<td>{{$info->finding_number}}</td>
-												<td>{{$info->safety_issue_number}}</td>
+                                                <td>{{CommonFunction::siaOrg($info->sia_number)}}</td>
+												<td>{{CommonFunction::findingTitle($info->finding_number)}} [{{$info->finding_number}}]</td>
+												<td>{{CommonFunction::safetyTitle($info->safety_issue_number)}} {{$info->safety_issue_number}}</td>
 												<td>{{date('d F Y',strtotime($info->issue_finding_date))}}</td>
-												<td>{{$info->place_or_airport}}</td>
+												
 												<td>{{date('d F Y',strtotime($info->target_date))}}</td>
 												
 												<td><?php $count=CommonFunction::isSafetyConsApproved($info->safety_issue_number);?>

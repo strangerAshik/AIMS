@@ -2361,34 +2361,38 @@ $(document).ready(function(){
                                 </th>
                             </tr>
                             <tr>
+                                <td>Active</td>
+                                <td>{{$veri->active}}</td>
+                            </tr>
+                            <tr>
                                 <td class="col-md-4">Name Of Assigned Task</td>
                                 <td >{{$veri->name}}</td>
                             </tr>
                            
                             <tr>
-                                <td>Date Of Entry</td>
+                                <td>Details of Task </td>
+                                <td>{{$veri->assigned_task}}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Assigned By </td>
+                                <td>{{$veri->assigned_by}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Date Of Assigning</td>
                                 <td>{{$veri->entry_date." ".$veri->entry_month." ".$veri->entry_year}}</td>
                             </tr>
-							<tr>
-                                <td>Active</td>
-                                <td> {{$veri->active}}</td>
-                            </tr>
+							
                             <tr>
-                                <td>Posting / Release  Date</td>
+                                <td>Date of Completion</td>
                                   <td>{{$veri->termination_date." ".$veri->termination_month." ".$veri->termination_year}}</td>
                             </tr>
                             <tr>
                                 <td>Position </td>
                                 <td>{{$veri->position}}</td>
                             </tr>
-                            <tr>
-                                <td>Assigned Task </td>
-                                <td>{{$veri->assigned_task}}</td>
-                            </tr>
-                            <tr>
-                                <td>Assigned By </td>
-                                <td>{{$veri->assigned_by}}</td>
-                            </tr>
+                            
                            
 							<tr>
                                 <td>Note </td>
@@ -2421,12 +2425,26 @@ $(document).ready(function(){
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Add Employee verification / Assignment </h4>
+                    <h4 class="modal-title">Update Employee  Assignment </h4>
                 </div>
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
                  {{Form::open(array('url'=>'qualification/updateEmpVerification','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 					 {{Form::hidden('id',$veri->id)}}
+					 <div class="form-group required">
+                                           
+											{{Form::label('active', 'Active', array('class' => 'col-xs-4 control-label'))}}
+											
+                                <div class="col-xs-6">
+										<div class="radio">
+									 
+									 <label> {{ Form::radio('active', 'Yes',Input::old('active', $veri->active == 'Yes'),array()) }} &nbsp  Yes</label>
+									 <label> {{ Form::radio('active', 'No',Input::old('active', $veri->active == 'No'),array()) }} &nbsp  No</label>
+
+									</div>
+									
+								</div>
+                        </div>
 						<div class="form-group required">
                                            
 											{{Form::label('name', 'Name', array('class' => 'col-xs-4 control-label'))}}
@@ -2435,10 +2453,21 @@ $(document).ready(function(){
 											{{Form::text('name',$veri->name, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
                         </div>
-						
+                        <div class="form-group required" >											
+											{{Form::label('assigned_task', 'Details of Task', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::textarea('assigned_task',$veri->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
+											</div>
+					    </div>
+						<div class="form-group required" >											
+											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('assigned_by',$veri->assigned_by, array('class' => 'form-control','placeholder'=>'', 'required'=>''))}}
+											</div>
+					    </div>
 						<div class="form-group required">
 												
-													{{Form::label('entry_date', 'Date Of Entry', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('entry_date', 'Date of Assigning', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -2454,22 +2483,10 @@ $(document).ready(function(){
 														</div>
 													</div>
 						</div>
-						<div class="form-group required">
-                                           
-											{{Form::label('active', 'Active', array('class' => 'col-xs-4 control-label'))}}
-											
-                                <div class="col-xs-6">
-										<div class="radio">
-									 
-									  <label> <label> {{ Form::radio('active', 'Yes') }} &nbsp  Yes</label>
-									 <label> {{ Form::radio('active', 'No') }} &nbsp  No</label>
-									</div>
-									
-								</div>
-                        </div>
+						
 						<div class="form-group">
 												
-													{{Form::label('termination_date', 'Termination Date/ Separation Date', array('class' => 'col-xs-4 control-label'))}}
+													{{Form::label('termination_date', 'Date of Completion', array('class' => 'col-xs-4 control-label'))}}
 												
 													<div class="row">
 														<div class="col-xs-2">
@@ -2488,26 +2505,16 @@ $(document).ready(function(){
 														</div>
 													</div>
 						</div>
-						<div class="form-group required">
+						<div class="form-group ">
                                            
 											{{Form::label('position', 'Position', array('class' => 'col-xs-4 control-label'))}}
 											
                                 <div class="col-xs-6">
-											{{Form::text('position', $veri->position , array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('position', $veri->position , array('class' => 'form-control','placeholder'=>''))}}
 											</div>
                         </div>
-						<div class="form-group required" >											
-											{{Form::label('assigned_task', 'Assigned Task', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('assigned_task',$veri->assigned_task, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
-											</div>
-					    </div>
-						<div class="form-group required" >											
-											{{Form::label('assigned_by', 'Assigned By', array('class' => 'col-xs-4 control-label'))}}
-											<div class="col-xs-6">
-											{{Form::textarea('assigned_by',$veri->assigned_by, array('class' => 'form-control','placeholder'=>'','size'=>'4x1', 'required'=>''))}}
-											</div>
-					    </div>
+						
+						
 						<div class="form-group " >											
 											{{Form::label('note', 'Note', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">

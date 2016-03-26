@@ -43,7 +43,7 @@
                                        			<td>Certification For AMO</td>
                                        			<td>AMO</td>
                                        			<td>Yes</td>
-                                       			<td><a href="{{URL::to('certification/singleCertification/CER_5823578')}}">Details</a></td>
+                                       			<td><a href="{{URL::to('certification/allPhases')}}">Details</a></td>
                                        		</tr>
                                        		<tr>
                                        			<td>CER_6094838</td>
@@ -52,7 +52,7 @@
                                        			<td>Certification For ATO</td>
                                        			<td>AMO</td>
                                        			<td>No</td>
-                                       			<td><a href="#">Details</a></td>
+                                       			<td><a href="{{URL::to('certification/singleCertification/CER_5823578')}}">Details</a></td>
                                        		</tr>
                                         </tbody>
                                        	

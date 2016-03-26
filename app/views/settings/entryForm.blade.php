@@ -1,5 +1,5 @@
 @section('addModule')
-<div class="modal fade" id="addModule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div  class="modal fade" id="addModule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -211,7 +211,7 @@ $('#organization').selectize({ create: true, sortField: {field: 'text',direction
                     </div>
                     <div class="form-group required">
                                         
-                                            {{Form::label('password_confirmation', 'Conform Password', array('class' => 'col-xs-4 control-label'))}}
+                                            {{Form::label('password_confirmation', 'Confirm Password', array('class' => 'col-xs-4 control-label'))}}
                                             <div class="col-xs-6">
                                             {{Form::password('password_confirmation','', array('class' => 'form-control','placeholder'=>''))}}
                                             </div>

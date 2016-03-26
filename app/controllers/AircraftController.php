@@ -14,6 +14,7 @@ class AircraftController extends \BaseController {
 	{
 		return View::make('aircraft/main')
 		->with('PageName','Aircraft')
+		->with('active','aircraft')
 		->with('personnel', parent::getPersonnelInfo())
 		->with('dates',parent::dates())
 		->with('months',parent::months())
@@ -60,6 +61,10 @@ class AircraftController extends \BaseController {
 			DB::table('aircraft_primary_info')
             ->where('id','=',$id)
             ->update(array(
+            	
+            	'aircraft_MM'=>Input::get('aircraft_MM'),
+				'aircraft_MSN'=>Input::get('aircraft_MSN'),
+
 				'assigned_inspector' => Input::get('assigned_inspector'),
 				'serial_number' => Input::get('serial_number'),
 				'registration_no' => Input::get('registration_no'),
@@ -76,7 +81,32 @@ class AircraftController extends \BaseController {
 				
 				'updated_at'=>date('Y-m-d H:i:s')	
 			));
-		return Redirect::back()->with('message', 'Successfully Updated!!');
+
+			//update mm & MSN every where 
+			$old_mm=Input::get('old_aircraft_MM');
+			$old_msn=Input::get('old_aircraft_MSN');
+			$mm=Input::get('aircraft_MM');
+			$msn=Input::get('aircraft_MSN');
+
+			$tableNames=[
+			'aircraft_tc_info','aircraft_stc_info','aircraft_exemption_info',
+			'aircraft_registration_info','aircraft_airworthiness_info','aircraft_caa_approval_info','aircraft_owner_info','aircraft_lessee_info','aircraft_insurer_info','aircraft_equipment_review_info'
+			];
+			if($old_mm!=$mm ||$old_msn!=$msn)
+			{
+				foreach ($tableNames as $table) {
+					DB::table($table)
+					->where('aircraft_MM',$old_mm)
+					->where('aircraft_MM',$old_mm)
+					->update(array(
+							'aircraft_MM'=>Input::get('aircraft_MM'),
+							'aircraft_MSN'=>Input::get('aircraft_MSN')
+						));
+				}
+				
+			}
+
+		return Redirect::to('aircraft/single/'.$mm.'/'.$msn)->with('message', 'Successfully Updated!!');
 		
 		
 	}
@@ -909,6 +939,7 @@ class AircraftController extends \BaseController {
 	
 		return View::make('aircraft/aircraft-single')
 		->with('PageName','Aircraft Info.')
+		->with('active','aircraft')
 		->with('personnel', parent::getPersonnelInfo())
 		->with('dates',parent::dates())
 		->with('months',parent::months())
@@ -938,6 +969,7 @@ class AircraftController extends \BaseController {
 		$inspectors=array_merge($select,$inspectors);
 		return View::make('aircraft/new_aircraft')
 		->with('PageName','Aircraft')
+		->with('active','aircraft')
 		->with('dates',parent::dates())
 		->with('months',parent::months())
 		->with('years',parent::years())
@@ -951,6 +983,7 @@ class AircraftController extends \BaseController {
 					->get();
 		return View::make('aircraft.index')
 		->with('PageName','Aircraft List')
+		->with('active','aircraft')
 		->with('aircrafts',$aircrafts);
 	}
 	public function myAircraftList(){
@@ -962,6 +995,7 @@ class AircraftController extends \BaseController {
 					->get();
 		return View::make('aircraft.myAircraftList')
 		->with('PageName','My Aircraft List')
+		->with('active','aircraft')
 		->with('aircrafts',$aircrafts);
 	}
 }

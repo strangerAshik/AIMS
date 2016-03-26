@@ -11,6 +11,7 @@ class QualificationController extends \BaseController {
 		//return "Hello";
 		return View::make('qualification/main')
 		->with('PageName','Main')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo());
 	}
 	//report
@@ -28,6 +29,7 @@ class QualificationController extends \BaseController {
 			
 		return View::make('qualification.index')
 		->with('PageName','Employee List')
+		->with('active','employee')
 		->with('emps',$query)
 		->with('personnel', parent::getPersonnelInfo());
 	}
@@ -37,6 +39,7 @@ class QualificationController extends \BaseController {
 		$query=DB::table('qualification_personal')->where('emp_id', '=', $id )->get();
 		return View::make('qualification/personnel')
 		->with('PageName','Personnel')
+		->with('active','employee')
 		->with('personnel', parent::getPersonnelInfo())
 		->with('dates',parent::dates())
 		->with('months',parent::months())
@@ -51,6 +54,7 @@ class QualificationController extends \BaseController {
 		$query2=DB::table('qualification_edu_thesis')->where('emp_id', '=', $id)->orderBy('id','desc')->get();
 		return View::make('qualification/education')
 		->with('PageName','Education')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('t_sl','0')
@@ -67,6 +71,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/employment')
 		->with('PageName','employment')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('dates',parent::dates())
@@ -85,6 +90,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/pro_degree')
 		->with('PageName','pro_degree')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('year',$years)
@@ -97,6 +103,7 @@ class QualificationController extends \BaseController {
 		$query=DB::table('qualification_training_ojt')->where('emp_id', '=', $id)->get();
 		return View::make('qualification/taining_work_ojt')
 		->with('PageName','Training/ Workshop/ OJT')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('dates',parent::dates())
@@ -111,6 +118,7 @@ class QualificationController extends \BaseController {
 		$query=DB::table('qualification_language')->where('emp_id', '=', $id)->get();
 		return View::make('qualification/language')
 		->with('PageName','Language')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('infos',$query)	
@@ -127,6 +135,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/technical_licence')
 		->with('PageName','Technical Licence')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('dates',$dates)
@@ -147,6 +156,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/aircraft_qualification')
 				->with('PageName','Aircraft Qualification')
+				->with('active','employee')
 				->with('personnel',parent::getPersonnelInfo())
 				->with('a_sl','0')
 				->with('dates',$dates)
@@ -162,6 +172,7 @@ class QualificationController extends \BaseController {
 		return View::make('qualification/reference')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('PageName','Reference')
+		->with('active','employee')
 		->with('a_sl','0')
 		->with('infos',$query)	
 		;
@@ -169,10 +180,11 @@ class QualificationController extends \BaseController {
 	public function emp_verification()
 	{
 		$id = Auth::user()->emp_id();
-		$query=DB::table('qualification_employee_verification')->where('emp_id', '=', $id)->get();
+		$query=DB::table('qualification_employee_verification')->where('emp_id', '=', $id)->orderBy('id','desc')->get();
 		
 		return View::make('qualification/emp_verification')
 		->with('PageName','Employee Verification')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('dates',parent::dates())
@@ -193,6 +205,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/other')
 		->with('PageName','other')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('a_sl','0')
 		->with('t_sl','0')
@@ -218,6 +231,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/comp_view')
 		->with('PageName','Comprehensive View')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('dates',parent::dates())
 		->with('months',parent::months())
@@ -269,6 +283,7 @@ class QualificationController extends \BaseController {
 		
 		return View::make('qualification/comp_view')
 		->with('PageName','Comprehensive View')
+		->with('active','employee')
 		->with('personnel',parent::getPersonnelInfo())
 		->with('dates',parent::dates())
 		->with('months',parent::months())
@@ -623,14 +638,20 @@ class QualificationController extends \BaseController {
 	   return Redirect::back()->with('message', 'Successfully Saved!!');
    }
    public function EmpVerification(){
-	  
+	   if(Input::get('termination_date')){
+	   	 $active="No";
+	   }
+	   else{
+	   	$active='Yes';
+	   }
+	    
 	    DB::table('qualification_employee_verification')->insert(array(
 	   'emp_id' => Auth::user()->emp_id(),
 	   'name' =>Input::get('name',' '),
 	   'entry_date' =>Input::get('entry_date',' '),
 	   'entry_month' =>Input::get('entry_month',' '),
 	   'entry_year' =>Input::get('entry_year',' '),
-	   'active' =>Input::get('active',' '),
+	   'active' =>$active,
 	   'termination_date' =>Input::get('termination_date',' '),
 	   'termination_month' =>Input::get('termination_month',' '),
 	   'termination_year' =>Input::get('termination_year',' '),
@@ -886,6 +907,12 @@ class QualificationController extends \BaseController {
   }
   public function updateEmpVerification(){
 	  $id= Input::get('id');
+	   if(Input::get('termination_date')){
+	   	 $active="No";
+	   }
+	   else{
+	   	$active='Yes';
+	   }
 	  DB::table('qualification_employee_verification')
             ->where('id',$id)
             ->update(array(
@@ -893,7 +920,7 @@ class QualificationController extends \BaseController {
 			   'entry_date' =>Input::get('entry_date'),
 			   'entry_month' =>Input::get('entry_month'),
 			   'entry_year' =>Input::get('entry_year'),
-			   'active' =>Input::get('active'),
+			   'active' =>$active,
 			   'termination_date' =>Input::get('termination_date'),
 			   'termination_month' =>Input::get('termination_month'),
 			   'termination_year' =>Input::get('termination_year'),

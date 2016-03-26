@@ -32,7 +32,6 @@
             <tr>
                
                 <th>Date Of Execution</th>
-                <th>Time</th>
                 <th>SIA Number</th>
                 <th>Organization</th>
                 <th>Event</th>
@@ -42,6 +41,7 @@
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
+                <th>Risk</th>
                 <th>SC</th>
                 <th>EDP</th>
                 <th>Status</th>
@@ -50,7 +50,6 @@
             <tr id="filterrow">
               
                 <th>Date Of Execution</th>
-                <th>Time</th>
                 <th>SIA Number</th>
                 <th>Organization</th>
                 <th>Event</th>
@@ -60,6 +59,7 @@
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
+                <th>Risk</th>
                 <th>SC</th>
                 <th>EDP</th>
                 <th>Status</th>
@@ -71,7 +71,7 @@
             <tr>
                
                 <th>DOE</th>
-                <th>Time</th>
+                
                 <th>SIA Number</th>
                 <th>Organization</th>
                 <th>Event</th>
@@ -81,6 +81,7 @@
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
+                <th>Risk</th>
                 <th>SC</th>
                 <th>EDP</th>
                 <th>Status</th>
@@ -93,7 +94,7 @@
             <tr>
 
                 <td>{{date('d F Y',strtotime($info->date))}}</td>
-                <td>{{$info->time}}</td>
+                
                 <td>{{$info->sia_number}}</td>
                 <td>{{$info->organization}}</td>
                 <td>{{$info->event}}</td>
@@ -129,6 +130,14 @@
                 @endif
                 </td>
                 <td>{{$info->location}}</td>
+                <td>
+                <?php $risk = CommonFunction::smsRisk($info->sia_number)?>
+                @if($risk)
+                    {{$risk}}                   
+                @else 
+                    SMS Not Provided
+                @endif
+                </td>
                 <td>
                     <?php $getSCAndRiskAnalysis=CommonFunction::getSCAndRiskAnalysis($info->sia_number);?>
                     <div class="disNon">{{$nsc=0;}}</div>

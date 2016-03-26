@@ -32,10 +32,10 @@ class SiaAction extends Migration {
 			$table->string('aircraft_mms');
 			$table->string('aircraft_registration_no');
 			$table->string('pic');
-			$table->string('pel_numbers');
+			$table->longText('pel_numbers');
 
-			$table->string('critical_element');
-			$table->string('sia_by_area');
+			$table->longText('critical_element');
+			$table->longText('sia_by_area');
 			
 			$table->string('other_personal_inspected',1000);
 			$table->string('has_finding');

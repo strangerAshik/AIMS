@@ -10,7 +10,9 @@ class MeetingController extends \BaseController {
 	 */
 	public function calendar()
 	{
-		return View::make('meeting.calendar');
+		return View::make('meeting.calendar')
+			->with('active','organigation')
+		;
 	}
 
 	/**

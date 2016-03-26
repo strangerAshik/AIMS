@@ -14,6 +14,8 @@
                 
 				{{Form::open(array('url'=>'aircraft/editPrimary','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 					{{Form::hidden('id',$primary->id)}}
+					{{Form::hidden('old_aircraft_MM',$primary->aircraft_MM)}}
+					{{Form::hidden('aircraft_MSN',$primary->aircraft_MSN)}}
 					<div class="form-group required">
                                            
 											{{Form::label('assigned_inspector', 'Assigned Inspector ', array('class' => 'col-xs-4 control-label'))}}
@@ -57,7 +59,7 @@
                                         
 											{{Form::label('aircraft_MM', 'Aircraft MM', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('aircraft_MM',$primary->aircraft_MM, array('class' => 'form-control','placeholder'=>'','required'=>'','disabled'=>'disabled'))}}
+											{{Form::text('aircraft_MM',$primary->aircraft_MM, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div>
@@ -65,7 +67,7 @@
                                         
 											{{Form::label('aircraft_MSN', 'Aircraft MSN', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('aircraft_MSN',$primary->aircraft_MSN, array('class' => 'form-control','placeholder'=>'','required'=>'','disabled'=>'disabled'))}}
+											{{Form::text('aircraft_MSN',$primary->aircraft_MSN, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div>
