@@ -33,6 +33,29 @@ class QualificationController extends \BaseController {
 		->with('emps',$query)
 		->with('personnel', parent::getPersonnelInfo());
 	}
+	public function trainingArchive(){
+		$trainings=DB::table('users')
+					->Join('qualification_training_ojt','users.id','=','qualification_training_ojt.emp_id')
+					->get();
+	    //$trainings=DB::table('qualification_training_ojt')->get();
+		return View::make('qualification.trainingArchive')
+				->with('PageName','Training Archive')
+				->with('active','employee')
+				->with('trainings',$trainings)
+				;
+	}
+	public function singleTrainingArchive($id){
+		$trainings=DB::table('users')
+					->Join('qualification_training_ojt','users.id','=','qualification_training_ojt.emp_id')
+					->where('qualification_training_ojt.id',$id)
+					->first();
+	    //$trainings=DB::table('qualification_training_ojt')->get();
+		return View::make('qualification.singleTraining')
+				->with('PageName','Single Training')
+				->with('active','employee')
+				->with('trainings',$trainings)
+				;
+	}
 	public function personnel()
 	{
 		$id = Auth::user()->emp_id();

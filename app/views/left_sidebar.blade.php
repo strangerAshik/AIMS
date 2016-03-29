@@ -114,7 +114,8 @@
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::to('qualification/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>  
 								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'access'))
-								<li><a href="{{URL::to('qualification/employees');}}"><i class="fa fa-angle-double-right"></i>Employees List</a></li> 
+                                <li><a href="{{URL::to('qualification/employees');}}"><i class="fa fa-angle-double-right"></i>Employees List</a></li> 
+								<li><a href="{{URL::to('qualification/trainingArchive');}}"><i class="fa fa-angle-double-right"></i>Training Archive</a></li> 
 							    @endif
 
 								<li><a href="{{URL::to('qualification/personnel');}}"><i class="fa fa-angle-double-right"></i>Personal Info. </a></li>
