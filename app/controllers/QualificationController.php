@@ -35,7 +35,7 @@ class QualificationController extends \BaseController {
 	}
 	public function trainingArchive(){
 		$trainings=DB::table('users')
-					->Join('qualification_training_ojt','users.id','=','qualification_training_ojt.emp_id')
+					->Join('qualification_training_ojt','users.emp_id','=','qualification_training_ojt.emp_id')
 					->get();
 	    //$trainings=DB::table('qualification_training_ojt')->get();
 		return View::make('qualification.trainingArchive')
@@ -46,7 +46,7 @@ class QualificationController extends \BaseController {
 	}
 	public function singleTrainingArchive($id){
 		$trainings=DB::table('users')
-					->Join('qualification_training_ojt','users.id','=','qualification_training_ojt.emp_id')
+					->Join('qualification_training_ojt','users.emp_id','=','qualification_training_ojt.emp_id')
 					->where('qualification_training_ojt.id',$id)
 					->first();
 	    //$trainings=DB::table('qualification_training_ojt')->get();
@@ -55,6 +55,29 @@ class QualificationController extends \BaseController {
 				->with('active','employee')
 				->with('trainings',$trainings)
 				;
+	}
+	public function empTaskList(){
+		$emps=DB::table('qualification_personal')
+			->Join('users','users.emp_id','=','qualification_personal.emp_id')
+			->select('users.*','qualification_personal.photo')
+			->where('users.organization','CAAB HQ')
+			->get();
+
+		return View::make('qualification.empTaskList')
+				->with('PageName','Employee Task List')
+				->with('active','employee')
+				->with('emps',$emps)
+		;
+	}
+	public function singleEmpTask($id){
+		
+		$tasks=DB::table('qualification_employee_verification')->where('emp_id', '=', $id)->orderBy('id','desc')->get();
+
+		return View::make('qualification.singleEmpTask')
+				->with('PageName','Employee Task List')
+				->with('active','employee')
+				->with('tasks',$tasks)
+		;
 	}
 	public function personnel()
 	{

@@ -266,7 +266,11 @@ Route::group(array('prefix' => 'qualification','before'=>'auth'), function()
 
 	Route::get('trainingArchive','QualificationController@trainingArchive'); 
 
-	Route::get('singleTrainingArchive/{id}','QualificationController@singleTrainingArchive'); 
+	Route::get('singleTrainingArchive/{id}','QualificationController@singleTrainingArchive');
+
+	Route::get('empTaskList','QualificationController@empTaskList'); 
+
+	Route::get('singleEmpTask/{id}','QualificationController@singleEmpTask'); 
 
 	Route::get('main','QualificationController@main'); 
 
