@@ -15,6 +15,7 @@
 						  @if(Auth::user()->photo())
                             {{HTML::image('files/userPhoto/'.Auth::user()->photo(),'User',array('class'=>'img-circle'))}}
                           @elseif(Employee::profilePic($emp_id))
+                          
 							{{HTML::image('img/PersonnelPhoto/'.Employee::profilePic($emp_id),'User',array('class'=>'img-circle'))}}
                           @else
                             {{HTML::image('img/PersonnelPhoto/'.'anonymous.png','User',array('class'=>'img-circle'))}}

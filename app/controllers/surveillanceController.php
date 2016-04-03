@@ -550,6 +550,7 @@ class SurveillanceController extends \BaseController {
 							
 							'org_name'=>Input::get('org_name'),
 							'event'=>Input::get('event'),
+							'specific_purpose'=>Input::get('specific_purpose'),
 							'date'=>$date,
 							'end_date'=>$end_date,
 							'location'=>Input::get('locationd',' '),

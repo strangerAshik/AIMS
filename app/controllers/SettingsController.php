@@ -641,10 +641,22 @@ class SettingsController extends \BaseController {
 	}
 /* SAve User For CAAB*/
  public function saveUser(){
+ 		
+
+ 		$rules_user_registration= array(
+		    'name'=>'required|min:2',
+		    'emp_id'=>'required|min:2|unique:users',
+		    'email'=>'required|email|unique:users',
+		    'designation'=>'required',
+		    'password'=>'required|alpha_num|between:5,30|confirmed',
+		    'password_confirmation'=>'required|alpha_num|between:5,30'
+		    );
+
 		
-		$validator = Validator::make(Input::all(), User::$rules_user_registration);
+		$validator = Validator::make(Input::all(), $rules_user_registration);
 
 		if ($validator->passes()) {
+			//return Input::get('password');
 		$user=new User;
 		$user->name= Input::get('name');
 		$user->emp_id= Input::get('emp_id');
@@ -3347,7 +3359,7 @@ class SettingsController extends \BaseController {
 									//Note:service Provider
 									'my_sia',
 									//'sia_program',
-									//'sia_single_program',//new 20 Feb 2016							
+									'sia_single_program',//new 20 Feb 2016							
 									//'sia_program_list',
 									//'sia_inspector_associate_sia',				
 									//'sia_action',
