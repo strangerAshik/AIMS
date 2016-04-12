@@ -10,7 +10,7 @@
                                 <h4 style='font-weight:bold;'>Certification Management</h4>
                             </div>
                             
-                            <a onclick="alert('Under Dev')" class="small-box-footer" href="{{URL::to('#');}}">
+                            <a  class="small-box-footer" href="{{URL::to('certification/addPhase');}}">
                                 More info <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>

@@ -8,13 +8,13 @@
     </div><!-- /.box-header -->
        <div class="content">
            <div class="box-body table-responsive">
-                                &nbsp &nbsp &nbsp <a class="btn btn-primary glyphicon glyphicon-retweet" href="{{URL::to('certification/timelines')}}">&nbspCustom Timeline</a>
                               
                                     <table id="example1" class="table table-bordered table-striped table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Event</th>
+                                                <th>Regulation/Guidance/Reference/Template</th>
                                                 <th>Date & Day</th>
                                                 <th>Timeline</th>
                                                 <th>Status</th>
@@ -24,7 +24,8 @@
                                         <tbody>
                                  			<tr>
                                  				<td>1</td>
-                                 				<td>Issuance of AOC Application</td>
+                                                <td>Issuance of AOC Application</td>
+                                 				<td><a href="#">Document</a></td>
                                  				<td>02 Feb 15 Mon</td>
                                  				<td>(D Day)</td>
                                  				<td>Issued</td>
@@ -33,6 +34,7 @@
                                  			<tr>
                                  				<td>2</td>
                                  				<td>Submission of AOC Application</td>
+                                                <td><a href="#">Document</a></td>
                                  				<td>09 Feb 15 Mon</td>
                                  				<td>(D+7)</td>
                                  				<td>Accepted</td>

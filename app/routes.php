@@ -707,6 +707,15 @@ Route::group(array('prefix'=>'certification','before'=>'auth'),function(){
 	Route::get('allPhases','CertificationController@allPhases');
 	Route::get('phase1','CertificationController@phase1');
 	Route::get('timelines','CertificationController@timelines');
+
+	//Admin
+	Route::get('addPhase','CertificationController@addPhase');
+	Route::get('phase/{phaseId}','CertificationController@phase');
+	Route::get('timeline/{phaseId}','CertificationController@timeline');
+	Route::get('document/{phaseId}','CertificationController@document');
+	Route::get('documentField/{phaseId}/{docId}','CertificationController@documentField');
+	Route::get('documentFieldOption/{phaseId}/{docId}/{optionId}','CertificationController@documentFieldOption');
+
 });
 
 /*Action Entry */

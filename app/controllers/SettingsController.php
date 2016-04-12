@@ -3893,7 +3893,12 @@ class SettingsController extends \BaseController {
 /*Change the password of individual id holder*/
  public function changePasswordIndividual($userId)
 	{
-		$validator = Validator::make(Input::all(), User::$rule_changePass);
+		$rule_changePass=array(
+	'password'=>'required|alpha_num|between:5,30|confirmed',
+    'password_confirmation'=>'required|alpha_num|between:5,30'
+	);
+
+		$validator = Validator::make(Input::all(), $rule_changePass);
  
 		if ($validator->passes()) {		
 			$id = $userId;

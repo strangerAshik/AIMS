@@ -77,6 +77,38 @@ class CertificationController extends \BaseController {
 				;
 	}
 
+	//Admin
+	public function addPhase(){
+		return View::make('certification.admin.addPhase')
+					->with('PageName','Add Phase')
+					->with('active','organization');
+	}
+	public function phase($phaseId){
+		return View::make('certification.admin.phase')
+					->with('PageName','Phase')
+					->with('active','organization');
+	}
+	public function timeline($phaseId){
+		return View::make('certification.admin.timeline')
+					->with('PageName','Timeline')
+					->with('active','organization');
+	}
+	public function document($phaseId){
+		return View::make('certification.admin.document')
+					->with('PageName','Timeline')
+					->with('active','organization');
+	}
+	public function documentField($phaseId,$docId){
+		return View::make('certification.admin.documentField')
+					->with('PageName','Doc Field')
+					->with('active','organization');
+	}
+	public function documentFieldOption($phaseId,$docId,$optionId){
+		return View::make('certification.admin.documentFieldOption')
+					->with('PageName','Doc Field Option')
+					->with('active','organization');
+	}
+
 
 
 }

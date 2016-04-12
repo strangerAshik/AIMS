@@ -423,7 +423,7 @@
 					
 					<div class="form-group required">
                                            
-											{{Form::label('approval_date', 'Changing Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('update_status', 'Update Status', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 											<?php 
 											$options=[
@@ -437,7 +437,7 @@
 											];
 											?>
 														<div class="col-md-6">
-														{{Form::select('approval_date', $options , date('d') ,array('class'=>'form-control','required'=>''))}}
+														{{Form::select('update_status', $options , date('d') ,array('class'=>'form-control','required'=>''))}}
 														</div>
 														
 											</div>
@@ -445,18 +445,18 @@
                     </div>
                     <div class="form-group required">
                                            
-											{{Form::label('approval_date', 'Changing Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('changing_date_date', 'Changing Date', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
-														{{Form::select('approval_date', $dates , date('d') ,array('class'=>'form-control','required'=>''))}}
+														{{Form::select('changing_date_date', $dates , date('d') ,array('class'=>'form-control','required'=>''))}}
 														</div>
 														<div class="col-xs-3">
-														{{Form::select('approval_month', $months , date('F') ,array('class'=>'form-control','required'=>''))}}
+														{{Form::select('changing_month', $months , date('F') ,array('class'=>'form-control','required'=>''))}}
 											
 															
 														</div>
 														<div class="col-xs-2">
-															{{Form::select('approval_year', $years , date('Y') ,array('class'=>'form-control','required'=>''))}}
+															{{Form::select('changing_year', $years , date('Y') ,array('class'=>'form-control','required'=>''))}}
 														</div>
 											</div>
 											
