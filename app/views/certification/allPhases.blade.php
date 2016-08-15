@@ -11,6 +11,11 @@
 </div>
 		<div class="row">
 			<div class="col-md-12">
+				&nbsp&nbsp&nbsp&nbsp&nbsp[100 of 270 Days]
+			</div>
+
+			<div class="col-md-12">
+
 				<a   href="{{URL::to('certification/phase1')}}" class="text-center col-md-4">
 				<button class="btn btn-primary btn-block">Phase-1
 				  <div class="progress" style="height:25px!important;">
@@ -79,6 +84,7 @@
 	
 			</div>
 		</div>
+
 </section>
 <script type="text/javascript">
 	

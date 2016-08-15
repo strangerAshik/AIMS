@@ -44,7 +44,7 @@
                     @if('true'==CommonFunction::hasPermission('sia',Auth::user()->emp_id(),'access'))
                         <li class="treeview <?php if($active=='sia') echo 'active';?>">
                             <a href="#">
-                                <i class="glyphicon glyphicon-fullscreen"></i> <span>SIA</span>
+                                <i class="glyphicon glyphicon-fullscreen"></i> <span>SIA & RSC (CE-7,8)</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
@@ -85,21 +85,10 @@
                                 <li><a href="{{URL::to('surveillance/centralSearch');}}"><i class="fa fa-angle-double-right"></i>SIA Central Search</a></li>
                                 @endif
 
-                                @if('true'==CommonFunction::hasPermission('sia_report',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('surveillance/report');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
+                                @if('true'==CommonFunction::hasPermission('sia',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/sia');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
                                 @endif
 
-                                 <!--Safety Concerns List-->
-                                @if('true'==CommonFunction::hasPermission('sc_safety_concerns_list',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('safety/issuedList');}}"><i class="fa fa-angle-double-right"></i>Safety Concerns List </a></li>
-                                @endif
-                                 <!--EDP List-->
-                                @if('true'==CommonFunction::hasPermission('edp_list',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('surveillance/allEdp');}}"><i class="fa fa-angle-double-right"></i>EDP List </a></li>
-                                @endif
-                                
-                                
-                              
                             </ul>
                         </li>
                         @endif
@@ -114,6 +103,10 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::to('qualification/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>  
+                                 @if('true'==CommonFunction::hasPermission('emp_notification_full',Auth::user()->emp_id(),'access'))
+                                <li><a href="{{URL::to('qualification/notification');}}"><i class="fa fa-angle-double-right"></i>Notification</a></li>  
+                                @endif
+                                <span class="disNon">
 								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('qualification/employees');}}"><i class="fa fa-angle-double-right"></i>Employees List</a></li>
 
@@ -121,6 +114,10 @@
 
 								<li><a href="{{URL::to('qualification/empTaskList');}}"><i class="fa fa-angle-double-right"></i>Employee Task List</a></li> 
 							    @endif
+                                @if('true'==CommonFunction::hasPermission('emp_summary',Auth::user()->emp_id(),'access'))
+                                 <li><a href="{{URL::to('qualification/summary');}}"><i class="fa fa-angle-double-right"></i>Employee Summary</a></li>
+                                @endif
+                               </span>
 
 								<li><a href="{{URL::to('qualification/personnel');}}"><i class="fa fa-angle-double-right"></i>Personal Info. </a></li>
                                 <li><a href="{{URL::to('qualification/education')}}"><i class="fa fa-angle-double-right"></i>Education</a></li>
@@ -134,10 +131,35 @@
 								 <li><a href="{{URL::to('qualification/emp_verification')}}"><i class="fa fa-angle-double-right"></i>Employee Assignments</a></li>
                                 <li><a href="{{URL::to('qualification/other')}}"><i class="fa fa-angle-double-right"></i>Others</a></li>
                                 <li><a href="{{URL::to('qualification/comp_view')}}"><i class="fa fa-angle-double-right"></i>Comprehensive View </a></li>
+                                @if('true'==CommonFunction::hasPermission('employee',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/employee');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
+                                @endif
+
                             </ul>
                         </li>						
 						@endif
-					<!--Organization -->
+					<!--Service Provider Certification -->
+                        @if('true'==CommonFunction::hasPermission('service_provider_certification',Auth::user()->emp_id(),'access'))
+                        <li class="treeview <?php if($active=='service_provider_certification') echo 'active';?>">
+                            <a href="#">
+                                <i class="icon ion-pricetags"></i> <span> Certification (CE-6)</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="{{URL::to('certification/certificationMain');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>
+
+                                <li><a href="{{URL::to('certification/addPhase');}}"><i class="fa fa-angle-double-right"></i>Certification Management</a></li>
+
+                                <li><a href="{{URL::to('certification/mycertification');}}"><i class="fa fa-angle-double-right"></i>S.P Certification</a></li>
+
+                                @if('true'==CommonFunction::hasPermission('service_provider_certification',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/service_provider_certification');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
+                                @endif
+
+                               
+                            </ul>
+                        </li>
+                        @endif<!--Organization -->
                         @if('true'==CommonFunction::hasPermission('organization',Auth::user()->emp_id(),'access'))
                         <li class="treeview <?php if($active=='organization') echo 'active';?>">
                             <a href="#">
@@ -147,13 +169,13 @@
                             <ul class="treeview-menu">
                                 <li><a href="{{URL::to('organization/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>
                                 @if('true'==CommonFunction::hasPermission('org_add_new',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('organization/newOrganization');}}"><i class="fa fa-angle-double-right"></i>Add Organization</a></li>
+                                <li ><a href="{{URL::to('organization/newOrganization');}}"><i class="fa fa-angle-double-right"></i>Add Organization</a></li>
                                 @endif
                                 @if('true'==CommonFunction::hasPermission('org_admin_list',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('organization/organizationList');}}"><i class="fa fa-angle-double-right"></i>Organizations List </a></li>
+                                <li ><a href="{{URL::to('organization/organizationList');}}"><i class="fa fa-angle-double-right"></i>Organizations List </a></li>
                                 @endif
                                 @if('true'==CommonFunction::hasPermission('org_my_org',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('organization/myOrganization');}}"><i class="fa fa-angle-double-right"></i>My Organization</a></li>
+                                <li ><a href="{{URL::to('organization/myOrganization');}}"><i class="fa fa-angle-double-right"></i>My Organization</a></li>
                                 @endif
                             </ul>
                         </li>
@@ -180,6 +202,10 @@
                                 <li><a href="{{URL::to('pel/logbookReview')}}"><i class="fa fa-angle-double-right"></i>Logbook Review</a></li>
 
                                 <li><a href="{{URL::to('pel/compView/'.Auth::user()->emp_id())}}"><i class="fa fa-angle-double-right"></i>Comprehensive View </a></li>
+                                @if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/personnel_licensing');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
+                                @endif
+
                             </ul>
                         </li>                       
                         @endif
@@ -193,10 +219,18 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="{{URL::to('aircraft/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>   
+                                <li><a href="{{URL::to('aircraft/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li> 
+                                @if('true'==CommonFunction::hasPermission('aircraft_notification',Auth::user()->emp_id(),'access'))
+                                <li><a href="{{URL::to('aircraft/notification');}}"><i class="fa fa-angle-double-right"></i>Notice Board</a></li> 
+                                @endif  
+                                @if('true'==CommonFunction::hasPermission('aircraft_summary',Auth::user()->emp_id(),'access'))
+                                <li><a href="{{URL::to('aircraft/summary');}}"><i class="fa fa-angle-double-right"></i>Aircraft Summary</a></li> 
+                                @endif  
+
                                 @if('true'==CommonFunction::hasPermission('aircraft_my_list',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('aircraft/myAircraftList');}}"><i class="fa fa-angle-double-right"></i>My Aircraft</a></li>                          
                                 @endif
+                               
 
                                 @if('true'==CommonFunction::hasPermission('airaft_admin_list',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('aircraft/aircraftList');}}"><i class="fa fa-angle-double-right"></i>Aircraft List</a></li>  
@@ -206,8 +240,8 @@
                                 <li><a href="{{URL::to('aircraft/new_aircraft');}}"><i class="fa fa-angle-double-right"></i>Add New Aircraft</a></li>   
                                 @endif
 
-                                @if('true'==CommonFunction::hasPermission('aircraft_report',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('aircraft/report');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>   
+                                @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/aircraft');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
                                 @endif
 
                             </ul>
@@ -218,7 +252,7 @@
                         @if('true'==CommonFunction::hasPermission('its',Auth::user()->emp_id(),'access'))
                         <li class="treeview <?php if($active=='its') echo 'active';?>">
                             <a href="#">
-                                <i class="fa fa-briefcase"></i> <span> ITS </span>
+                                <i class="fa fa-briefcase"></i> <span> ITS (CE-4) </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
@@ -250,6 +284,10 @@
                                 @if('true'==CommonFunction::hasPermission('its_central_search',Auth::user()->emp_id(),'access'))
                                 <li><a href="{{URL::to('itsOjt/centralSearch');}}"><i class="fa fa-angle-double-right"></i>ITS Central Search</a></li>  
                                 @endif
+                                
+                                @if('true'==CommonFunction::hasPermission('its',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/its');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
+                                @endif
 
 
                             </ul>
@@ -260,22 +298,23 @@
                         @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'access'))
                         <li class="treeview <?php if($active=='e_library') echo 'active';?>">
                             <a href="#">
-                                <i class="glyphicon glyphicon-book"></i> <span> E-Library </span>
+                                <i class="glyphicon glyphicon-book"></i> <span> E-Library (CE-1,2,3,5)</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                  <li><a href="{{URL::to('library/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>
 
                                 @if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('library/newSupportingDocuments');}}"><i class="fa fa-angle-double-right"></i>New Supporting Document</a></li>                            
+                                <li><a href="{{URL::to('library/newSupportingDocuments');}}"><i class="fa fa-angle-double-right"></i>Add Document</a></li>                            
                                 @endif
 
                                 @if('true'==CommonFunction::hasPermission('library_supporting_docs',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('library/privateView');}}"><i class="fa fa-angle-double-right"></i>View Supporting Document</a></li>                            
+                                <li><a href="{{URL::to('library/privateView');}}"><i class="fa fa-angle-double-right"></i>Document List</a></li>                            
                                 @endif
 
-                                @if('true'==CommonFunction::hasPermission('library_report',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('library/report');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>                            
+                               
+                                @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/e_library');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
                                 @endif
 
                             </ul>
@@ -286,14 +325,18 @@
                         @if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'access'))
                         <li class="treeview  <?php if($active=='voluntary_reporting') echo 'active';?>">
                             <a href="#">
-                                <i class="fa fa-users"></i> <span>Voluntary Reporting</span>
+                                <i class="fa fa-users"></i> <span>V & M Reporting</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                  <li><a href="{{URL::to('voluntary/main');}}"><i class="fa fa-angle-double-right"></i>Main</a></li>
 
                                 @if('true'==CommonFunction::hasPermission('voluntary_reporting_list',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('voluntary/voluntaryReportingList');}}"><i class="fa fa-angle-double-right"></i>Voluntary Reporting List</a></li>                            
+                                <li><a href="{{URL::to('voluntary/voluntaryReportingList');}}"><i class="fa fa-angle-double-right"></i>V & M Reporting List</a></li>                            
+                                @endif
+
+                                @if('true'==CommonFunction::hasPermission('voluntary_reporting',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/voluntary_reporting');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
                                 @endif
 
                             </ul>
@@ -318,8 +361,8 @@
                                 <li><a href="{{URL::to('helpFaq/faqBank');}}"><i class="fa fa-angle-double-right"></i>FAQ Bank</a></li>                            
                                 @endif
 
-                                @if('true'==CommonFunction::hasPermission('help_faq_report',Auth::user()->emp_id(),'access'))
-                                <li><a href="{{URL::to('helpFaq/report');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>                            
+                                @if('true'==CommonFunction::hasPermission('help_faq',Auth::user()->emp_id(),'report'))
+                                <li><a href="{{URL::to('report/reportByModuel/help_faq');}}"><i class="fa fa-angle-double-right"></i>Report</a></li>
                                 @endif
 
                             </ul>

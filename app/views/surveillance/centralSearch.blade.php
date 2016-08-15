@@ -34,10 +34,13 @@
                 <th>Date Of Execution</th>
                 <th>SIA Number</th>
                 <th>Organization</th>
+                <th>Critical Area</th>
+                <th>Critical Elements</th>
                 <th>Event</th>
+                
                 <th>Spe. Purpose</th>
                 <th>Team Members</th>
-                <th>Finding</th>
+                <th>Findings</th>
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
@@ -52,10 +55,14 @@
                 <th>Date Of Execution</th>
                 <th>SIA Number</th>
                 <th>Organization</th>
+
+                <th>Critical Area</th>
+                <th>Critical Elements</th>
                 <th>Event</th>
+
                 <th>Spe. Purpose</th>
                 <th>Team Members</th>
-                <th>Finding</th>
+                <th>Findings</th>
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
@@ -77,7 +84,7 @@
                 <th>Event</th>
                 <th>Spe. Purpose</th>
                 <th>Team Members</th>
-                <th>Finding</th>
+                <th>Findings</th>
                 <th>MMS</th>
                 <th>PEL NO.</th>
                 <th>Location</th>
@@ -97,6 +104,28 @@
                 
                 <td>{{$info->sia_number}}</td>
                 <td>{{$info->organization}}</td>
+                <td>
+                 @if(is_array($areas=unserialize($info->sia_by_area)))
+                  @foreach($areas as $area)
+                    {{$area}},
+                  @endforeach
+                 @else
+                 No Area Seleted
+                 @endif
+                </td>
+                <td>
+                
+                 @if($elements=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'critical_element'))
+                       @if($elements!=null)
+                            @foreach($elements as $key=>$value)
+                                {{$value}},<br>
+                            @endforeach
+                       
+                        @endif
+                @else
+                    No CE Added!!
+                @endif
+                </td>
                 <td>{{$info->event}}</td>
                 <td>
 					<?php $getSpecificPurpose=CommonFunction::getSpecificPurpose($info->sia_number);?>

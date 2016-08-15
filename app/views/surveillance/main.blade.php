@@ -5,28 +5,14 @@ Action Entry landing page,
 @extends('layout')
 @section('content')
 
-<section class='content' >
-                        <div class="row">
-                            <div class="col-md-12">
-                                <!-- Primary box -->
-                                <div class="box box-solid box-primary">
-                                    <div class="box-header">
-                                        <h3 class="box-title">Summary</h3>
-                                        <div class="box-tools pull-right">
-                                            <button data-widget="collapse" class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></button>
-                                            <button data-widget="remove" class="btn btn-primary btn-sm"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                       <span>Total Programmed Surveillance:&nbsp &nbsp <span class="badge bg-primary"> 3</span></span> |
-                                       <span>Total Executed Surveillance:&nbsp &nbsp <span class="badge bg-primary"> 2</span></span> |
-                                       <span>Total Open Surveillance:&nbsp &nbsp <span class="badge bg-primary"> 2</span></span> |
-                                       <span>Total Close Surveillance:&nbsp &nbsp <span class="badge bg-primary"> 2</span></span> |
-                                        <span>Total Close Surveillance:&nbsp &nbsp <span class="badge bg-primary"> 2</span></span>
-                                    </div><!-- /.box-body -->
-                                </div><!-- /.box -->
-                            </div>
-                        </div>
+<section class='content'>
+<!--Instruction Start-->
+ <?php 
+$module='sia';
+ $instructions=CommonFunction::getModuleInstructions($module);?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
 						<div class="row">
                         <div class="col-md-12">
                          @if('true'==CommonFunction::hasPermission('sia_board',Auth::user()->emp_id(),'access'))
@@ -196,7 +182,7 @@ Action Entry landing page,
 
                      
 
-                     @if('true'==CommonFunction::hasPermission('sia_report',Auth::user()->emp_id(),'access'))
+                     @if('true'==CommonFunction::hasPermission('sia',Auth::user()->emp_id(),'report'))
                         <div class="col-md-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua" >
@@ -205,7 +191,7 @@ Action Entry landing page,
                                    
                                 </div>
                            
-                                <a class="small-box-footer"  href="{{URL::to('surveillance/report');}}">
+                                <a class="small-box-footer"  href="{{URL::to('report/reportByModuel/sia');}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -217,6 +203,8 @@ Action Entry landing page,
                     </div>
 
                     <div>
+
+                      
 
 
 	

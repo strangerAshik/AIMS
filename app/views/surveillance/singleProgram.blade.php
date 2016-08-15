@@ -7,7 +7,7 @@
    //Some Variable 
    $hasFinding='No';
    $hasEdp='No';
-   $hasSc='No';
+   $hasSc='No'; 
    ?>
    <!--Get The Team Members-->
    <?php 
@@ -64,6 +64,7 @@
                <div class='disNon'>{{$num=0}}</div>
                <table class="table table-bordered" >
                   <tbody>
+                  @if(!$approvalInfo)
                      <tr>
                         <span class='hidden-print'>
                         @if('true'==CommonFunction::hasPermission('sia_program',Auth::user()->emp_id(),'par_delete'))
@@ -87,6 +88,11 @@
                         @endif
                         </span>	
                      </tr>
+                  @else
+                     <tr>
+                        <td colspan="2" class="text-right text-danger">Colsed Program</td>
+                     </tr>
+                  @endif
                      @if($info->approve=='0')
                      <tr>
                         <th  colspan='2'> {{AircraftPrimaryInfo::notApproved($info)}}</th>
@@ -102,8 +108,28 @@
                         <td>{{$info->sia_number}}</td>
                      </tr>
                      <tr>
+                        <th>Related Previous SIA</th>
+                        <td>{{$info->related_sia}}</td>
+                     </tr>
+                     <tr>
+                        <th>Certificate Number</th>
+                        <td>{{$info->certificate_number}}</td>
+                     </tr>
+                     <tr>
                         <th>Organization Name</th>
                         <td>{{$info->org_name}}</td>
+                     </tr>
+                     <tr>
+                        <th>SIA Area</th>
+                        <td>
+                        @if($info->sia_by_area)
+                        <?php $areas=unserialize($info->sia_by_area);?>
+                        @foreach($areas as $area)
+                           {{$area}},
+                        @endforeach
+
+                        @endif
+                        </td>
                      </tr>
                      <tr>
                         <th>Event On</th>
@@ -188,7 +214,7 @@
                <h3 class="box-title"style='color:#367FA9;font-weight:bold;' >Action Details</h3>
                <span class='hidden-print man pull-right'>-</span>
             </div>
-            @if(!$actionDetails && $imTeamMember='True')	
+            @if(!$actionDetails && $imTeamMember=='true')	
             @if('true'==CommonFunction::hasPermission('sia_action',Auth::user()->emp_id(),'access'))
             &nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#primaryInfo">[Add Action Details] </a> 
             @endif
@@ -202,6 +228,7 @@
                   <tbody>
                      @if($actionDetails)
                      @foreach($actionDetails as $info)	
+                     @if(!$approvalInfo)
                      <tr>
                         <td colspan="2">
                            <span class='hidden-print'>
@@ -227,6 +254,11 @@
                            </span>	
                         </td>
                      </tr>
+                     @else 
+                        <tr>
+                           <td colspan="2" class="text-right text-danger">Program Closed</td>
+                        </tr>
+                     @endif
                      @if($info->approve=='0')
                      <tr>
                         <th  colspan='2'> {{AircraftPrimaryInfo::notApproved($info)}}</th>
@@ -241,7 +273,7 @@
                         <th class="col-md-3">Objective</th>
                         <td>{{$info->objective}}</td>
                      </tr>
-                     <tr>
+                     <tr class="disNon">
                         <th>ISWC</th>
                         <td>{{$info->iats_code}}</td>
                      </tr>
@@ -313,7 +345,7 @@
                            @endif
                         </td>
                      </tr>
-                     <tr>
+                     <tr class="disNon">
                         <th>SIA By Critical Area </th>
                         <td>
                            @if($areas=CommonFunction::updateMultiSelection('sia_action', 'id',$info->id,'sia_by_area'))
@@ -344,6 +376,21 @@
                         <td>{{$hasEdp=$info->has_edp}}</td>
                      </tr>
                      <tr>
+                        <th>ISWC Document(s)</th>
+                        <td>
+
+                           <?php 
+                           $docs=CommonFunction::getDocs($info->id,'sia_action','file');
+                           ?>                    
+
+                            @foreach($docs as $doc)
+                            <a href="{{URL::to('files/documents/'.$doc->calling_id)}}">{{$doc->doc_name}},</a>
+                             {{ HTML::linkAction('BaseController@permanentDelete', '',array('documents',$doc->id,"#"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;text-align:center','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}   
+                             <br>
+                            @endforeach
+                        </td>
+                     </tr>
+                     <tr>
                         <td colspan="2">
                            <i>Initialized By : {{$info->row_creator}} | 
                            Initialized at : {{$info->created_at}} | 
@@ -370,133 +417,28 @@
       </div>
    </div>
    <!--SMS descripton-->
-   <div class="row" id="SMSDetails">
-      <!-- left column -->
-      <div class="col-md-12">
-         <!-- general form elements -->
-         <div class="box box-primary">
-            <div class="box-header table_toggle expand">
-               <h3 class="box-title"style='color:#367FA9;font-weight:bold;' >SMS Details</h3>
-               <span class='hidden-print man pull-right'>-</span>
-            </div>
-            @if(!$sms)
-            @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'entry'))
-            &nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#entrySms">[Add SMS Details] </a> 
-            @endif
-            @endif
-            <div class="box-body">
-               <div class='disNon'> 
-                  {{$num=0}}
-               </div>
-               <table class="table table-bordered">
-                  <tbody>
-                     @if($sms)
-                     @foreach($sms as $info)	
-                     <tr>
-                        <td colspan="2">
-                           <span class='hidden-print'>
-                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'par_delete'))
-                           {{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+      <!-- show or not sms details button check based on finding mitigate or not -->
+       <?php $no=0;$yes=0;?>
+       @if($findings)
+        
+                     @foreach ($findings as $info) 
+                     <?php $isMitigate=CommonFunction::isMitigate($info->finding_number);?>
+                        @if($isMitigate)
+                           @if($isMitigate->approve!='1')
+                              <?php ++$no;?>
+                           @else 
+                           
                            @endif
-                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'sof_delete'))	
-                           {{ HTML::linkAction('BaseController@softDelete', 'S.D',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
-                           @endif
-                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'approve'))
-                           {{ HTML::linkAction('BaseController@approve', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
-                           {{ HTML::linkAction('BaseController@notApprove', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
-                           @endif
-                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'worning'))	
-                           {{ HTML::linkAction('BaseController@removeWarning', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
-                           {{ HTML::linkAction('BaseController@warning', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
-                           @endif
-                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'update'))
-                           <a data-toggle="modal" data-target="#updateSms{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
-                           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                           </a>
-                           @endif
-                           </span>	
-                        </td>
-                     </tr>
-                     @if($info->approve=='0')
-                     <tr>
-                        <th  colspan='2'> {{AircraftPrimaryInfo::notApproved($info)}}</th>
-                     </tr>
-                     @endif
-                     @if($info->warning=='1')
-                     <tr  >
-                        <th colspan='2'>{{AircraftPrimaryInfo::warning($info)}}	</th>
-                     </tr>
-                     @endif
-                     <tr>
-                        <th class="col-md-3">Hazard Identification</th>
-                        <td>{{$info->hazard_identification}}</td>
-                     </tr>
-                     <tr>
-                        <th>Asses Initial risk</th>
-                        <td>{{$info->initial_risk}}</td>
-                     </tr>
-                     <tr>
-                        <th>Determine Severity</th>
-                        <td>{{$info->determine_severity}}</td>
-                     </tr>
-                     <tr>
-                        <th>Determine Likelihood</th>
-                        <td>{{$info->determine_likelihood}}</td>
-                     </tr>
-                     <tr>
-                        <th>Determine risk [risk matrix] </th>
-                        <td>{{$info->determine_risk}}</td>
-                     </tr>
-                     <tr>
-                        <th>Violation of Safety Standard</th>
-                        <td>{{$info->violation_of_safety_standard}}</td>
-                     </tr>
-                     <tr>
-                        <th>Safety Risk Management</th>
-                        <td>{{$info->safety_risk_management}}</td>
-                     </tr>
-                     <tr>
-                        <th>Final Risk Statement</th>
-                        <td>{{$info->risk_statement}}</td>
-                     </tr>
-                     <tr>
-                        <th>Safety performance indicator (SPI)</th>
-                        <td>{{$info->safety_performance_indicator}}</td>
-                     </tr>
-                     <tr>
-                        <th>Safety performance target (SPT)</th>
-                        <td>{{$info->safety_performance_target}}</td>
-                     </tr>
-                     <tr>
-                        <th>LEI(%)</th>
-                        <td>{{$info->lack_of_effective_implementation}}</td>
-                     </tr>
-                     <tr>
-                        <td colspan="2">
-                           <i>Initialized By : {{$info->row_creator}} | 
-                           Initialized at : {{$info->created_at}} | 
-                           Last Updated By : {{$info->row_updator}} | 
-                           Updated at : {{$info->updated_at}}</i>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               <?php break;?>
-               @endforeach
-               @else 
-               <table class="table table-bordered">
-                  <tbody>
-                     <tr>
-                        <td colspan="2">No SMS Given!
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               @endif
-            </div>
-         </div>
-      </div>
-   </div>
+                        @else 
+                           <?php ++$no;?>
+                        @endif
+                     @endforeach
+
+
+      @endif
+
+      <!-- End show or not sms details button check based on finding mitigate or not -->
+  
    <!--Finding Description -->  
    <div class="row" id="Findings">
       <!-- left column -->
@@ -540,11 +482,15 @@
                         <td>{{$info->target_date}}</td>
                         <td>
                            <?php $isMitigate=CommonFunction::isMitigate($info->finding_number);?>
-                           @if($isMitigate>0)
-                           Yes
+                        @if($isMitigate)
+                           @if($isMitigate->approve!='1')
+                           Pending
                            @else 
-                           Not Yet
+                           Yes
                            @endif
+                        @else 
+                           No
+                        @endif
                         </td>
                         <td class='hidden-print'><a  href="{{URL::to('surveillance/correctiveAction/'.$sia_number.'#'.$info->id)}}">Details</a></td>
                      </tr>
@@ -706,6 +652,142 @@
          </div>
       </div>
    </div>
+   <!-- SMS -->
+    <div class="row" id="SMSDetails">
+      <!-- left column -->
+      <div class="col-md-12">
+         <!-- general form elements -->
+         <div class="box box-primary">
+            <div class="box-header table_toggle expand">
+               <h3 class="box-title"style='color:#367FA9;font-weight:bold;' >SMS Details</h3>
+               <span class='hidden-print man pull-right'>-</span>
+            </div>
+            @if(!$sms)
+               @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'entry') && $no==0)
+               &nbsp &nbsp <a  class="hidden-print"href="#" style="color:green" data-toggle="modal" data-target="#entrySms">[Add SMS Details] </a> 
+               @else 
+                &nbsp &nbsp <a  class="hidden-print"href="#" style="color:#DDD" data-toggle="modal" data-target="#" title="All Finding(s) Are Not Mitigated Yet ">[Add SMS Details] </a> 
+               @endif
+            @endif
+            <div class="box-body">
+               <div class='disNon'> 
+                  {{$num=0}}
+               </div>
+               <table class="table table-bordered">
+                  <tbody>
+                     @if($sms)
+                     @foreach($sms as $info) 
+                     @if(!$approvalInfo)
+                     <tr>
+                        <td colspan="2">
+                           <span class='hidden-print'>
+                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'par_delete'))
+                           {{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                           @endif
+                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'sof_delete')) 
+                           {{ HTML::linkAction('BaseController@softDelete', 'S.D',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+                           @endif
+                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'approve'))
+                           {{ HTML::linkAction('BaseController@approve', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
+                           {{ HTML::linkAction('BaseController@notApprove', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
+                           @endif
+                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'worning')) 
+                           {{ HTML::linkAction('BaseController@removeWarning', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
+                           {{ HTML::linkAction('BaseController@warning', '',array('sia_sms',$info->id,'sms'.$info->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+                           @endif
+                           @if('true'==CommonFunction::hasPermission('sia_sms',Auth::user()->emp_id(),'update'))
+                           <a data-toggle="modal" data-target="#updateSms{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
+                           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                           </a>
+                           @endif
+                           </span>  
+                        </td>
+                     </tr>
+                     @else 
+                     <tr>
+                        <td colspan="2" class="text-right text-danger">Program Closed</td>
+                     </tr>
+                     @endif
+                     @if($info->approve=='0')
+                     <tr>
+                        <th  colspan='2'> {{AircraftPrimaryInfo::notApproved($info)}}</th>
+                     </tr>
+                     @endif
+                     @if($info->warning=='1')
+                     <tr  >
+                        <th colspan='2'>{{AircraftPrimaryInfo::warning($info)}}  </th>
+                     </tr>
+                     @endif
+                     <tr>
+                        <th class="col-md-3">Hazard Identification</th>
+                        <td>{{$info->hazard_identification}}</td>
+                     </tr>
+                     <tr>
+                        <th>Asses Initial risk</th>
+                        <td>{{$info->initial_risk}}</td>
+                     </tr>
+                     <tr>
+                        <th>Determine Severity</th>
+                        <td>{{$info->determine_severity}}</td>
+                     </tr>
+                     <tr>
+                        <th>Determine Likelihood</th>
+                        <td>{{$info->determine_likelihood}}</td>
+                     </tr>
+                     <tr>
+                        <th>Determine risk [risk matrix] </th>
+                        <td>{{$info->determine_risk}}</td>
+                     </tr>
+                     <tr>
+                        <th>Violation of Safety Standard</th>
+                        <td>{{$info->violation_of_safety_standard}}</td>
+                     </tr>
+                     <tr>
+                        <th>Safety Risk Management</th>
+                        <td>{{$info->safety_risk_management}}</td>
+                     </tr>
+                     <tr>
+                        <th>Final Risk Statement</th>
+                        <td>{{$info->risk_statement}}</td>
+                     </tr>
+                     <tr>
+                        <th>Safety performance indicator (SPI)</th>
+                        <td>{{$info->safety_performance_indicator}}</td>
+                     </tr>
+                     <tr>
+                        <th>Safety performance target (SPT)</th>
+                        <td>{{$info->safety_performance_target}}</td>
+                     </tr>
+                     <tr>
+                        <th>LEI(%)</th>
+                        <td>{{$info->lack_of_effective_implementation}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2">
+                           <i>Initialized By : {{$info->row_creator}} | 
+                           Initialized at : {{$info->created_at}} | 
+                           Last Updated By : {{$info->row_updator}} | 
+                           Updated at : {{$info->updated_at}}</i>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <?php break;?>
+               @endforeach
+               @else 
+               <table class="table table-bordered">
+                  <tbody>
+                     <tr>
+                        <td colspan="2">No SMS Given!
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               @endif
+            </div>
+         </div>
+      </div>
+   </div>
    <!--Approval Info-->
    <div class="row" id="ApprovalInfo">
       <!-- left column -->
@@ -738,9 +820,9 @@
                         <th>Designation</th>
                         <th>Approval Date</th>
                         <th>Note</th>
-                        <th class='hidden-print'>Edit</th>
-                        <th class='hidden-print' >S.D</th>
-                        <th class='hidden-print'>P.D</th>
+                        <th class='hidden-print disNon'>Edit</th>
+                        <th class='hidden-print disNon' >S.D</th>
+                        <th class='hidden-print disNon'>P.D</th>
                      </tr>
                      @if($approvalInfo)
                      @foreach($approvalInfo as $info)
@@ -749,19 +831,19 @@
                         <td>{{$info->designation}}</td>
                         <td>{{$info->approval_date}}</td>
                         <td>{{$info->approval_note}}</td>
-                        <td class='hidden-print'>
+                        <td class='hidden-print disNon'>
                            @if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'update'))
                            <a data-toggle="modal" data-target="#approvalForm{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                            </a>
                            @endif
                         </td>
-                        <td class='hidden-print'>
+                        <td class='hidden-print disNon'>
                            @if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'sof_delete'))	
                            {{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
                            @endif
                         </td>
-                        <td class='hidden-print'>
+                        <td class='hidden-print disNon'>
                            @if('true'==CommonFunction::hasPermission('sia_approval',Auth::user()->emp_id(),'par_delete'))
                            {{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
                            @endif

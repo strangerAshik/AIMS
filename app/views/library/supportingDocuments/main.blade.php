@@ -8,6 +8,14 @@ Library Main page,
 
 <section class='content' >
 
+<!--Instruction Start-->
+ <?php 
+$module='e_library';
+ $instructions=CommonFunction::getModuleInstructions($module);?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
+
     <div class="row" style='margin:0px 0px 0px 0px;;'>
                       
 						
@@ -18,7 +26,7 @@ Library Main page,
                             <!-- small box -->
 						<div class="small-box bg-aqua " >
 							<div class="inner">
-								<h4 style='font-weight:bold;'>Add New Supporting Document</h4>
+								<h4 style='font-weight:bold;'>Add Document</h4>
 							</div>
 							
 							<a class="small-box-footer" href="{{URL::to('library/newSupportingDocuments');}}">
@@ -32,7 +40,7 @@ Library Main page,
                             <!-- small box -->
                             <div class="small-box bg-aqua " >
                                 <div class="inner">
-                                    <h4 style='font-weight:bold;'>View Supporting Document</h4>
+                                    <h4 style='font-weight:bold;'>Document List</h4>
                                     
                                 </div>
                              
@@ -42,7 +50,7 @@ Library Main page,
                             </div>
                         </div><!-- ./col -->
                         @endif
-                        @if('true'==CommonFunction::hasPermission('library_report',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('e_library',Auth::user()->emp_id(),'access'))
                         <div class="col-md-4">
                             <!-- small box -->
                             <div class="small-box bg-aqua " >
@@ -51,7 +59,7 @@ Library Main page,
                                    
                                 </div>
                            
-                                <a class="small-box-footer" href="{{URL::to('library/report')}}">
+                                <a class="small-box-footer" href="{{URL::to('report/reportByModuel/e_library')}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

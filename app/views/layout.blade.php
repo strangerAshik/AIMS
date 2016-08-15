@@ -17,7 +17,19 @@
 
 	   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-	   <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+     <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+
+     <script src="{{URL::asset('js/scrollToTop/jquery.scrollToTop.min.js')}}" type="text/javascript"></script>
+     <link href="http://www.jqueryscript.net/css/top.css" rel="stylesheet" type="text/css">
+
+
+     <!-- Data Tables -->
+    <!--  <link href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> -->
+	   <!-- <link href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
+     {{ HTML::style('css/datatables/dataTables.bootstrap.css') }}
+
+     <!-- date picker -->
+     {{ HTML::style('plugin/datepicker/jquery.datetimepicker.css') }}
 	   
      
        
@@ -73,6 +85,11 @@
 		.demo-animals .scientific::after {
 			content: ')';
 		}
+    @media print {
+        a[href]:after {
+          content: none !important;
+        }
+      }
 		</style>
  <!--Text Area Customaize
  <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script> 
@@ -86,6 +103,7 @@
 
     </head>
     <body class="skin-blue">
+    <a href="#top" id="toTop"></a>
 				
         <!-- header logo: style can be found in header.less -->
         <header class="header">
@@ -295,11 +313,38 @@ $(document).ready(function() {
     } );
 } );
 </script>
+<!-- Data Tables -->
+<script src="{{URL::asset('js/plugins/datatables/jquery.dataTables.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('js/plugins/datatables/dataTables.bootstrap.js')}}" type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#examples').DataTable();
+});
+</script>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.min.js" type="text/javascript"></script>
         
-        <!-- AdminLTE App -->
+        <!-- date picker -->
+ <script src="{{URL::asset('plugin/datepicker/jquery.datetimepicker.full.js')}}" type="text/javascript"></script>  
+        <script>
+
+          $.datetimepicker.setLocale('en');
+
+
+          $('.datepicker').datetimepicker({
+            timepicker:false,
+            format:'d F Y'
+
+          });
+
+
+
+      </script>
+
+       <!-- date picker -->
+       
+      <!-- AdminLTE App -->
         <script src="{{URL::asset('js/AdminLTE/app.js')}}" type="text/javascript"></script>
 
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -309,6 +354,10 @@ $(document).ready(function() {
         <script src="{{URL::asset('js/AdminLTE/demo.js')}}" type="text/javascript"></script>
       
 
-	
+	<script type="text/javascript">
+    $(function() {
+         $("#toTop").scrollToTop(1000);
+    });
+</script>
     </body>
 </html>

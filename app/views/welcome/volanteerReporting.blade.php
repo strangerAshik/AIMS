@@ -8,7 +8,7 @@
                             <!-- general form elements -->
                             <div class="box box-primary">
                                 <div class="box-header">
-                                    <h4 class="box-title text-center">Voluntary Reporting</h4>
+                                    <h4 class="box-title text-center">Voluntary & Mandatory Reporting</h4>
                                 </div><!-- /.box-header -->
                                 <!-- form start -->
                                              
@@ -22,9 +22,17 @@
                                             <label for="exampleInputEmail1">Title</label>
                                             <input name="title" class="form-control" id="voluntary_email" placeholder="Title Of Report ">
                                         </div>
+                                        <div class="form-group required">
+                                            <label for="exampleInputEmail1" style="color:red">Category</label>
+                                            <select class="form-control" name="category" required>
+                                                <option value="">Select Reporting Type.....</option>
+                                                <option value="Voluntary Reporting">Voluntary Reporting</option>
+                                                <option value="Mandatory Reporting">Mandatory Reporting</option>
+                                            </select>
+                                        </div>
                                        <div class="form-group">
-                                            <label>Reporting Details</label>
-                                            <textarea name="report" class="form-control" rows="3" placeholder=""></textarea>
+                                            <label style="color:red">Reporting Details</label>
+                                            <textarea name="report" class="form-control" rows="3" placeholder="" required=""></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputFile">File input</label>

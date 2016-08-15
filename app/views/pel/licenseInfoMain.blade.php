@@ -4,7 +4,7 @@
 	<div class="row">
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-aqua " >
+			<div class="small-box bg-blue " >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>General</h4>
 				</div>
@@ -32,7 +32,7 @@
 			@if('true'==CommonFunction::hasPermission('pel_simulator',Auth::user()->emp_id(),'access'))
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-green " >
+				<div class="small-box bg-blue " >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>Simulator</h4>
 						
@@ -48,7 +48,7 @@
 			@if('true'==CommonFunction::hasPermission('pel_ame_log_details',Auth::user()->emp_id(),'access'))	
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-red  " >
+			<div class="small-box bg-blue" >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>AME Log Details</h4>
 				</div>
@@ -62,7 +62,7 @@
 			@if('true'==CommonFunction::hasPermission('pel_atc_log_details',Auth::user()->emp_id(),'access'))
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-yellow" >
+				<div class="small-box bg-blue" >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>ATC Log Details</h4>
 						

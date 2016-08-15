@@ -40,7 +40,7 @@
                                 <h4 style='font-weight:bold;'>Report</h4>
                             </div>
                             
-                            <a class="small-box-footer" href="{{URL::to('surveillance/programList');}}">
+                            <a class="small-box-footer" href="{{URL::to('#');}}">
                                 More info <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>

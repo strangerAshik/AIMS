@@ -41,7 +41,7 @@ Organization landing page,
                         </div>
                         </div><!-- ./col -->
                        {{--  @endif --}}
-                       {{--  @if('true'==CommonFunction::hasPermission('org_admin_list',Auth::user()->emp_id(),'access')) --}}
+                       
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
@@ -54,7 +54,7 @@ Organization landing page,
                             </a>
                         </div>
                         </div><!-- ./col -->
-                       {{--  @endif --}}
+                       
                         @if('true'==CommonFunction::hasPermission('org_admin_list',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
                             <!-- small box -->

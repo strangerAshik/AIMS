@@ -9,7 +9,7 @@
 
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title text-center text-primary">Supporting Documents</h3>
+                                    <h3 class="box-title text-center text-primary"> Documents</h3>
                                 </div><!-- /.box-header -->
                                  <div class="content">
             
@@ -80,24 +80,29 @@
                                                         {{HTML::link('#','No Document Provided')}}
                                                     @endif
                                                     </br></td>
-
-									<td>
-									 @if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'par_delete'))
-										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
-									 @endif
-									</td>
-									<td>
+									  @if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'par_delete'))
+										<td>
+																		
+											{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('lib_suporting_docs',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+										
+										</td>
+										 @endif
 									@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'sof_delete'))
-										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
-									@endif
-									</td>
 									<td>
+									
+										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('lib_suporting_docs', $info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
+									
+									</td>
+									@endif
 									@if('true'==CommonFunction::hasPermission('library_add_new_supporitng_docs',Auth::user()->emp_id(),'update'))
+									
+									<td>
 										 <a data-toggle="modal" data-target="#updateSupportingDocs{{$info->id}}" href='' style='color:green;float:right;padding:5px;'>
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
-									@endif
+									
 									</td>
+									@endif
 									
                                                 
                                            </tr>
@@ -124,7 +129,7 @@
                 <h4 class="modal-title">New Supporting Document</h4>
             </div>
 		<div style='display:none'>	{{$num=$info->id}}</div>>
-				{{--*/$authors=CommonFunction::updateMultiSelection('lib_suporting_doc_authors', 'doc_authors',$num,'doc_authors_name'); /*---}}
+				
 					
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
@@ -187,7 +192,8 @@
 											{{Form::label('doc_series', 'Series', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_series',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'), $info->doc_series ,array('class'=>'form-control',))}}
+														
+														{{Form::text('doc_series',$info->doc_series, array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -197,7 +203,7 @@
 											{{Form::label('doc_edition', 'Edition', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_edition',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_edition,array('class'=>'form-control'))}}
+												{{Form::text('doc_edition',$info->doc_edition, array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -207,7 +213,8 @@
 											{{Form::label('doc_part', 'Part', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_part',array(''=>'--Select Part --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
+												{{Form::text('doc_part',$info->doc_part, array('class' => 'form-control','placeholder'=>''))}}
+											
 												</div>													
 													
 											
@@ -217,7 +224,9 @@
 											{{Form::label('doc_volume', 'Volume', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_volume',array(''=>'--Select Volume --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
+														
+														{{Form::text('doc_volume',$info->doc_volume, array('class' => 'form-control','placeholder'=>''))}}
+											
 												</div>													
 													
 											
@@ -227,7 +236,7 @@
 											{{Form::label('doc_amendment', 'Amendment', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_amendment',array(''=>'--Select Amendment --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),$info->doc_part,array('class'=>'form-control', ))}}
+													{{Form::text('doc_amendment',$info->doc_amendment, array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											

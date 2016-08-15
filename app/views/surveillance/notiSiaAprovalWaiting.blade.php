@@ -5,7 +5,7 @@
 			<div class="com-md-12">
 			<div class="box box-solid">
                                 <div class="box-header">
-                                    <h3 class="box-title">Program : Execution Date Exceed</h3>
+                                    <h3 class="box-title">Surveillance: Approval Pending</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
 					  <div class="box-body table-responsive">
@@ -14,7 +14,7 @@
 	                                        <thead>
 	                                            <tr>
 	                                                <th>No</th>
-	                                                <th>Date</th>    
+	                                                <th class="col-md-1">Date</th>    
 	                                                <th>Organization</th>
 	                                                <th>Event On</th>
 	                                                <th>Team Member</th>
@@ -25,12 +25,45 @@
 	                                        </thead>
 	                                        <tbody>
 	                                        <?php $num=0;?>
+	                                         <?php
+                                        //check whether user has full access notification
+                                         $fullAccess=CommonFunction::hasPermission('sia_notification_full',Auth::user()->emp_id(),'access');?>
                                     	    @foreach ($notApprovalSiaList as $info)  
-                                    	    <?php $datas=CommonFunction::getSiaNumberInfoTest($info); ?>	
-											@foreach ($datas as $data)
-	                                        	<tr>
+
+                                    	    <?php $data=CommonFunction::getSiaNumberInfo($info); ?>	
+                                    	        <?php 
+                                        if($fullAccess=='true')
+                                            $imTeamMember='true';
+
+                                        else{
+                                        		if($data)
+	                                        		$siaNumber=$data->sia_number;
+	                                        	else
+	                                        		$siaNumber='';
+
+                                               //getting member in an array 
+                                                $members=CommonFunction::updateMultiSelection('sia_program', 'sia_number',$siaNumber,'team_members');
+                                               //checking whether member or not 
+                                               $imTeamMember=CommonFunction::isItMe($members,Auth::user()->emp_id());
+                                               }
+                                         ?>
+                                         @if($imTeamMember=='true')   
+										   @if($data)
+										   <?php $action=CommonFunction::actionDetails($data->sia_number);?>
+										   
+	                                        	 <tr   
+	                                        	 	  @if($action->has_edp=='Yes')
+				                                        style="color:red;font-weight: bold;"
+				                                       @elseif($action->has_safety_concern=='Yes')
+				                                        style="color:red"
+				                                       @elseif($action->has_finding=='Yes')
+				                                        style="color:green"
+				                                       @else
+				                                        style=""
+				                                       @endif 
+				                                       >
 	                                        		<td>{{++$num}}</td>
-	                                        		<td>{{$data->sia_number}}</td>
+	                                        		<td>{{$data->date}}</td>
 	                                        		<td>{{$data->org_name}}</td>
 	                                        		<td>{{$data->event}}</td>
 	                                        		<td>
@@ -52,7 +85,11 @@
 	                                        		<td>{{$data->sia_number}}</td>
 	                                        		<td><a href="{{URL::to('surveillance/singleProgram/'.$data->sia_number)}}">View</a></td>
 	                                        	</tr>
-	                                        @endforeach
+	                                        	
+	                                        @endif
+	                                        @endif
+
+	                                        	
 	                                        @endforeach
 	                                        </tbody>
 

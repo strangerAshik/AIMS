@@ -59,7 +59,7 @@
         
         <!-- AdminLTE App -->
         
-        <script src="{{URL::asset('js/AdminLTE/app.js')}}" type="text/javascript"></script>
+       
        
         
         <!-- page script -->

@@ -25,8 +25,26 @@
 	                                        </thead>
 	                                        <tbody>
 	                                        <?php $num=0;?>
+
+	                                    <?php
+	                                    //check whether user has full access notification
+	                                     $fullAccess=CommonFunction::hasPermission('sia_notification_full',Auth::user()->emp_id(),'access');?>
+
+	                                    
                                     	    @foreach ($notExecuted as $info)  
-                                    	    <?php $data=CommonFunction::getSiaNumberInfo($info);?>			
+                                	    <?php $data=CommonFunction::getSiaNumberInfo($info);?>			 <?php 
+                                	    if($fullAccess=='true')
+                                	    	$imTeamMember='true';
+
+                                	    else{
+
+											   //getting member in an array 
+											    $members=CommonFunction::updateMultiSelection('sia_program', 'sia_number',$info,'team_members');
+											   //checking whether member or not 
+											   $imTeamMember=CommonFunction::isItMe($members,Auth::user()->emp_id());
+											   }
+										 ?>
+										 @if($imTeamMember=='true')
 	                                        	<tr>
 	                                        		<td>
 	                                        			{{++$num}}
@@ -51,9 +69,10 @@
                                                 @endif
 	                                        		</td>
 	                                        		<td>{{$data->location}}</td>
-	                                        		<td>{{$data->sia_number}}</td>
+	                                        		<td><a href="{{URL::to('surveillance/singleProgram/'.$data->sia_number)}}">{{$data->sia_number}}</a></td>
 	                                        		<td><a href="{{URL::to('surveillance/singleProgram/'.$data->sia_number)}}">View</a></td>
 	                                        	</tr>
+	                                        	@endif
 	                                        @endforeach
 	                                        </tbody>
 

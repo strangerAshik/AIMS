@@ -41,41 +41,32 @@
                   </div>
                </div>
             </div>
-            <div class="form-group ">
-               {{Form::label('sia_number ', 'SIA/ Tracking Number', array('class' => 'col-xs-4 control-label'))}}
-               <div class="col-xs-6">
-                  <select id="edp_sia_number"  name='sia_number' class="demo-default" placeholder="Select 70000 if program type is Not Planned...">
-                     <option value="{{$info->sia_number}}">{{$info->sia_number}}</option>
-                     @foreach($toDayProgram as $option)
-                     <option value="{{$option}}">{{$option}}</option>
-                     @endforeach
-                  </select>
-               </div>
+            {{Form::hidden('sia_number',$info->sia_number)}}
+          
+         
+            <div class="form-group required">
+                                           
+                                    {{Form::label('finding_number', 'Finding Title', array('class' => 'col-xs-4 control-label'))}}
+                                    <div class="col-xs-6">
+                                    <?php $options=CommonFunction::getFindingListOfThisSia($info->sia_number);?>
+
+                                    {{Form::select('finding_number',$options, $info->finding_number, array('class' => 'form-control demo-default','id'=>'finding_number_sc','placeholder'=>'Select Finding Number','required'=>''))}}
+                                    </div>
+                                    
             </div>
             <div class="form-group ">
-               {{Form::label('finding_number ', 'Finding Number', array('class' => 'col-xs-4 control-label'))}}
-               <div class="col-xs-6">
-                  <select id="finding_number{{$info->id}}"  name='finding_number' class="demo-default" placeholder="Select Finding Number">
-                     <option value="{{$info->finding_number}}">{{$info->finding_number}}</option>
-                     <?php $options=CommonFunction::siaActionListedSiaNumber();?>
-                     @foreach($options as $option)
-                     <option value="{{$option}}">{{$option}}</option>
-                     @endforeach
-                  </select>
-               </div>
-            </div>
-            <div class="form-group ">
-               {{Form::label('sc_number ', 'SC Number', array('class' => 'col-xs-4 control-label'))}}
-               <div class="col-xs-6">
-                  <select id="sc_number{{$info->id}}"  name='sc_number' class="demo-default" placeholder="Select SC Number">
-                     <?php $options=CommonFunction::siaActionListedSiaNumber();?>
-                     <option value="{{$info->sc_number}}">{{$info->sc_number}}</option>
-                     @foreach($options as $option)
-                     <option value="{{$option}}">{{$option}}</option>
-                     @endforeach
-                  </select>
-               </div>
-            </div>
+                                           
+                                 {{Form::label('sc_number ', 'SC Title', array('class' => 'col-xs-4 control-label'))}}
+                                 <div class="col-xs-6">
+                                 
+                                    
+                                 <?php $options=CommonFunction::getScListOfThisSia($info->sia_number);?>
+                                                                  
+                                 {{Form::select('sc_number',$options, $info->sc_number, array('class' => 'form-control demo-default','id'=>'sc_number_edp','placeholder'=>'Select Sc Number',))}}
+                                 </div>
+                                 
+          </div>
+          
             <div class="form-group ">
                {{Form::label('severity_level', 'Severity Level', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">											
@@ -205,13 +196,13 @@
                   {{Form::file('enforcement_action_file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('admin_opinion', 'Admin Opinion', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   {{Form::textarea('admin_opinion',$info->admin_opinion, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('file', 'Uploaded File (Admin Opinion)', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   @if($info->admin_opinion_file!='Null'){{HTML::link('files/edp_legal_admin_opinion_file/'.$info->admin_opinion_file,'Document',array('target'=>'_blank'))}}
@@ -220,19 +211,19 @@
                   @endif
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('file', 'Upload updated File (Admin Opinion)', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   {{Form::file('admin_opinion_file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('legal_opinion', 'Legal Opinion', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   {{Form::textarea('legal_opinion',$info->legal_opinion, array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('file', 'Uploaded File (Legal Opinion)', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   @if($info->legal_opinion_file!='Null'){{HTML::link('files/edp_legal_admin_opinion_file/'.$info->legal_opinion_file,'Document',array('target'=>'_blank'))}}
@@ -241,7 +232,7 @@
                   @endif
                </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group disNon">
                {{Form::label('file', 'Upload updated File (Legal Opinion)', array('class' => 'col-xs-4 control-label'))}}
                <div class="col-xs-6">
                   {{Form::file('legal_opinion_file',array("accept"=>"image/*,application/pdf",'class'=>'fileupload'))}}

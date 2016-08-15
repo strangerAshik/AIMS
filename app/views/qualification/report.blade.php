@@ -1,21 +1,14 @@
-@extends('layoutReport')
+@extends('layout')
 @section('content')
-<section class='content contentWidth'>
+<section class='content'>
+ <!--Tab-->
+ <div class="container">
+  <?php $module='employee';?>
+  @include('commonReport')
+  @yield('report')
+  
  <!-- Main content -->
-                <div class="content">
 
-                    <div class="row col-md-12">
-                       
-
-
-              			
-                  
-              			
-
-             
-
-		      	    </div>
-		        </div><!-- /.content -->
 </section>
 
 

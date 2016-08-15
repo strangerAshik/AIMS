@@ -193,21 +193,7 @@
                                             {{Form::label('role','Role', array('class' => 'col-xs-4 control-label'))}}
                                             
                                              <div class="col-md-7">
-                                            <?php $options=array(
-                                                ''=>'--Select Role For This System--',
-
-                                                'DB Admin'=>'DB Admin',
-                                                'Chief Admin'=>'Chief Admin',
-                                                'Inspector OPS,Airworthiness'=>'Inspector OPS,Airworthiness',
-                                                'Inspector ANS-AGA'=>'Inspector ANS-AGA',
-                                                'Inspector Legal'=>'Inspector Legal',
-                                                'ITS Manager'=>'ITS Manager',                                                
-                                                'Voluntary Reporting Manager'=>'Voluntary Reporting Manager',
-                                                'Program Manager'=>'Program Manager',
-                                                'Service Provider-AOC'=>'Service Provider-AOC',
-                                                'Service Provider-Airport'=>'Service Provider-Airport',
-                                                'Employee'=>'Employee',
-                                            );?>
+                                            <?php $options=CommonFunction::roles();?>
                                             {{Form::select('role', $options ,$info->role ,array('class'=>'form-control'))}}
                                             </div>
 

@@ -171,7 +171,9 @@ class EdpController extends \BaseController {
 			));
 		//file upload
 		//getting mother id
-		 $motherId=DB::table('edp_legal_opinion')->orderBy('id','desc')->first();
+		 $motherId=DB::table('edp_legal_opinion')
+		 ->where('edp_number',Input::get('edp_number'))
+		 ->orderBy('id','desc')->first();
 		 $upload_file=parent::fileUpload('doc','documents');
 		//Save to document table
 			DB::table('documents')->insert(array(

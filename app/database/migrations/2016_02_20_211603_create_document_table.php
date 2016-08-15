@@ -16,12 +16,14 @@ class CreateDocumentTable extends Migration {
 		{
 			$table->increments('id');
 			
+			$table->string('title',1000);
 			$table->string('table_name');
             $table->string('mother_id');
             $table->string('calling_id');
-            $table->string('pdf_title');
-            $table->string('pdf_name');
-            $table->string('pdf_description');
+            $table->string('field_name');
+            $table->string('doc_type');
+            $table->string('doc_name');
+            $table->string('doc_description');
             
             $table->string('creator');
             $table->string('updater');

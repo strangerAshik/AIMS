@@ -52,6 +52,7 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>SIA Number</th>
+                                                <th>Team Member(s)</th>
                                                 <th>Organization</th>
                                                 <th>Safety Concern(s)</th>
                                                 <th>Finding(s)</th>
@@ -65,6 +66,19 @@
                                             <tr>
                                                 <td>{{++$num}}</td>
                                                 <td>{{$info->sia_number}}</td>
+                                                <td>
+                                                     <?php  $members=CommonFunction::updateMultiSelection('sia_program', 'sia_number',$info->sia_number,'team_members');?>
+                                                           @if($members)
+                                                           @if($members!=null)
+                                                                @foreach($members as $key=>$value)
+                                                                    {{$value}},
+                                                                @endforeach
+                                                           
+                                                            @endif
+                                                            @else
+                                                                No Members Added!!
+                                                            @endif
+                                                </td>
                                                 <td>{{$info->organization}}</td>
                                                 <td>
                                                 <?php $sNum=CommonFunction::saftyConsCount($info->sia_number) ?>

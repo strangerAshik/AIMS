@@ -2,7 +2,26 @@
 
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="maintenance" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999">
+   <div class="modal-dialog">
+      <div class="modal-content">
+	  <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               System Under Maintenance
+            </h4>
+         </div>
+         <div class="modal-body">
+			You Can't Login Because Now The System is Under Maintenance.
+		 </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div><!-- Modal -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" 
    aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -40,7 +59,7 @@
 											{{$errors->first('password')}}
 										</div>
 										<div class="form-group">
-											<input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in">
+											<input type="submit" class="btn btn-lg btn-primary btn-block" value="Log In">
 										</div>
 									</div>
 								</div>
@@ -51,7 +70,7 @@
 </div>
 
 <div class='container-fluid' style='color:#fff;background:#357CA5;padding:5px;'  >
-	<p style='padding:13px 0px 0px 99px;' ><span>Copywrite &copy; 2015 Soft Lab BD. All Right Reserved</span><span class="pull-right" style="padding-right:99px;"></span></p> 
+	<p style='padding:13px 0px 0px 99px;' ><span>Civil Aviation Authority, Bangladesh 2015</span><span class="pull-right" style="padding-right:99px;"></span></p> 
 </div>
 <!-- Bootstrap -->
 <!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>-->

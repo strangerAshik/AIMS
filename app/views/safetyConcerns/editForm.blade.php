@@ -260,14 +260,14 @@ var $select = $('#team_members{{$info->id}}').selectize({
 											
                     </div>
 					
-                     <div class='form-group required'>
+                     <div class='form-group disNon'>
                     		{{Form::label('type_of_concern','Type Of Concern', array('class'=>'col-xs-4 control-label'))}}
                     		<div class="col-xs-6">
                     		{{Form::select('type_of_concern',array(
                     		''=>'--Select Concern Type--',
                     		'Safety Concern'=>'Safety Concern',
                     		'Non-Standard Issue'=>'Non-Standard Issue'
-                    		), $sc->type_of_concern ,array('class'=>'form-control','id'=>'category','required'=>''))}}
+                    		), $sc->type_of_concern ,array('class'=>'form-control','id'=>'category'))}}
                     		</div>
                     </div>
 
@@ -598,7 +598,7 @@ $('#finding_number_sc').selectize();
 					
 					<div class="form-group required">
                                         
-											{{Form::label('currective_action', 'Corrective Action', array('class' => 'col-xs-4 control-label','required'=>''))}}
+											{{Form::label('currective_action', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label','required'=>''))}}
 											<div class="col-xs-6">
 											{{Form::textarea('currective_action',$action->currective_action, array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
 											</div>
@@ -607,7 +607,7 @@ $('#finding_number_sc').selectize();
 					
 					<div class="form-group required">
                                            
-											{{Form::label('revived_date', 'Revived Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('revived_date', 'CAP Initiated on', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('revived_date', $dates, $action->revived_date ,array('class'=>'form-control','required'=>''))}}
@@ -632,7 +632,7 @@ $('#finding_number_sc').selectize();
                     </div>
 					<div class="form-group required">
                                         
-											{{Form::label('regulation_mitigation', 'Regulation Mitigation', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation', 'Resolution/Mitigation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('regulation_mitigation',$action->regulation_mitigation, array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
 											</div>
@@ -642,7 +642,7 @@ $('#finding_number_sc').selectize();
 					
 					<div class="form-group required">
                                            
-											{{Form::label('regulation_mitigation_date', 'Regulation Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation_date', 'Regulation/ Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('regulation_mitigation_date', $dates,$action->regulation_mitigation_date ,array('class'=>'form-control','required'=>''))}}
@@ -793,7 +793,7 @@ $(document).ready(function(){
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Update Finalization Info.</h4>
+                <h4 class="modal-title">Edit Safety Concern Finalization</h4>
             </div>
 
             <div class="modal-body">

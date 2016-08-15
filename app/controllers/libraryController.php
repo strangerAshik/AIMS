@@ -11,7 +11,10 @@ class LibraryController extends \BaseController {
 	}
 	//report
 	public function report(){
-		return App::make('SurveillanceController')->report('library');
+		return View::make('library.report')
+		->with('PageName','Report')
+		->with('active','e_library')
+		;
 	}
 	public function reportByDateToDate(){
 		return App::make('SurveillanceController')->reportByDateToDate('library');

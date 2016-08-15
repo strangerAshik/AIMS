@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layoutTable')
 @section('content')
 <section class="content contentWidth">
 <p class="text-center col-md-12">
@@ -20,25 +20,35 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Phase Name</th>
+                                                <th>Title</th>
+                                                <th>Subtitle</th>
                                                 <th>Category</th>
                                                 <th>Total Day(s)</th>
-                                                <th>Weight</th>
+                                                <th>order</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
                                                 <th>View</th>
                                             </tr>
                                         </thead>
                                      
                                         <tbody>
                                          <div style="display: none">{{$num=0;}}</div>
+                                         @foreach($allPhases as $info)
                                        		<tr>
-                                       			<td>1</td>
-                                       			<td>Phase-1</td>
-                                       			<td>AMO6</td>
-                                                <td>60</td>
-                                       			<td>20</td>
+                                       			<td>{{++$num}}</td>
+                                                <td>{{$info->title}}</td>
+                                       			<td>{{$info->subtitle}}</td>
+                                       			<td>{{$info->category_id}}</td>
+                                                <td>{{$info->total_day}}</td>
+                                                <td>{{$info->order}}</td>
+                                                <td><a href="#"  data-toggle="modal" data-target="#edit{{$info->id}}">Edit</a></td>
+                                       			<td>
+                                                     {{ HTML::linkAction('BaseController@permanentDelete', '',array('phase',$info->id,"#"), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;text-align:center','title'=>'Permanent Delete','onclick'=>" return confirm('Wanna Delete?')")) }}     
+                                                </td>
                                        			
-                                       			<td><a href="{{URL::to('certification/phase/1')}}">Details</a></td>
+                                       			<td><a href="{{URL::to('certification/phase/'.$info->id)}}">Details</a></td>
                                        		</tr>
+                                        @endforeach
                                        		
                                         </tbody>
                                        	
@@ -60,44 +70,51 @@
 
             <div class="modal-body"> 
                               
-				{{Form::open(array('url'=>'surveillance/saveProgram','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
+				{{Form::open(array('url'=>'certification/savePhase','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
 				  
+                    {{Form::hidden('id','new')}}
+                    <div class="form-group required">
+                                           
+                                            {{Form::label('title', 'Title', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            {{Form::text('title',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            </div>
+                                            
+                    </div> 
 					
                     <div class="form-group required">
                                            
-											{{Form::label('name', 'Name', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('subtitle', 'Subtitle', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('name',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('subtitle',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div>      
                     <div class="form-group required">
                                         
-											{{Form::label('category', 'Category', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('category_id', 'Category', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											<?php $options=['AMO','ATO','Cargo','Passange-Domestic','Passange-International'] ;?>
-											<select   id="category"   name="category" class="form-control" required>
-												<option value="">Select Category...</option>
-												@foreach($options as $option)
-												<option  value="{{$option}}">{{$option}}</option>
-												@endforeach
-											</select>
+                                            <?php $options=CommonFunction::getOptions('certificate_category');?>
+											
+                                            {{Form::select('category_id',[''=>'Select Category...']+$options,'',array('class'=>'form-control','required'=>''))}}
+
+											
 											</div>
 											
                     </div>
                      <div class="form-group required">
                                            
-                                            {{Form::label('totalDay', 'Total Day(s)', array('class' => 'col-xs-4 control-label'))}}
+                                            {{Form::label('total_day', 'Total Day(s)', array('class' => 'col-xs-4 control-label'))}}
                                             <div class="col-xs-6">
-                                            {{Form::text('totalDay',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            {{Form::text('total_day',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
                                             </div>
                                             
                     </div> 
                      <div class="form-group required">
                                            
-											{{Form::label('weight', 'Weight', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('order', 'Order', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::text('weight',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+											{{Form::text('order',' ', array('class' => 'form-control','placeholder'=>'','required'=>''))}}
 											</div>
 											
                     </div> 
@@ -114,6 +131,79 @@
         </div>
     </div>
 </div>
+
+ @foreach($allPhases as $info)
+     <div class="modal fade" id="edit{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Update Phase</h4>
+            </div>
+
+            <div class="modal-body"> 
+                              
+                {{Form::open(array('url'=>'certification/savePhase','method'=>'post','class'=>'form-horizontal','data-toggle'=>'validator','role'=>'form'))}}
+                  
+                    {{Form::hidden('id',$info->id)}}
+                    <div class="form-group required">
+                                           
+                                            {{Form::label('title', 'Title', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            {{Form::text('title',$info->title, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            </div>
+                                            
+                    </div> 
+                    
+                    <div class="form-group required">
+                                           
+                                            {{Form::label('subtitle', 'Subtitle', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            {{Form::text('subtitle',$info->subtitle, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            </div>
+                                            
+                    </div>      
+                    <div class="form-group required">
+                                        
+                                            {{Form::label('category_id', 'Category', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            <?php $options=[''=>'Select Category...','AOC'=>'AOC','AMO'=>'AMO','ATO'=>'ATO','Cargo'=>'Cargo','Passange-Domestic'=>'Passange-Domestic','Passange-International'=>'Passange-International'] ;?>
+
+                                            {{Form::select('category_id',$options,$info->category_id,array('class'=>'form-control','required'=>''))}}
+
+                                            
+                                            </div>
+                                            
+                    </div>
+                     <div class="form-group required">
+                                           
+                                            {{Form::label('total_day', 'Total Day(s)', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            {{Form::text('total_day',$info->total_day, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            </div>
+                                            
+                    </div> 
+                     <div class="form-group required">
+                                           
+                                            {{Form::label('order', 'Order', array('class' => 'col-xs-4 control-label'))}}
+                                            <div class="col-xs-6">
+                                            {{Form::text('order',$info->order, array('class' => 'form-control','placeholder'=>'','required'=>''))}}
+                                            </div>
+                                            
+                    </div> 
+                   
+                    
+                    <div class="form-group">
+                       
+                            <button type="submit" name='saveAndContinue' value='' class="btn btn-primary btn-lg btn-block">Save</button>
+                       
+                    </div>
+                    </div>
+                    {{Form::close()}}
+            </div>
+        </div>
+    </div>
+ @endforeach
 
 
 </section>

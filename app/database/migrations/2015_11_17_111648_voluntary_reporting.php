@@ -19,6 +19,7 @@ class VoluntaryReporting extends Migration {
 		
 			$table->string('email');
 			$table->string('title',800);
+			$table->string('category');
 			$table->string('report',5000);
 			$table->string('file');
 			

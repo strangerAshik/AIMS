@@ -15,6 +15,22 @@
 				  
 				{{Form::hidden('id',$info->id)}}
 				{{Form::hidden('sia_number',$info->sia_number)}}
+					<div class="form-group">
+                                           
+											{{Form::label('related_sia', 'Related Pevious SIA', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('related_sia',$info->related_sia, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                    </div>
+					<div class="form-group">
+                                           
+											{{Form::label('certificate_number', 'Certificate Number', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('certificate_number',$info->certificate_number, array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                    </div>
 					
                     <div class="form-group required">
                                            
@@ -27,6 +43,19 @@
 												<option value="{{$organization}}">{{$organization}}</option>
 												@endforeach
 											</select>
+											</div>
+											
+                    </div>
+                    <div class="form-group required">
+                                        
+											{{Form::label('sia_by_area ', 'SIA Area', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+
+												<?php $options=CommonFunction::getOptions('SIA_By_Area');?>
+											
+											{{Form::select('sia_by_area[]',$options,unserialize($info->sia_by_area),array('class'=>'','multiple'=>'','id'=>'sia_by_area_e','required'=>''))}}
+											
+																						
 											</div>
 											
                     </div>
@@ -164,6 +193,7 @@
 	//$('#org_name').selectize();
 	$('#event').selectize();
 	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+	$('#sia_by_area_e').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 	//multiple selection from options
 var eventHandler = function(name) {
 					return function() {
@@ -171,6 +201,7 @@ var eventHandler = function(name) {
 						$('#log').append('<div><span class="name">' + name + '</span></div>');
 					};
 				};
+	
 	var $select = $('#team_members').selectize({
 					create          : true,
 					onChange        : eventHandler('onChange'),
@@ -458,7 +489,7 @@ $(document).ready(function(){
 											</div>
 											
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group disNon">
                                            
 											{{Form::label('iats_code','ISWC', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -613,7 +644,7 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 											</div>
 											
                     </div>
-					<div class="form-group ">
+					<div class="form-group disNon">
                                         
 											{{Form::label('sia_by_area ', 'SIA by Critical Area ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -685,6 +716,17 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 										
 									</div>
 	            </div>
+	            <div class="form-group ">
+	                                           
+									{{Form::label('file', 'New ISWC File', array('class' => 'col-xs-4 control-label'))}}
+												
+	                                <div class="col-xs-6">
+										
+											{{Form::file('file[]',array("accept"=>"image/*,application/pdf",'class'=>'fileupload','multiple'=>'multiple'))}}
+
+											
+									</div>
+	                </div>
 					
 				
                     <div class="form-group">
@@ -858,9 +900,10 @@ var $select = $('#locations').selectize({
                     </div>
 					<div class="form-group  ">
                                         
-											{{Form::label('regulation_mitigation', 'Regulation Mitigation', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation', 'Resolution /Mitigation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('regulation_mitigation',$action->regulation_mitigation, array('class' => 'form-control','placeholder'=>'','size'=>'4x1',''=>''))}}
+											<span style="color: red">Note: Must Provide After Completion of CAP</span>
 											</div>
 											
                     </div>
@@ -868,7 +911,7 @@ var $select = $('#locations').selectize({
 					
 					<div class="form-group ">
                                            
-											{{Form::label('regulation_mitigation_date', 'Regulation Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation_date', 'Resolution/ Mitigation Date (Projected/ Current)', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 											<?php $date=CommonFunction::date($action->regulation_mitigation_date); ?>
 														<div class="col-xs-2">
@@ -968,7 +1011,7 @@ $('#').selectize();
                     </div>
                     <div class="form-group required">
                                            
-											{{Form::label('finding', 'Finding', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('finding', 'Finding Details', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('finding',$info->finding, array('required'=>'','class' => 'form-control','placeholder'=>'',''=>'','size'=>'4x1'))}}
 											
@@ -979,7 +1022,7 @@ $('#').selectize();
                     
 					 <div class="form-group required">
 	                                           
-												{{Form::label('date', 'Target Date', array('class' => 'col-xs-4 control-label'))}}
+												{{Form::label('date', 'Target Date for Resolution', array('class' => 'col-xs-4 control-label'))}}
 												
 														<div class="row">
 															<div class="col-xs-2">

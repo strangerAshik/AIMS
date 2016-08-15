@@ -57,8 +57,8 @@ class helpFaqController extends \BaseController {
 		$question=DB::table('help_faq_question')
         ->leftJoin('help_faq_ans', 'help_faq_question.id', '=', 'help_faq_ans.question_id')
         ->where('help_faq_question.soft_delete','<>','1')
-        ->select('help_faq_question.row_creator','help_faq_question.id', 'help_faq_question.question', 'help_faq_question.created_at', 'help_faq_question.category', 'help_faq_ans.ans')
-       // ->where('soft_delete','<>','1')
+        ->select('help_faq_question.*', 'help_faq_ans.ans')
+        ->orderBy('help_faq_question.id','desc')
         ->get();
 
 		return View::make('helpFaq.faqBank')
@@ -79,7 +79,9 @@ class helpFaqController extends \BaseController {
 	 */
 	public function report()
 	{
-		return App::make('SurveillanceController')->report('helpFaq');
+		return View::make('helpFaq.report')
+		->with('PageName','Report')
+		->with('active','help_faq');
 	}
 
 

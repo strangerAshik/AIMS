@@ -1,16 +1,23 @@
 @extends('layout')
 @section('content')
 
-<section class='content widthController' >
+<section class='content' >
 
-    
+<!--Instruction Start-->
+ <?php 
+ $module="personnel_licensing";
+ $instructions=CommonFunction::getModuleInstructions($module);
+ ?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
                       
 						
 	<div class="row">
 			@if('true'==CommonFunction::hasPermission('pel_list',Auth::user()->emp_id(),'access'))			
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-aqua " >
+			<div class="small-box bg-blue " >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>PEL List</h4>
 				</div>
@@ -55,7 +62,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-aqua " >
+			<div class="small-box bg-blue" >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>Academic Qualification</h4>
 				</div>
@@ -85,7 +92,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-yellow" >
+				<div class="small-box bg-blue" >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>Language Proficiency</h4>
 						
@@ -99,7 +106,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-maroon" >
+				<div class="small-box bg-blue" >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>Designee Records</h4>
 						
@@ -126,7 +133,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-purple" >
+			<div class="small-box bg-blue" >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>License Info.</h4>
 				</div>
@@ -139,7 +146,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-green " >
+				<div class="small-box bg-blue " >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>License History</h4>
 						
@@ -153,7 +160,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-aqua " >
+			<div class="small-box bg-blue " >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>Training Details</h4>
 				</div>
@@ -166,7 +173,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-			<div class="small-box bg-red  " >
+			<div class="small-box bg-blue  " >
 				<div class="inner">
 					<h4 style='font-weight:bold;'>Logbook Review</h4>
 				</div>
@@ -179,7 +186,7 @@
 		
 			<div class="col-lg-3 col-xs-6 col-md-3 col-md-3">
 				<!-- small box -->
-				<div class="small-box bg-yellow " >
+				<div class="small-box bg-blue " >
 					<div class="inner">
 						<h4 style='font-weight:bold;'>Comprehensive View</h4>
 						
@@ -200,7 +207,7 @@
 						
 					</div>
 				  
-					<a class="small-box-footer" href="{{URL::to('#')}}">
+					<a class="small-box-footer" href="{{URL::to('report/reportByModuel/personnel_licensing')}}">
 						More info <i class="fa fa-arrow-circle-right"></i>
 					</a>
 				</div>

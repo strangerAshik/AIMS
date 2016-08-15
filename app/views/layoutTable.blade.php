@@ -124,6 +124,9 @@
                 $("#resolved").dataTable();               
                 $("#example3").dataTable();               
                 $("#example4").dataTable();               
+                $("#faqhelp").dataTable( {
+                    "aaSorting": [[0, "desc"]]
+                } );               
             });
         </script>
 

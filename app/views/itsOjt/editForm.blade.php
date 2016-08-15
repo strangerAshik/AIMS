@@ -283,7 +283,7 @@ var eventHandler = function(name) {
                     </div>
                     <div class="form-group ">
                                            
-											{{Form::label('associative_faa_job_task_no', 'Associative CAA Job Task #', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('associative_faa_job_task_no', 'Associated CAA Job Task #', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::text('associative_faa_job_task_no',$info->associative_faa_job_task_no, array('class' => 'form-control','placeholder'=>''))}}
 											</div>

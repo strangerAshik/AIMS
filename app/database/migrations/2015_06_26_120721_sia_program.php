@@ -16,7 +16,10 @@ class SiaProgram extends Migration {
 		{
 			$table->increments('id');
 			$table->string('sia_number');
+			$table->string('related_sia');
+			$table->string('certificate_number');
 			$table->string('org_name');
+			$table->string('sia_by_area',1000);
 			$table->string('event');
 			$table->longText('specific_purpose');
 			$table->string('date');

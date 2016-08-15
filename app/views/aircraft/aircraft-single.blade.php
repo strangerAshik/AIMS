@@ -14,12 +14,20 @@
 </span>
 @endif
 {{--End Menu--}}
+<!-- Cheching Am I assinged Inspector -->
+ <?php 
+ foreach($primaryData as $primary){
+	$members=unserialize($primary->assigned_inspector);
+	$imTeamMember=CommonFunction::isItMe($members,Auth::user()->emp_id());
+}
+//echo $imTeamMember;
+?>
 
 {{--Aircraft Primary Information--}}
  <div class="row" >
                       
 		  @foreach($primaryData as $primary)
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="primaryAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header  table_toggle expand">
@@ -43,7 +51,7 @@
 							  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
 									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_primary_info',$primary->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 							   @endif
-									
+						@if($imTeamMember=='true')
 							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
                                   
 									{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_primary_info',$primary->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -55,6 +63,7 @@
 									{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_primary_info',$primary->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 									{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_primary_info',$primary->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 							@endif
+						@endif
 							@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 									 <a data-toggle="modal" data-target="#editPrimaryInfoForm{{$primary->id}}" href='' style='color:green;float:right;padding:5px;'>
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -78,7 +87,18 @@
                                 <td class="col-md-3">									
 									Assigned Inspector
 								</td>
-                                <td>{{$primary->assigned_inspector}}</td>
+                                <td>
+                               
+									 @if($inspector=CommonFunction::updateMultiSelection('aircraft_primary_info', 'id',$primary->id,'assigned_inspector'))
+			                           @if($inspector!=null)
+			                           @foreach($inspector as $key=>$value)
+			                           {{ $value}},
+			                           @endforeach
+			                           @endif
+			                           @else
+			                           No Inspector Added!!
+			                           @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td class="col-md-3">									
@@ -205,7 +225,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="tcAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -237,6 +257,7 @@
 									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_tc_info',$tc->id,$tc->id), array('class' => 'glyphicon glyphicon-trash hidden-print','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif	
 									
+							@if($imTeamMember=='true')
 								 @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 									{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_tc_info',$tc->id,$tc->id), array('class' => 'glyphicon glyphicon-ok hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
@@ -247,6 +268,7 @@
 									{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_tc_info',$tc->id,$tc->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:green;float:right;padding:5px;')) }}
 									{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_tc_info',$tc->id,$tc->id), array('class' => 'glyphicon glyphicon-bell hidden-print','style'=>'color:red;float:right;padding:5px;')) }}
 									@endif
+							@endif
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 
 									 <a data-toggle="modal" data-target="#editTCIForm{{$tc->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -429,7 +451,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="stcAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -450,7 +472,7 @@
 					
 					   <tbody>						
                          <tr>
-							<th colspan='2'>TC Information #{{++$num}} 
+							<th colspan='2'>STC Information #{{++$num}} 
 							 <span class='hidden-print'>
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'par_delete'))
 
@@ -459,6 +481,7 @@
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))	
 									{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_stc_info',$stc->id,$stc->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 								@endif
+								@if($imTeamMember=='true')
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 									{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_stc_info',$stc->id,$stc->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -468,6 +491,7 @@
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))	
 									{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_stc_info',$stc->id,$stc->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 									{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_stc_info',$stc->id,$stc->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+								@endif
 								@endif
 								@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 									<a data-toggle="modal" data-target="#editSTCForm{{$stc->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -590,7 +614,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="exemptionAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -620,6 +644,7 @@
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_exemption_info',$exemption->id,$exemption->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 						
 						@endif
+						@if($imTeamMember=='true')
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_exemption_info',$exemption->id,$exemption->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -630,6 +655,7 @@
 						
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_exemption_info',$exemption->id,$exemption->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_exemption_info',$exemption->id,$exemption->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+						@endif
 						@endif
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 
@@ -727,7 +753,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="registrationAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -757,6 +783,7 @@
 						
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_registration_info',$registration->id,$registration->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					  @endif
+					@if($imTeamMember=='true')
 					 @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_registration_info',$registration->id,$registration->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -768,6 +795,7 @@
 						
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_registration_info',$registration->id,$registration->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_registration_info',$registration->id,$registration->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+					@endif
 					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 						 <a data-toggle="modal" data-target="#editRegistrationInfoForm{{$registration->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -926,9 +954,9 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="airworthinessAprovalWaiting">
                             <!-- general form elements -->
-                            <div class="box box-primary ">
+                            <div class="box box-primary">
 							 <div class="box-header table_toggle expand">
 									<h3 class="box-title">Aircraft Airworthiness Information</h3>
 									<div class="man pull-right">-</div>
@@ -955,6 +983,7 @@
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_airworthiness_info',$airworthiness->id,$airworthiness->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					    @endif
+					@if($imTeamMember=='true')
 					 @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_airworthiness_info',$airworthiness->id,$airworthiness->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -964,6 +993,7 @@
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_airworthiness_info',$airworthiness->id,$airworthiness->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_airworthiness_info',$airworthiness->id,$airworthiness->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+					@endif
 					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 						 <a data-toggle="modal" data-target="#editACForm{{$airworthiness->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -1116,7 +1146,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="caaAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -1146,6 +1176,7 @@
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_caa_approval_info',$approval->id,$approval->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					
 					  @endif
+					@if($imTeamMember=='true')
 					 @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_caa_approval_info',$approval->id,$approval->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -1157,6 +1188,7 @@
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_caa_approval_info',$approval->id,$approval->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_caa_approval_info',$approval->id,$approval->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 						@endif
+				   @endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 
 						 <a data-toggle="modal" data-target="#editApprovalForm{{$approval->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -1257,7 +1289,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="ownerAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -1286,6 +1318,7 @@
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_owner_info',$owner->id,$owner->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 						
 					  @endif
+					  @if($imTeamMember=='true')
 					  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_owner_info',$owner->id,$owner->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -1296,6 +1329,7 @@
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_owner_info',$owner->id,$owner->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_owner_info',$owner->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 						@endif
+					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 						<a data-toggle="modal" data-target="#editOwnerForm{{$owner->id}}" href='' style='color:green;float:right;padding:5px;'>
 							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -1429,7 +1463,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="lesseeAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -1456,6 +1490,7 @@
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))	
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_lessee_info',$lessee->id,$lessee->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					  @endif
+					@if($imTeamMember=='true')
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_lessee_info',$lessee->id,$lessee->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -1466,6 +1501,7 @@
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_lessee_info',$lessee->id,$lessee->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_lessee_info',$lessee->id,$lessee->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 					 @endif
+					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))
 
 						 <a data-toggle="modal" data-target="#editLesseeForm{{$lessee->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -1595,7 +1631,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="insurerAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -1622,6 +1658,7 @@
 						@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'sof_delete'))
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_insurer_info',$insurer->id,$insurer->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					  @endif
+					  @if($imTeamMember=='true')
 					  @if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))
 
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_insurer_info',$insurer->id,$insurer->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
@@ -1631,6 +1668,7 @@
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))	
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_insurer_info',$insurer->id,$insurer->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_insurer_info',$insurer->id,$insurer->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+					@endif
 					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))	
 						 <a data-toggle="modal" data-target="#editInsurerForm{{$insurer->id}}" href='' style='color:green;float:right;padding:5px;'>
@@ -1778,7 +1816,7 @@
  <div class="row" >
                         
 		
-                 <div class="col-md-12">
+                 <div class="col-md-12" id="equipmentReviewAprovalWaiting">
                             <!-- general form elements -->
                             <div class="box box-primary ">
 							 <div class="box-header table_toggle expand">
@@ -1808,6 +1846,7 @@
 
 						{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('aircraft_equipment_review_info',$equipment->id,$equipment->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 					 @endif
+					@if($imTeamMember=='true')
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'approve'))	
 						{{ HTML::linkAction('AircraftController@approve', '',array('aircraft_equipment_review_info',$equipment->id,$equipment->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 						
@@ -1816,6 +1855,7 @@
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'worning'))		
 						{{ HTML::linkAction('AircraftController@removeWarning', '',array('aircraft_equipment_review_info',$equipment->id,$equipment->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 						{{ HTML::linkAction('AircraftController@warning', '',array('aircraft_equipment_review_info',$equipment->id,$equipment->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
+					@endif
 					@endif
 					@if('true'==CommonFunction::hasPermission('aircraft',Auth::user()->emp_id(),'update'))	
 						 <a data-toggle="modal" data-target="#editEquipmentReviewForm{{$equipment->id}}" href='' style='color:green;float:right;padding:5px;'>

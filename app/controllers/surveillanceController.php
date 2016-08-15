@@ -239,7 +239,35 @@ class SurveillanceController extends \BaseController {
 
 		;
 	}
-	public function reportByDateToDate($module='surveillance'){
+	public function reportChart($fileName,$active){
+		return View::make('reportBankChart/'.$fileName)
+		->with('PageName','Chart Report')
+		->with('fileName',$fileName)
+		->with('active',$active)
+
+		->with('dates',parent::dates())
+		->with('toDay',date("d F Y"))
+		->with('months',parent::months())
+		->with('years_from',parent::years_from())
+		->with('years',parent::years())
+
+		->with('from','1 January '.date('Y'))
+		->with('to',date('d F Y'))
+
+		->with('from_Date','1')
+		->with('fromMonth','January')
+		->with('fromYear', date('Y'))
+
+		->with('to_Date',date('d'))
+		->with('toMonth',date('F'))
+		->with('toYear',date('Y'))
+
+		->with('fromDate',date('Y').'-01-01')
+		->with('toDate',date('Y-m-d'))
+		;
+	}
+	public function reportByDateToDate(){
+		
 		$fromDate=Input::get('from_date').' '.Input::get('from_month').' '.Input::get('from_year');
 		$timestamp = strtotime($fromDate);
 		$fromDate =date('Y-m-d', $timestamp);
@@ -247,11 +275,13 @@ class SurveillanceController extends \BaseController {
 		$toDate=Input::get('to_date').' '.Input::get('to_month').' '.Input::get('to_year');
 		$timestamp = strtotime($toDate);
 		$toDate =date('Y-m-d', $timestamp);
-
+        $fileName=Input::get('fileName');
+        $active=Input::get('active');
 		//$thisYear=Input::get('thisYear');
-		return View::make($module.'.report')
-		->with('PageName','Report')
-		->with('active','sia')
+		return View::make('reportBankChart/'.$fileName)
+		->with('PageName','Chart Report')
+		->with('fileName',$fileName)
+		->with('active',$active)
 		->with('dates',parent::dates())
 		->with('toDay',date("d F Y"))
 		->with('months',parent::months())
@@ -273,6 +303,27 @@ class SurveillanceController extends \BaseController {
 		->with('toDate',$toDate)
 
 		;
+	}
+	protected function multiFileUpload($tableName,$fieldName,$files,$docType,$motherId){
+					$destinationPath = 'files/documents';
+						   
+					foreach ($files as $file) {
+						$orginalName=$file->getClientOriginalName();
+						$filename =$orginalName.'-'.time().'.'.$file->getClientOriginalExtension();
+                 		$upload_success = $file->move($destinationPath, $filename);
+                 		
+                 		 DB::table('documents')->insert(array(
+                        'table_name'=>$tableName,
+                        'mother_id'=>$motherId,
+                        'calling_id'=>$filename,
+                        'field_name'=>$fieldName,
+                        'doc_type'=>$docType,
+                        'doc_name'=>$orginalName,
+
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                    ));
+					}
 	}
 
 	public function saveAction(){
@@ -297,10 +348,11 @@ class SurveillanceController extends \BaseController {
 		$existance=DB::table('sia_action')->where('sia_number',Input::get('sia_number'))->count();
 		//Insert data
 		if($existance==0){
+			$siaNumber=Input::get('sia_number',' ');
 		DB::table('sia_action')->insert(
 					array(
 							'program_type'=>Input::get('program_type',' '),
-							'sia_number'=>Input::get('sia_number',' '),
+							'sia_number'=>$siaNumber,
 							'team_members'=>$team_members,
 							'event'=>$event,
 							'objective'=>Input::get('objective',' '),
@@ -352,6 +404,22 @@ class SurveillanceController extends \BaseController {
 							'updated_at'=>date('Y-m-d H:i:s')
 						)
 				);
+		//Multifile upload							
+			$tableName='sia_action';							
+			$fieldName='file';
+			$files=Input::file($fieldName);
+			$docType='pdf';
+			$num=0;
+			$motherId=DB::table('sia_action')
+					->where('sia_number',$siaNumber)
+					->pluck('id');
+			//call upload function 
+			if(Input::hasFile($fieldName))
+			$upload=$this->multiFileUpload($tableName,$fieldName,$files,$docType,$motherId);
+
+
+
+
 		//return Redirect::back()->with('message','Action is Saved!');
 		return Redirect::to(URL::previous() . "#ActionDetails")->with('message', 'Action is Saved!');
 		}
@@ -475,13 +543,26 @@ class SurveillanceController extends \BaseController {
 							'updated_at'=>date('Y-m-d H:i:s')
 						)
 				);
+		//Multifile upload							
+			$tableName='sia_action';							
+			$fieldName='file';
+			$files=Input::file($fieldName);
+			$docType='pdf';
+			$num=0;
+			$motherId=$id;
+			//call upload function 
+			
+			if(Input::hasFile('file'))
+			$upload=$this->multiFileUpload($tableName,$fieldName,$files,$docType,$motherId);
+
 		//return Redirect::back()->with('message','Action is Updated!');
 		return Redirect::to(URL::previous() . "#ActionDetails")->with('message', 'Action is Updated!');
 	}
 
 	public function newProgram(){
+		$orgName=CommonFunction::companySetupOrgName()->org_name;
 		$organizations=DB::table('users')->lists('organization');
-		$inspectors=DB::table('users')->where('organization','CAAB HQ')->orderBy('emp_id')->get();
+		$inspectors=DB::table('users')->where('organization',$orgName)->orderBy('emp_id')->get();
 		
 		$prgramList=DB::table('sia_program')->where('soft_delete','<>','1')->orderBy('created_at','desc')->paginate(10);
 		return View::make('surveillance.newProgram')
@@ -508,10 +589,15 @@ class SurveillanceController extends \BaseController {
 
 
 		$team_members=serialize(Input::get('team_members'));
+		$created_at=date('Y-m-d H:i:s');
+		$siaNumber=Input::get('sia_number',' ');
 		$save=DB::table('sia_program')->insert(
 					array(
-							'sia_number'=>Input::get('sia_number',' '),
+							'sia_number'=>$siaNumber,
+							'related_sia'=>trim(Input::get('related_sia',' ')),
+							'certificate_number'=>trim(Input::get('certificate_number',' ')),
 							'org_name'=>Input::get('org_name',' '),
+							'sia_by_area'=>serialize(Input::get('sia_by_area',' ')),
 							'event'=>Input::get('event',' '),
 							'specific_purpose'=>Input::get('specific_purpose',' '),
 							'date'=>$date,
@@ -525,10 +611,11 @@ class SurveillanceController extends \BaseController {
 							'row_updator'=>Auth::user()->getName(),
 							'soft_delete'=>'0',
 							'approve'=>'1',
-							'created_at'=>date('Y-m-d H:i:s'),
+							'created_at'=>$created_at,
 							'updated_at'=>date('Y-m-d H:i:s')
 						)
 				);
+		
 		if($save==true)
 		return Redirect::back()->with('message','Program Saved!');
 		else
@@ -548,7 +635,10 @@ class SurveillanceController extends \BaseController {
 		DB::table('sia_program')->where('id',Input::get('id'))->update(
 					array(
 							
+							'related_sia'=>Input::get('related_sia'),
+							'certificate_number'=>Input::get('certificate_number'),
 							'org_name'=>Input::get('org_name'),
+							//'sia_by_area'=>serialize(Input::get('sia_by_area')),
 							'event'=>Input::get('event'),
 							'specific_purpose'=>Input::get('specific_purpose'),
 							'date'=>$date,
@@ -760,6 +850,8 @@ class SurveillanceController extends \BaseController {
 
 				'row_creator'=>Auth::user()->getName(),
 				'row_updator'=>Auth::user()->getName(),
+				'created_at'=>date('Y-m-d H:i:s'),			
+				'updated_at'=>date('Y-m-d H:i:s'),	
 				'approve'=>'0',
 				'warning'=>0,
 				'soft_delete'=>0,
@@ -788,7 +880,9 @@ class SurveillanceController extends \BaseController {
 				'regulation_mitigation'=>Input::get('regulation_mitigation'),
 				'regulation_mitigation_date'=>$regulation_mitigation_date,
 				'corrective_action_file'=>$corrective_action_file,				
-				'row_updator'=>Auth::user()->getName()				
+				
+				'row_updator'=>Auth::user()->getName()	,
+				'updated_at'=>date('Y-m-d H:i:s')		,	
 			));
 		
 		
@@ -813,7 +907,7 @@ class SurveillanceController extends \BaseController {
 			'user_id'=>Auth::User()->emp_id(),
 			'follow_up'=>Input::get('follow_up',' '),
 			'follow_up_file'=>$follow_up_file,
-			'chat_time'=>time('A',' '),
+			'chat_time'=>date('Y-m-d H:i:s'),
 			'row_creator'=>Auth::user()->getName(),
 			'soft_delete'=>0,
 			));
@@ -962,6 +1056,42 @@ class SurveillanceController extends \BaseController {
 		return Redirect::back()->with('message','Finding Saved!');
 	}
 /*Notification board of SIA view page*/
+   //Count associate with me
+   protected  function countMyAssociatedSia($sias){
+
+			 $myNotice=0;
+			 foreach ($sias as $sia) {
+			 	
+			 	//get teammembers
+			 	 $members=CommonFunction::updateMultiSelection('sia_program', 'sia_number',$sia,'team_members');
+			 	$emp_id=Auth::user()->emp_id();
+
+			 	//
+			 	 $teamMembers=[];
+				 $existance=0;
+				 if($members!=null){
+				    foreach ($members as $key => $value) {
+				       if (($pos = strpos($value, "-")) !== FALSE) { 
+				            $teamMembers[] = substr($value, $pos+1); 
+				        }
+				    }   
+
+				    }
+				  
+				  if (in_array($emp_id,$teamMembers))
+				   $myNotice++;
+			 }
+			 return $myNotice;
+   }
+   protected function getSiaList($keys,$tableName,$columnName){
+   	$siaHolderArray=[];
+		 	  		foreach ($keys as $key) {
+		 	  			$sia=DB::table($tableName)->where($columnName,$key)->pluck('sia_number');
+		 	  			$siaHolderArray[]=$sia;
+		 	  		}
+
+	return $siaHolderArray;
+   }
 	
 	public function noticeBoard(){
 		// Program : Execution Date Exceed
@@ -969,6 +1099,9 @@ class SurveillanceController extends \BaseController {
 			 $executedSiaNumber=DB::table('sia_action')->lists('sia_number');
 			 $notExecuted=array_diff($totalSiaNumber,$executedSiaNumber);
 			 $numberOfNotExecutedSia=count($notExecuted);
+			 //my associated sias
+			 $myNoticeNumberOfNotExecutedSia=$this->countMyAssociatedSia($notExecuted);
+
 		//SIA : Finding Target Time Exceed
 		 	//list of finding 
 		 	  $findingList=DB::table('sia_findings')->lists('finding_number');
@@ -991,12 +1124,22 @@ class SurveillanceController extends \BaseController {
 		 	  }
 		 	 //count number 
 		 	  $exceedDateFindingNumbers=count($exceedDateArray);
+		 	  //my associated Findings
+		 	  	//get sia list
+		 	  		$siaNumberofExceedDateFindingNumbers=[];
+		 	  		foreach ($exceedDateArray as $findingNumber) {
+		 	  			$exceedDateFindingNumber=DB::table('sia_findings')->where('finding_number',$findingNumber)->pluck('sia_number');
+		 	  			$siaNumberofExceedDateFindingNumbers[]=$exceedDateFindingNumber;
+		 	  		}
+		 	  	//my associated sia
+			 		$myNoticeFindingDateExceed=$this->countMyAssociatedSia($siaNumberofExceedDateFindingNumbers);
+
 		
 		//SC : Safety Concern Target Time Exceed
 		 	  //safety concern list
-		 	 	 $scList=DB::table('sc_safety_concern')->lists('safety_issue_number');
+		 	 	  $scList=DB::table('sc_safety_concern')->lists('safety_issue_number');
 		 	 //Corrective Action sc list
-		 	 	 $correctiveActionScList=DB::table('sc_corrective_action')->lists('safety_issue_number');
+		 	 	  $correctiveActionScList=DB::table('sc_corrective_action')->lists('safety_issue_number');
 		 	 //diff number
 		 	 	 $scExceedDateArray=[];
 		 	 	 $notGivenCorrActionList=array_diff($scList,$correctiveActionScList);
@@ -1008,7 +1151,17 @@ class SurveillanceController extends \BaseController {
 			 	  	 		$scExceedDateArray[]=$exceedDate;
 			 	  	 }
 		 	 	 }
+
 		 	 	 $exceedDateScNumbers=count($scExceedDateArray);
+		 	 	//my associated sc
+		 	  	//get sia list
+		 	  		$siaNumberofExceedDateSc=[];
+		 	  		foreach ($scExceedDateArray as $scNumber) {
+		 	  			$exceedDateScSiaNumbers=DB::table('sc_safety_concern')->where('safety_issue_number',$scNumber)->pluck('sia_number');
+		 	  			$siaNumberofExceedDateSc[]=$exceedDateScSiaNumbers;
+		 	  		}
+		 	  	//my associated sia
+			 		$myNoticeScDateExceed=$this->countMyAssociatedSia($siaNumberofExceedDateSc);
 		//EDP:Waiting for approval
 		 	 	//EDP list of legal
 		 	 	 $edpLegalList=DB::table('edp_legal_opinion')->lists('edp_number');
@@ -1018,6 +1171,34 @@ class SurveillanceController extends \BaseController {
 		 	 	 $notApproveEdp=array_diff($edpLegalList, $edpLegalListApproval);
 
 		 	 	 $pendingApproveEdpNumber=count($notApproveEdp);
+
+		 	 	 //my associated EDP
+		 	  	//get sia list
+		 	  		$siaNumberofWaitingForApproval=[];
+		 	  		foreach ($notApproveEdp as $edpNumber) {
+		 	  			$edpApprovalWaitingSiaNumbers=DB::table('edp_primary')->where('edp_number',$edpNumber)->pluck('sia_number');
+		 	  			$siaNumberofWaitingForApproval[]=$siaNumberofWaitingForApproval;
+		 	  		}
+		 	  	//my associated sia
+			 		$myNoticeEdpWaitingForApproval=$this->countMyAssociatedSia($siaNumberofExceedDateSc);
+		//EDP:Legal Opinion pending
+			 	//total edp list
+			 		$edpTotal=DB::table('edp_primary')->lists('edp_number');	 		
+			 	//total legalopinion list
+			 		$edpLegalList=DB::table('edp_legal_opinion')->lists('edp_number');
+			 	//Diff
+			 		$legalOpinionNotGiven=array_diff($edpTotal,$edpLegalList);
+			 	//Count
+			 		$totalEdpLegalOpinionPending=count($legalOpinionNotGiven);
+			 	//my associated
+			 		//get sia list
+		 	 	 	$keys=$legalOpinionNotGiven;
+		 	 	 	$tableName='edp_primary';
+		 	 	 	$columnName='edp_number';		 	  		
+			 	  	//Sia list 
+			 	  	$siaNumberofPendingLegal=$this->getSiaList($keys,$tableName,$columnName);
+			 	  	//my associated sia
+			 		$myNoticeEdpPendingLegalOpinion=$this->countMyAssociatedSia($siaNumberofPendingLegal);
 		//SC:waiting for Approval
 		 	 	 //Sc finalize list
 		 	 	 	$scFinalizeList=DB::table('sc_finalization')->lists('safety_issue_number');
@@ -1027,35 +1208,96 @@ class SurveillanceController extends \BaseController {
 		 	 	 	$notApprovalScList=array_diff($scFinalizeList,$scApproval);
 		 	 	 	$pendingApprovalScNumber=count($notApprovalScList);
 
+		 	 	//my associated Sc waiting for Approval
+		 	  	//get sia list
+		 	 	 	$keys=$notApprovalScList;
+		 	 	 	$tableName='sc_safety_concern';
+		 	 	 	$columnName='safety_issue_number';
+		 	  		
+		 	  	//Sia list 
+		 	  		$siaNumberofNotApprovalSc=$this->getSiaList($keys,$tableName,$columnName);
+		 	  	//my associated sia
+			 		$myNoticeScWaitingForApproval=$this->countMyAssociatedSia($siaNumberofNotApprovalSc);
+		//SC: Corrective Action Approval pending
+			 	//not approved corr action
+			 		$scApprovalPendingCorrAction=DB::table('sc_corrective_action')->where('approve','0')->lists('safety_issue_number');
+			 	//count
+			 		$totalScCorrApprovalPending=count($scApprovalPendingCorrAction);
+			 	//Associate with me
+			 		//get sia list
+		 	 	 	$keys=$scApprovalPendingCorrAction;
+		 	 	 	$tableName='sc_safety_concern';
+		 	 	 	$columnName='safety_issue_number';
+		 	  		
+		 	  	//Sia list 
+		 	  		$siaNumberofCorrPendingApprovalSc=$this->getSiaList($keys,$tableName,$columnName);
+		 	  	//my associated sia
+			 		$myNoticeScCorrPendignApproval=$this->countMyAssociatedSia($siaNumberofCorrPendingApprovalSc);
+
 		//SIA:waiting for SIA Approval 	
 				//SMS sia_number list
 		 	 	 	$smsSiaNumberList=DB::table('sia_sms')->where('approve','1')->lists('sia_number');
 				//Approval sia_number list
 		 	 	 	$approvalSiaNumberList=DB::table('sia_approval')->lists('sia_number');
 				//Not Approve Sia List
-		 	 	 	$notApprovalSiaList=array_diff($smsSiaNumberList,$approvalSiaNumberList);
+		 	 	  $notApprovalSiaList=array_diff($smsSiaNumberList,$approvalSiaNumberList);
 		 	 	  $pendingSiaApproval=count($notApprovalSiaList);
+
+		 	 //my associated SIA waiting for Approval
+		 	  	
+		 	  	//my associated sia
+			 		$myNoticeSiaWaitingForApproval=$this->countMyAssociatedSia($notApprovalSiaList);
 
 		//SIA:SMS waiting For Approval 	
 				//SMS sia_number list
 		 	 	 	$smsApprovalPendingList=DB::table('sia_sms')->where('approve','0')->lists('sia_number');
 		 	 	    $pendingSmsApproval=count($smsApprovalPendingList);
+		 	 	//my associated sia
+			 		$myNoticeSmsWaitingForApproval=$this->countMyAssociatedSia($smsApprovalPendingList);
 		//Findign:finding corrective action waiting For Approval 	
 				//corrective finding number list
-		 	 	 	$pendingCorrectiveActionList=DB::table('sia_corrective_action')->where('approve','0')->lists('finding_number');
-		 	 	    $pendingCorrectiveActionList=count($pendingCorrectiveActionList);
+		 	 	 	$pendingCorrectiveActionLists=DB::table('sia_corrective_action')
+		 	 	 		->where('approve','0')
+		 	 	 		->where('regulation_mitigation','<>','')
+		 	 	 		->lists('finding_number');
+		 	 	    $pendingCorrectiveActionList=count($pendingCorrectiveActionLists);
+
+		 	    //my associated Sc waiting for Approval
+		 	  	//get sia list
+		 	 	 	$keys=$pendingCorrectiveActionLists;
+		 	 	 	$tableName='sia_corrective_action';
+		 	 	 	$columnName='finding_number';
+		 	  		
+		 	  	//Sia list 
+		 	  		$siaNumberofPendingCorrApproval=$this->getSiaList($keys,$tableName,$columnName);
+		 	  	//my associated sia
+			 		$myNoticePendingCorrApproval=$this->countMyAssociatedSia($siaNumberofPendingCorrApproval);
+
 
 		return View::make('surveillance.noticeBoard')
 		->with('PageName','SIA Board')
 		->with('active','sia')
 		->with('numberOfNotExecutedSia',$numberOfNotExecutedSia)
+		->with('myNoticeNumberOfNotExecutedSia',$myNoticeNumberOfNotExecutedSia)
 		->with('exceedDateFindingNumbers',$exceedDateFindingNumbers)
+		->with('myNoticeFindingDateExceed',$myNoticeFindingDateExceed)
 		->with('exceedDateScNumbers',$exceedDateScNumbers)
+		->with('myNoticeScDateExceed',$myNoticeScDateExceed)
+		->with('totalScCorrApprovalPending',$totalScCorrApprovalPending)
+		->with('myNoticeScCorrPendignApproval',$myNoticeScCorrPendignApproval)
 		->with('pendingSiaApproval',$pendingSiaApproval)
+		->with('myNoticeSiaWaitingForApproval',$myNoticeSiaWaitingForApproval)
+		->with('myNoticeEdpWaitingForApproval',$myNoticeEdpWaitingForApproval)
 		->with('pendingApprovalScNumber',$pendingApprovalScNumber)
+		->with('myNoticeScWaitingForApproval',$myNoticeScWaitingForApproval)
 		->with('pendingApproveEdpNumber',$pendingApproveEdpNumber)
+		->with('totalEdpLegalOpinionPending',$totalEdpLegalOpinionPending)
+		->with('myNoticeEdpPendingLegalOpinion',$myNoticeEdpPendingLegalOpinion)
 		->with('pendingSmsApproval',$pendingSmsApproval)
+		->with('myNoticeSmsWaitingForApproval',$myNoticeSmsWaitingForApproval)
 		->with('pendingCorrectiveActionList',$pendingCorrectiveActionList)
+		->with('myNoticePendingCorrApproval',$myNoticePendingCorrApproval)
+		
 		
 		;
 	}
@@ -1127,13 +1369,27 @@ class SurveillanceController extends \BaseController {
 			 	  	 		$scExceedDateArray[]=$exceedDate;
 			 	  	 }
 		 	 	 }
-		
+		//return $scExceedDateArray;
 		
 		return View::make('surveillance.notiScTargetTimeExceed')
 						->with('PageName','SC Date Exceed List')
 						->with('active','sia')
 						->with('scExceedDateArray',$scExceedDateArray)
 				;
+	}
+/*SC: Corrective Action Approval Pendign*/
+	public function scCorrPendingAproval(){
+
+		 $scApprovalPendingCorrAction=DB::table('sc_corrective_action')->where('approve','0')->lists('safety_issue_number');
+
+
+
+		return View::make('surveillance.notiScCorrPendingAproval')
+						->with('PageName','SC Corr Approval Pending')
+						->with('active','sia')
+						->with('scApprovalPendingCorrAction',$scApprovalPendingCorrAction)
+				;
+
 	}
 /*SIA Waiting Details page*/
 	public function siaAprovalWaiting(){
@@ -1185,6 +1441,21 @@ class SurveillanceController extends \BaseController {
 						->with('notApproveEdp',$notApproveEdp)
 				;
 	}
+/*EDP :pending  Legal opinion list*/
+	public function edpPendingLegalOpinion(){
+				//total edp list
+			 		$edpTotal=DB::table('edp_primary')->lists('edp_number');	 		
+			 	//total legalopinion list
+			 		$edpLegalList=DB::table('edp_legal_opinion')->lists('edp_number');
+			 	//Diff
+			 	 $legalOpinionNotGiven=array_diff($edpTotal,$edpLegalList);
+		
+		return View::make('surveillance.notiEdpLegalOpinionWaiting')
+						->with('PageName','EDP: Legal Opinion Not Given')
+						->with('active','sia')
+						->with('legalOpinionNotGiven',$legalOpinionNotGiven)
+				;
+	}
 	
 /*SMS pending approval list*/
 	public function pendingSmsApproval(){
@@ -1200,7 +1471,10 @@ class SurveillanceController extends \BaseController {
 /*SMS pending approval list*/
 	public function pendingFindingCorrectiveActionList(){
 		//corrective finding number list
-		 	 	 	$pendingCorrectiveActionList=DB::table('sia_corrective_action')->where('approve','0')->lists('finding_number');
+		 	 	 	$pendingCorrectiveActionList=DB::table('sia_corrective_action')
+		 	 	 	->where('approve','0')
+		 	 	 	->where('regulation_mitigation','<>','')
+		 	 	 	->lists('finding_number');
 		return View::make('surveillance.notiFindingCorrectiveActionwaiting')
 						->with('PageName','Finding Corrective Action Approval Wating List')
 						->with('active','sia')

@@ -25,13 +25,31 @@
 	                                        </thead>
 	                                        <tbody>
 	                                        <?php $num=0;?>
+	                                        <?php
+	                                        //check whether user has full access notification
+	                                         $fullAccess=CommonFunction::hasPermission('sia_notification_full',Auth::user()->emp_id(),'access');?>
                                     	    @foreach ($smsApprovalPendingList as $info)  
-                                    	    <?php $data=CommonFunction::getSmsInfo($info);?>			
+                                    	    <?php $data=CommonFunction::getSmsInfo($info);?>	
+
+                                    	   
+                                    	        <?php 
+                                        if($fullAccess=='true')
+                                            $imTeamMember='true';
+
+                                        else{
+
+                                               //getting member in an array 
+                                                $members=CommonFunction::updateMultiSelection('sia_program', 'sia_number',$data->sia_number,'team_members');
+                                               //checking whether member or not 
+                                               $imTeamMember=CommonFunction::isItMe($members,Auth::user()->emp_id());
+                                               }
+                                         ?>
+                                         @if($imTeamMember=='true')   
 	                                        	<tr>
 	                                        		<td>
 	                                        			{{++$num}}
 	                                        		</td>
-	                                        		<td>{{$data->sia_number}}</td>
+	                                        		<td><a href="{{URL::to('surveillance/singleProgram/'.$data->sia_number)}}">{{$data->sia_number}}</a></td>
 	                                        		<td>{{$data->initial_risk}}</td>
 	                                        		<td>{{$data->determine_severity}}</td>
 	                                        		<td>{{$data->determine_likelihood}}</td>
@@ -39,6 +57,7 @@
 	                                        		<td>{{$data->lack_of_effective_implementation}}</td>
 	                                        		<td><a href="singleProgram/{{$info}}#SMSDetails">View</a></td>
 	                                        	</tr>
+	                                      @endif
 	                                        @endforeach
 	                                        </tbody>
 

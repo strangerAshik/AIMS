@@ -79,7 +79,8 @@
 
 							   @foreach($itsAssignedFormal as $info)
 							   <!--itscn,emp_tracker-->
-							   <?php $allJobTask=CommonFunction::getOjtTask($info->itscn);?>					   <!--job task-->
+							   <?php $allJobTask=CommonFunction::getOjtTask($info->itscn);?><?php $formalStatus=CommonFunction::formalCourseStatus($info->itscn,$info->emp_tracker);?>				
+							   	   <!--job task-->
 							   <!--info(itscn,emp_tracker),job task-->
 								   @foreach ($allJobTask as $task)
 								   <?php $name=CommonFunction::getEmployeeName($info->emp_tracker); ?>
@@ -99,7 +100,7 @@
 								   			{{ HTML::linkAction('itsOjtController@singleFormalCourse',$info->itscn,array($info->itscn), array('class' => '','title'=>CommonFunction::getFormalCourseTitle($info->itscn),'target'=>'_blink')) }}
 											</br>
 								   			<!--This employee's - this formal course  status  -->
-									<?php $formalStatus=CommonFunction::formalCourseStatus($info->itscn,$info->emp_tracker);?>
+									
 			                    		@if(!$formalStatus)
 				                    		Not Done
 			                    		@else 
@@ -117,7 +118,7 @@
 													</span>
 												
 													@endif
-													{{-- <span style="font-weight: bold;">Instructor : </span>{{$status->instructor}} --}}
+													
 			                    			@endforeach
 			                    		@endif
 								   		</td>
@@ -146,7 +147,7 @@
 														</span>
 														
 														@endif
-														{{-- <span style="font-weight: bold;">Instructor : </span>{{$status->instructor}} --}}
+														
 				                    			@endforeach
 				                    		@endif
 
@@ -174,7 +175,7 @@
 												</span>
 												
 												@endif
-												{{-- <span style="font-weight: bold;">Instructor : </span>{{$status->instructor}} --}}
+												
 		                    			@endforeach
 		                    		@endif
 
@@ -189,7 +190,7 @@
 			                    		 <?php $validityLevel3=40;?>
 		                    		@else 
 		                    			@foreach($ojtL3 as $status)
-												{{-- <span style="font-weight: bold;">Completion Date : </span>{{$status->completion_date}}	<br> --}}
+												
 													<?php $validityLevel3= time() - strtotime($status->validity_date)?>
 												@if($validityLevel3<0)
 												<i>Validity Till : </i><br>{{$status->validity_date}}	<br>
@@ -202,7 +203,6 @@
 												</span>
 												
 												@endif
-												{{-- <span style="font-weight: bold;">Instructor : </span>{{$status->instructor}} --}}
 		                    			@endforeach
 		                    		@endif
 

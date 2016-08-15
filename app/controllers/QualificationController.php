@@ -16,7 +16,9 @@ class QualificationController extends \BaseController {
 	}
 	//report
 	public function report(){
-		return App::make('SurveillanceController')->report('qualification');
+		return View::make('qualification/report')
+		->with('PageName','Report')
+		->with('active','employee');
 	}
 	public function reportByDateToDate(){
 		return App::make('SurveillanceController')->reportByDateToDate('qualification');
@@ -57,11 +59,13 @@ class QualificationController extends \BaseController {
 				;
 	}
 	public function empTaskList(){
-		$emps=DB::table('qualification_personal')
-			->Join('users','users.emp_id','=','qualification_personal.emp_id')
-			->select('users.*','qualification_personal.photo')
-			->where('users.organization','CAAB HQ')
+		$emps=DB::table('qualification_employee_verification')
+			//->leftJoin('users','users.emp_id','=','qualification_employee_verification.emp_id')
+			//->select('qualification_employee_verification.*','users.name as empName')
+			->orderBy('active','desc')
+
 			->get();
+
 
 		return View::make('qualification.empTaskList')
 				->with('PageName','Employee Task List')
@@ -410,7 +414,7 @@ class QualificationController extends \BaseController {
 		'month_of_birth' => Input::get('month_of_birth',' '),
 		'year_of_birth' => Input::get('year_of_birth',' '),
 		'photo' =>$filename,
-		'verify' =>'1',
+		'verify' =>'0',
 		'created_at' =>date('Y-m-d H:i:s'),
 		'updated_at' =>date('Y-m-d H:i:s')		
 		));
@@ -460,6 +464,7 @@ class QualificationController extends \BaseController {
 		'month_of_birth' => Input::get('month_of_birth',' '),
 		'year_of_birth' => Input::get('year_of_birth',' '),
 		'photo' =>$filename,
+		'verify' =>'0',
 		
 		'updated_at' =>date('Y-m-d H:i:s')
 			
@@ -483,7 +488,7 @@ class QualificationController extends \BaseController {
 		'grade_division' => Input::get('grade_division',' '),
 		'certificate' => $certificate,
 		'out_of' => Input::get('out_of',false),		
-		'verify' =>'1',		
+		'verify' =>'0',		
 		'created_at' =>date('Y-m-d H:i:s'),
 		'updated_at' =>date('Y-m-d H:i:s')	
 			
@@ -500,7 +505,7 @@ class QualificationController extends \BaseController {
 		'title' => Input::get('title',' '),
 		'institute' =>Input::get('institute',' ') ,
 		'duration' => Input::get('duration',' '),	
-		'verify' =>'1',
+		'verify' =>'0',
 		'created_at' =>date('Y-m-d H:i:s'),
 		'updated_at' =>date('Y-m-d H:i:s')	
 		));
@@ -538,7 +543,7 @@ class QualificationController extends \BaseController {
 		'pro_degree_major_area' => Input::get('pro_degree_major_area',' '),	
 		
 		'pro_degree_year' => Input::get('pro_degree_year',' '),	
-		'verify' =>'1',
+		'verify' =>'0',
 		'created_at' =>date('Y-m-d H:i:s'),
 		'updated_at' =>date('Y-m-d H:i:s')	
 		));
@@ -586,7 +591,7 @@ class QualificationController extends \BaseController {
 		'start_date' => $start_date,	
 		'end_date' => $end_date,
 		'pdf' => $filename,	
-		'verify' =>'1',
+		'verify' =>'0',
 		//'duration' => Input::get('duration',' '),			
 		'created_at' =>date('Y-m-d H:i:s'),
 		'updated_at' =>date('Y-m-d H:i:s')	
@@ -602,7 +607,7 @@ class QualificationController extends \BaseController {
 	   'lang_understanding' =>Input::get('lang_understanding',' '),
 	   'lang_reading' =>Input::get('lang_reading',' '),
 	   'lang_writing' =>Input::get('lang_writing',' '),	  
-	   'verify' =>'1', 
+	   'verify' =>'0', 
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')
 	   ));
@@ -622,7 +627,7 @@ class QualificationController extends \BaseController {
 	   'expiration_month' =>Input::get('expiration_month',' '),	   
 	   'expiration_year' =>Input::get('expiration_year',' '),	   
 	   'rating' =>Input::get('rating',' '),	   
-	   'verify' =>'1',
+	   'verify' =>'0',
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
@@ -656,7 +661,7 @@ class QualificationController extends \BaseController {
 	   'instructor' =>Input::get('instructor',' '),	  
 	   'proof' =>Input::get('proof',' '),	  
 	   'pdf' =>$filename,	  
-	   'verify' =>'1',
+	   'verify' =>'0',
 	  // 'certification' =>Input::get('certification',' '),	  
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')	
@@ -676,7 +681,7 @@ class QualificationController extends \BaseController {
 	   'email_address' =>Input::get('email_address',' '),	   
 	   //'completion_year' =>Input::get('completion_year'),	   
 	   'may_we_request' =>Input::get('may_we_request',' '), 
-	   'verify' =>'1',
+	   'verify' =>'0',
 	   //'certification' =>Input::get('certification'),	  
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')
@@ -705,7 +710,7 @@ class QualificationController extends \BaseController {
 	   'assigned_task' =>Input::get('assigned_task',' '),	     
 	   'assigned_by' =>Input::get('assigned_by',' '),	     
 	   'note' =>Input::get('note',' '),	  
-	   'verify' =>'1',   
+	   'verify' =>'0',   
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')
 	   ));
@@ -716,7 +721,7 @@ class QualificationController extends \BaseController {
 	   'emp_id' => Auth::user()->emp_id(),
 	   'title' =>Input::get('title',' '),
 	   'description' =>Input::get('description',' '),  
-	   'verify' =>'1',   
+	   'verify' =>'0',   
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
@@ -727,7 +732,7 @@ class QualificationController extends \BaseController {
 	   'emp_id' => Auth::user()->emp_id(),
 	   'title' =>Input::get('title',' '),
 	   'description' =>Input::get('description',' '),   
-	   'verify' =>'1',  
+	   'verify' =>'0',  
 	   'created_at' =>date('Y-m-d H:i:s'),
 	   'updated_at' =>date('Y-m-d H:i:s')	
 	   ));
@@ -749,7 +754,8 @@ class QualificationController extends \BaseController {
 				'standard' => Input::get('standard'),
 				'grade_division' => Input::get('grade_division'),
 				'certificate' =>$certificate,
-				'out_of' => Input::get('out_of',false),		
+				'out_of' => Input::get('out_of',false),
+				'verify' =>'0',		
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
 			
@@ -766,6 +772,7 @@ class QualificationController extends \BaseController {
 				'title' => Input::get('title'),
 				'institute' =>Input::get('institute') ,
 				'duration' => Input::get('duration'),
+				'verify' =>'0',
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
 			
@@ -789,6 +796,7 @@ class QualificationController extends \BaseController {
 				'end_year' => Input::get('end_year'),	
 				'supervisor_name' => Input::get('supervisor_name'),	
 				'supervisor_phone' => Input::get('supervisor_phone'),	
+				'verify' =>'0',
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -804,6 +812,7 @@ class QualificationController extends \BaseController {
 				'pro_degree_grade' =>Input::get('pro_degree_grade') ,
 				'pro_degree_major_area' => Input::get('pro_degree_major_area'),
 				'pro_degree_year' => Input::get('pro_degree_year'),	
+				'verify' =>'0',
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -855,6 +864,7 @@ class QualificationController extends \BaseController {
 				'start_date' => $start_date,	
 				'end_date' => $end_date,	
 				'pdf' => $filename,	
+				'verify' =>'0',
 				//'duration' => Input::get('duration'),
 				'updated_at' =>date('Y-m-d H:i:s')	
 			));
@@ -870,6 +880,7 @@ class QualificationController extends \BaseController {
 			   'lang_understanding' =>Input::get('lang_understanding'),
 			   'lang_reading' =>Input::get('lang_reading'),
 			   'lang_writing' =>Input::get('lang_writing'),	
+			   'verify' =>'0',
 			   'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -890,6 +901,7 @@ class QualificationController extends \BaseController {
 			   'expiration_month' =>Input::get('expiration_month'),	   
 			   'expiration_year' =>Input::get('expiration_year'),	   
 			   'rating' =>Input::get('rating'),	
+			   'verify' =>'0',
 			   'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -927,6 +939,7 @@ class QualificationController extends \BaseController {
 			   'instructor' =>Input::get('instructor'),	  
 			   'proof' =>Input::get('proof'),	  
 			   'pdf' =>$filename,	  
+			   'verify' =>'0',
 			  // 'certification' =>Input::get('certification'),	
 			   'updated_at' =>date('Y-m-d H:i:s')
 			));
@@ -946,6 +959,7 @@ class QualificationController extends \BaseController {
 			   'years_acquainted' =>Input::get('years_acquainted'),
 			   'email_address' =>Input::get('email_address'),	    
 			   'may_we_request' =>Input::get('may_we_request'), 
+			   'verify' =>'0',
 			   'updated_at' =>date('Y-m-d H:i:s')	
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -974,6 +988,7 @@ class QualificationController extends \BaseController {
 			   'assigned_task' =>Input::get('assigned_task'),
 			   'assigned_by' =>Input::get('assigned_by'),
 			   'note' =>Input::get('note'),	
+			   'verify' =>'0',
 			   'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -986,6 +1001,7 @@ class QualificationController extends \BaseController {
             ->update(array(
 			  'title' =>Input::get('title'),
 			  'description' =>Input::get('description'), 
+			  'verify' =>'0',
 			  'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -998,6 +1014,7 @@ class QualificationController extends \BaseController {
             ->update(array(
 			  'title' =>Input::get('title'),
 			  'description' =>Input::get('description'), 
+			  'verify' =>'0',
 			  'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -1095,6 +1112,156 @@ class QualificationController extends \BaseController {
 	    return Redirect::to(URL::previous() . "#$pageId")->with('message', 'Approval Info Updated!!');
    }
    /******************End Approve data **********************/
+
+   public function summary(){
+   	$employees=CommonFunction::getInspectorListWithId();
+   	return View::make('qualification/summary')
+				->with('PageName','Emp Summary')
+				->with('active','employee')
+				->with('employees',$employees)
+				
+				;
+   }
+   public function notification(){
+   		return View::make('qualification/notification')
+				->with('PageName','Emp Notification')
+				->with('active','employee')
+				;
+   }
+   public function pendingVarification($tableName){
+   	return DB::table($tableName)->where('verify','<>','1')->get();
+   }
+	public function approvalPendingPersonalInfo(){
+
+		$empInfo=$this->pendingVarification('qualification_personal');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Personal Information')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingPersonalInfo')
+				->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingAcademicQualification(){
+
+		$empInfo=$this->pendingVarification('qualification_edu_accademic');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Academic Qualification')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingAcademicQualification')
+				->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingThesis(){
+
+		$empInfo=$this->pendingVarification('qualification_edu_thesis');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Thesis/Project/Internship/Dissertation')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingThesis')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingEmployment(){
+
+		$empInfo=$this->pendingVarification('qualification_emplyment');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Employment')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingEmployment')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingProfessionalDeg(){
+
+		$empInfo=$this->pendingVarification('qualification_pro_degree');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Professional Degree')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingProfessionalDeg')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingTraining(){
+
+		$empInfo=$this->pendingVarification('qualification_training_ojt');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Training/Workshop/OJT ')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingTraining')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingLanguage(){
+
+		$empInfo=$this->pendingVarification('qualification_language');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Language')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingLanguage')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingMembership(){
+
+		$empInfo=$this->pendingVarification('qualification_others_membership');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Membership')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingMembership')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingPublication(){
+
+		$empInfo=$this->pendingVarification('qualification_others_publication');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Publication')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingPublication')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingTechnicalLicence(){
+
+		$empInfo=$this->pendingVarification('qualification_technical_licence');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','CAA Technical License')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingTechnicalLicence')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingAircraftQuali(){
+
+		$empInfo=$this->pendingVarification('qualification_aircraft');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','CAA Aircraft Qualification')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingAircraftQuali')
+		->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingReference(){
+
+		$empInfo=$this->pendingVarification('qualification_reference');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','References')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingReference')
+				->with('empInfo',$empInfo)
+				;
+	}
+	public function approvalPendingAssignment(){
+
+		$empInfo=$this->pendingVarification('qualification_employee_verification');
+		return View::make('qualification.notificationDetails')
+				->with('PageName','Employee Assignments')
+				->with('active','employee')
+				->with('onPageIdName','approvalPendingAssignment')
+				->with('empInfo',$empInfo)
+				;
+	}
+   
 	
 
 	}

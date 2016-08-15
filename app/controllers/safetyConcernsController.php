@@ -414,7 +414,7 @@ class SafetyConcernsController extends \BaseController {
 		
 		$sc->row_creator=Auth::user()->getName();
 		$sc->row_updator=Auth::user()->getName();
-		$sc->approve=1;
+		$sc->approve=0;
 		$sc->warning=0;
 		$sc->soft_delete=0;
 		$sc->save();

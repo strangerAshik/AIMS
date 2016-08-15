@@ -97,22 +97,9 @@
                                         
                                             {{Form::label('designation', 'Designation', array('class' => 'col-xs-4 control-label'))}}
                                             <div class="col-xs-6">
-                                            <?php $options=array(
-                                                ''=>'--Select Role For This System--',
-
-                                                'DB Admin'=>'DB Admin',
-                                                'Chief Admin'=>'Chief Admin',
-                                                'Inspector OPS,Airworthiness'=>'Inspector OPS,Airworthiness',
-                                                'Inspector ANS-AGA'=>'Inspector ANS-AGA',
-                                                'Inspector Legal'=>'Inspector Legal',
-                                                'ITS Manager'=>'ITS Manager',                                                
-                                                'Voluntary Reporting Manager'=>'Voluntary Reporting Manager',
-                                                'Program Manager'=>'Program Manager',
-                                                'Service Provider-AOC'=>'Service Provider-AOC',
-                                                'Service Provider-Airport'=>'Service Provider-Airport',
-                                                'Employee'=>'Employee',
-                                            );?>
-                                            {{Form::select('designation', $options ,' ' ,array('class'=>'form-control'))}}
+                                            <?php $options=CommonFunction::roles();
+                                            ?>
+                                            {{Form::select('designation', $options ,'' ,array('class'=>'form-control'))}}
                                             </div>
                                             
                     </div>

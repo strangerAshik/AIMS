@@ -41,35 +41,21 @@
                                                 
                                                 <th>No.</th>
                                                 <th>Date[Y-M-D]</th>
-                                                <th>Time</th>
+                                               
                                                 <th>SIA/Tracking No</th>
                                                 <th>Organization</th>
                                                 <th>Event</th>
-                                                
-                                                
                                                 <th>Team members</th>
-                                                <th>Accomplishment Status</th>
+                                                <th>Finding</th>
+                                                <th>SC</th>
+                                                <th>EDP</th>
+                                                <th>Action Status</th>
+                                                <th>Program Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                           <tr>
-                                                
-                                                <th>No.</th>
-                                                <th>Date[Y-M-D]</th>
-                                                <th>Time</th>
-                                                <th>SIA/Tracking No</th>
-                                                <th>Organization</th>
-                                                <th>Event</th>
-                                                
-                                                
-                                                <th>Team members</th>
-                                                <th>Accomplishment Status</th>
-                                              
-                                                <th>Details</th>
-                                            </tr>
-                                        </tfoot>
+                                        
                                         <tbody>
                                          <div style="display: none">{{$num=0;}}</div>
                                         @foreach ($prgramList as $program)
@@ -85,7 +71,7 @@
                                                 
                                                 <td>{{++$num}}</td>                                                
                                                 <td>{{date('d F Y',strtotime($program->date))}}</td>
-                                                <td>{{$program->time}}</td>
+                                               
                                                 <td>{{$program->sia_number}}</td>                                                
                                                 <td>{{$program->org_name}}</td>
                                                 <td>{{$program->event}}</td>
@@ -101,10 +87,45 @@
                                                 @else
                                                     No Members Added!!
                                                 @endif</td>
-                                                <td>@if($insNum=CommonFunction::inspectionHappend($program->sia_number)>0) 
-                                                    <span style="color:green">Done</span>
+                                                <td>
+                                                    <?php $fNum=CommonFunction::findingCount($program->sia_number);?>
+                                                    @if($fNum!=0)
+                                                    Finding-{{$fNum}}
                                                     @else
-                                                   <span style="color:#FFC200"> Action Not Taken</span>
+                                                        No Finding
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                <?php $sNum=CommonFunction::saftyConsCount($program->sia_number) ?>
+                                                @if($sNum!=0)
+                                                    SC-{{$sNum}}
+                                                @else
+                                                    No SC 
+                                                @endif
+
+                                                </td>
+                                                <td>
+                                                    <?php $edpNum=CommonFunction::edpCount($program->sia_number);?>
+                                                    @if($edpNum!=0)
+                                                    EDP-{{$edpNum}}
+                                                    @else
+                                                        No EDP
+                                                    @endif
+
+                                                </td>
+                                                <td>@if($insNum=CommonFunction::inspectionHappend($program->sia_number)>0) 
+                                                    <span style="color:#0DD47A">Yes</span>
+                                                    @else
+                                                   <span style="color:#FD39CC"> No</span>
+                                                    @endif
+                                                 </td>
+                                                 <td>
+                                                 <?php $status=CommonFunction::programStatus($program->sia_number);?>
+                                                    @if($status!=0)
+                                                        <span style="color:green">Close</span>
+                                                    @else 
+                                                        <span style="color:red">Open</span>
                                                     @endif
                                                  </td>
                                                 

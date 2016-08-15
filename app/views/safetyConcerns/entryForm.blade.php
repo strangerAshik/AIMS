@@ -270,7 +270,7 @@ var $select = $('#team_members').selectize({
                     </div>
                     
 
-                    <div class='form-group '>
+                    <div class='form-group disNon'>
                     		{{Form::label('type_of_concern','Type Of Concern', array('class'=>'col-xs-4 control-label'))}}
                     		<div class="col-xs-6">
                     		{{Form::select('type_of_concern',array(
@@ -706,7 +706,7 @@ var $select = $('#sia_by_areas').selectize({
 	                    </div>
 	                    <div class="form-group required">
 	                                        
-												{{Form::label('finding_number', 'Finding Number', array('class' => 'col-xs-4 control-label'))}}
+												{{Form::label('finding_number', 'Finding Title', array('class' => 'col-xs-4 control-label'))}}
 												<div class="col-xs-6">
 												<?php $options=CommonFunction::getFindingList();?>
 												
@@ -716,7 +716,7 @@ var $select = $('#sia_by_areas').selectize({
 	                    </div>
 	                    <div class="form-group ">
 	                                        
-											{{Form::label('sc_number ', 'SC Number', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('sc_number ', 'SC Title', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											
 												
@@ -887,7 +887,7 @@ var $select = $('#sia_by_areas').selectize({
 											</div>
 											
                     </div>  
-                    <div class="form-group ">
+                    <div class="form-group disNon ">
                                         
 											{{Form::label('admin_opinion', 'Admin Opinion', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -896,7 +896,7 @@ var $select = $('#sia_by_areas').selectize({
 											
                     </div> 
 
-					<div class="form-group ">
+					<div class="form-group disNon">
                                         
 											{{Form::label('file', 'File Upload (Admin Opinion)', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -904,7 +904,7 @@ var $select = $('#sia_by_areas').selectize({
 											</div>
 											
                     </div> 
-                    <div class="form-group ">
+                    <div class="form-group disNon">
                                         
 											{{Form::label('legal_opinion', 'Legal Opinion', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -913,7 +913,7 @@ var $select = $('#sia_by_areas').selectize({
 											
                     </div> 
 
-					<div class="form-group ">
+					<div class="form-group disNon">
                                         
 											{{Form::label('file', 'File Upload (Legal Opinion)', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -1008,7 +1008,7 @@ var $select = $('#sc_number').selectize({
 					
 					<div class="form-group required ">
                                         
-											{{Form::label('currective_action', 'Corrective Action', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('currective_action', 'Corrective Action Plan', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('currective_action','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
 											</div>
@@ -1017,7 +1017,7 @@ var $select = $('#sc_number').selectize({
 					
 					<div class="form-group required">
                                            
-											{{Form::label('revived_date', 'Revived Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('revived_date', 'CAP Initiated on', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('revived_date', $dates,'0',array('class'=>'form-control','required'=>''))}}
@@ -1041,11 +1041,11 @@ var $select = $('#sc_number').selectize({
 											</div>
 											
                     </div>
-					<div class="form-group required ">
+					<div class="form-group  ">
                                         
-											{{Form::label('regulation_mitigation', 'Regulation Mitigation', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation', 'Resolution/Mitigation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											{{Form::textarea('regulation_mitigation','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1','required'=>''))}}
+											{{Form::textarea('regulation_mitigation','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1'))}}
 											</div>
 											
                     </div>
@@ -1053,7 +1053,7 @@ var $select = $('#sc_number').selectize({
 					
 					<div class="form-group required">
                                            
-											{{Form::label('regulation_mitigation_date', 'Regulation Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation_date', 'Regulation/ Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
 														{{Form::select('regulation_mitigation_date', $dates,'0',array('class'=>'form-control','required'=>''))}}
@@ -1328,7 +1328,7 @@ $(document).ready(function(){
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Finzalization</h4>
+                <h4 class="modal-title">Safety Concern Finalization</h4>
             </div>
 
             <div class="modal-body">

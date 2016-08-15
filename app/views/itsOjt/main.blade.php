@@ -1,6 +1,16 @@
 @extends('layout')
 @section('content')
-<section class='content contentWidth'>
+<section class='content'>
+
+<!--Instruction Start-->
+
+ <?php 
+ $module='its';
+ $instructions=CommonFunction::getModuleInstructions($module);
+ ?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
 	<div class="row">
     <div class="col-md-12">
 
@@ -88,7 +98,7 @@
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
                             <div class="inner">
-                                <h4 style='font-weight:bold;'>Review / Update Tasks &Courses</h4>
+                                <h4 style='font-weight:bold;'>Review / Update Tasks & Courses</h4>
                             </div>
                             
                             <a class="small-box-footer" href="{{URL::to('itsOjt/addTrainingOjt');}}">
@@ -114,7 +124,7 @@
                         </div>
                         </div><!-- ./col -->
                         @endif
-                        @if('true'==CommonFunction::hasPermission('its_report',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('its',Auth::user()->emp_id(),'access'))
                         <div class="col-md-4">
                             <!-- small box -->
                         <div class="small-box bg-aqua " >
@@ -122,7 +132,7 @@
                                 <h4 style='font-weight:bold;'>Report</h4>
                             </div>
                             
-                            <a class="small-box-footer" href="" onclick="alert('under Development')">
+                            <a class="small-box-footer" href="{{URL::to('report/reportByModuel/its')}}">
                                 More info <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>

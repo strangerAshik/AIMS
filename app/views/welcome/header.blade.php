@@ -81,6 +81,10 @@
   font-size: 34px;
   line-height: 50px;
 }
+.logo img{
+	background: #fff none repeat scroll 0 0;
+	border-radius: 20px;
+}
 </style>
 </head>
 <body style='background:#ddd;'>
@@ -88,8 +92,8 @@
 <div class='container-fluid'style="background:#357CA5!important;">
   <div class='container' >
   <div class='row'>	
-   <div class='col-md-3'>
-	<!--{{HTML::image('img/logo.png','User',array('class'=>'img-circle  pull-right','id'=>'logo-main','width'=>'80'))}}	-->
+   <div class='col-md-3 logo' id=''>
+	{{HTML::image('img/logo.png','Logo of CAA',array('class'=>'pull-right','width'=>'190','height'=>'100','style'=>"margin-top:8px;margin-bottom:8px;border:1px solid #000"))}}	
 	</div>
 	<div class='col-md-9' >
 	<h3 class='title'>{{CommonFunction::getCompanySetupDetails()->full_name}}-{{CommonFunction::getCompanySetupDetails()->short_name}}</h3>
@@ -108,7 +112,7 @@
   <!--<li><a href="{{URL::to('faq')}}">Help & FAQ</a></li>-->
   <li><a href="{{URL::to('contact')}}">Contact</a></li>
   <li><a href="#" data-toggle="modal" 
-   data-target="#myModal">Login</a></li>
+   data-target="#login">Login</a></li>
   <span class='pull-right' style='margin:15px 10px 0px 0px;color:#fff;font-weight:bold'><?php date_default_timezone_set('UTC');?>{{date('Y h:i:s A')}} UTC</span>
   
 </ul>

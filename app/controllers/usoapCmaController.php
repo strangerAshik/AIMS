@@ -6,13 +6,16 @@ class UsoapCmaController extends \BaseController {
 	public function main()
 	{
 		return View::make('usoapCma.main')
-		->with('PageName','USOAP CMA Main');
+		->with('PageName','USOAP CMA Main')
+		->with('active','usoap_cma')
+		;
 	}
 
 	public function newPQ()
 	{
 		return View::make('usoapCma.newPQ')
 		->with('PageName','New PQ')
+		->with('active','usoap_cma')
 		->with('dates',parent::dates())
 			
 			->with('months',parent::months())
@@ -78,6 +81,7 @@ class UsoapCmaController extends \BaseController {
 		$pqList=DB::table('usoap_pq')->get();
 		return View::make('usoapCma.listView')
 		->with('PageName','PQ List')
+		->with('active','usoap_cma')
 		->with('pqList',$pqList)
 		;
 	}

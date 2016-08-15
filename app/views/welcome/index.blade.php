@@ -12,10 +12,10 @@
 </a>
 <!-- <a href="http://arcg.is/1ORgGoB" target="_blink" class="list-group-item ">Automated Height Certification</a> -->
 <a href="{{URL::to('libraryPublicView')}}" class="list-group-item" target='_blink'>E-library</a>
-<a href="{{URL::to('volanteerReporting')}}" class="list-group-item ">Voluntary Reporting</a>
+<a href="{{URL::to('volanteerReporting')}}" class="list-group-item ">Voluntary & Mandatory Reporting</a>
 <a href="#" class="list-group-item disNon">Wild Life Strike Reporting</a>
 <a href="#" class="list-group-item disNon">Incident Reporting</a>
-<a href="#" class="list-group-item ">PEL Exam Management</a>
+<a href="{{URL::to('exam')}}" class="list-group-item disNon">PEL Exam Management</a>
 
 <a href="#" class="list-group-item active widget" >
 Notice Board
@@ -31,7 +31,7 @@ Notice Board
 
 </div>
 <!--Carasol -->
-<div class='col-md-6'>
+<div class='col-md-9'>
 <div id="myCarousel" class="carousel slide">
    <!-- Carousel indicators -->
    <ol class="carousel-indicators">
@@ -57,7 +57,7 @@ Notice Board
    <a class="carousel-control right" href="#myCarousel" 
       data-slide="next">&rsaquo;</a>
 </div> 
-</div>
+</div><!-- 
 <div class="col-md-3">
   <a href="#" class="list-group-item active widget">
    Sponsored Area 
@@ -71,7 +71,7 @@ Notice Board
 </iframe>
 </a>
 
-</div>
+</div> -->
 
 </div>
 

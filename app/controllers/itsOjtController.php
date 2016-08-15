@@ -331,7 +331,7 @@ class itsOjtController extends \BaseController {
     	);
 		$inputData=	array(
 							'emp_tracker'=>Input::get('emp_tracker',' '),
-							'employee_id'=>Input::get('employee_id',' '),
+							'employee_id'=>trim(Input::get('employee_id',' ')),
 							'employee_name'=>Input::get('employee_name',' '),
 							'employees_speciality'=>Input::get('employees_speciality',' '),
 							'hire_date'=>$hire_date,
@@ -729,7 +729,7 @@ class itsOjtController extends \BaseController {
 	public function centralSearch(){
 		
 
-        $itsAssignedFormal=DB::table('itsojt_assign_course_ojt')->where('soft_delete','<>','1')->select('itscn','emp_tracker')->get();
+        $itsAssignedFormal=DB::table('itsojt_assign_course_ojt')->where('soft_delete','<>','1')->select('itscn','emp_tracker')->limit(100)->get();
       //$itsAssignedFormal=array_unique($itsAssignedFormal);
 
 		return View::make('itsOjt/centralSearch')
@@ -769,6 +769,22 @@ class itsOjtController extends \BaseController {
 			
 			;
 
+	}
+	public function report(){
+		return View::make('itsOjt.report')
+					->with('PageName','Report Main')
+			        ->with('active','its');
+	}
+	public function itsOjtRecordProvider(){
+		$traineeList=DB::table('itsojt_trainee')->select('emp_tracker','employee_id','employee_name')->get();
+		$itsManager=DB::table('users')->where('role','10')->select('name','role')->get();
+
+		return View::make('itsOjt.report.itsOjtRecordProvider')
+					->with('PageName','ITSOJT Record Provider')
+			        ->with('active','its')
+			        ->with('traineeList',$traineeList)
+			        ->with('itsManager',$itsManager)
+			        ;
 	}
 
 

@@ -6,7 +6,7 @@
 							<div class="box box-primary">
                                 <div class="box-header">
 									<div class="col-md-6 ">
-                                    <h3 class="box-title">Voluntary Report List</h3>
+                                    <h3 class="box-title">Voluntary & Mandatory Report List</h3>
 									</div>
 									
 									
@@ -20,6 +20,7 @@
 												<th>No.</th>
 												<th>Date</th>
 												<th>Email</th>
+												<th>Category</th>
 												<th>Title</th>
 												<th>Action Status</th>
 												<th>Aproval Status</th>
@@ -34,6 +35,7 @@
 												<td class='text-centre'>{{++$num}}</td>
 												<td class='text-centre'>{{$info->created_at}}</td>
 												<td class='text-centre'>{{$info->email}}</td>
+												<td class='text-centre'>{{$info->category}}</td>
 												<td class='text-centre'>{{$info->title}}</td>
 												<td class='text-centre'>
 													<?php $actionStatus=CommonFunction::actionStatus($info->id);?>

@@ -8,6 +8,7 @@ function window.onload() {
 }
 </script>
 <div class="row">
+
                         <div class="col-md-12">
 							<div class="box box-primary">
                                 <div class="box-header">
@@ -18,7 +19,8 @@ function window.onload() {
                                 <div class="box-body">
 								
 								<div style="display:none">{{$num=0;}}</div>
-								@foreach($findings as $info)								
+								@foreach($findings as $info)	
+								<?php $approval=CommonFunction::programStatus($info->sia_number);?>							
 									
                                     <table class="table table-bordered">
                                     
@@ -27,6 +29,8 @@ function window.onload() {
 									
                                    <tr id="{{$info->id}}">               
 								<th colspan='2' style='color:#72C2E6'>Finding #{{++$num}}
+								 <?php $corrAct=CommonFunction::correctiveAction($info->finding_number)?>
+								@if(!$corrAct)
 								<span  class='hidden-print'>
 									@if('true'==CommonFunction::hasPermission('sia_add_finding',Auth::user()->emp_id(),'par_delete'))
 										{{ HTML::linkAction('BaseController@permanentDelete', 'P.D',array('sia_findings',$info->id,$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
@@ -42,6 +46,10 @@ function window.onload() {
 										</a>
 									 @endif
 									 </span>
+								@else 
+								<span  class='text-right pull-right text-danger'>CA Given</span>
+
+								@endif
 
 								</th>
 								
@@ -62,7 +70,7 @@ function window.onload() {
                                       	<tr>
                                            
                                             <td class="col-md-4">SIA Number</td>
-                                            <td >{{$info->sia_number}}</td>
+                                            <td ><a href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}"> {{$info->sia_number}}</a></td>
                                             
                                         </tr>
 
@@ -102,25 +110,32 @@ function window.onload() {
 									   		
 									   	</tr>
                                         
-                                        <?php $corrAct=CommonFunction::correctiveAction($info->finding_number)?>
+                                       
 										@if($corrAct)
 										@foreach($corrAct as $corr)
 										<tr>
                                            <th colspan='2' style='color:green'>Corrective Action Taken
+                                          
                                           <span class='hidden-print'>
+                                    @if(!$approval)
+                                    @if($corr->approve=='0')
 									 @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'par_delete'))
 										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
 									 @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'sof_delete'))
 										{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('sia_corrective_action', $corr->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
-								@if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'approve'))
+									@endif
+									
+								     @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'approve'))
 
 									{{ HTML::linkAction('AircraftController@approve', '',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:green;float:right;padding:5px;')) }}
 									
 									{{ HTML::linkAction('AircraftController@notApprove', '',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-ok','style'=>'color:red;float:right;padding:5px;')) }}
-								@endif
-									@if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'worning'))	
+								     @endif
+
+								    @if($corr->approve=='0')
+									 @if('true'==CommonFunction::hasPermission('sia_corrective_action',Auth::user()->emp_id(),'worning'))	
 										{{ HTML::linkAction('AircraftController@removeWarning', '',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:green;float:right;padding:5px;')) }}
 										{{ HTML::linkAction('AircraftController@warning', '',array('sia_corrective_action',$corr->id), array('class' => 'glyphicon glyphicon-bell','style'=>'color:red;float:right;padding:5px;')) }}
 									@endif
@@ -131,7 +146,15 @@ function window.onload() {
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
 									 @endif
+
+									  @else 
+									 <span class="pull-right text-danger">Corrective Action Approved</span>
+									 @endif
+									 @else
+									 <span class="pull-right text-danger">Program Close</span>
+									 @endif
 									 </span>
+									
 								</th>
                                         </tr>
                     @if($corr->approve=='0')
@@ -157,11 +180,11 @@ function window.onload() {
                                             <td>{{$corr->concern_authority_officer}}</td>
                                         </tr>
 										<tr>
-                                            <td>Regulation Mitigation</td>
+                                            <td>Resolution/ Mitigation</td>
                                             <td>{{$corr->regulation_mitigation}}</td>
                                         </tr>
 										<tr>
-                                            <td>Regulation Mitigation Date</td>
+                                            <td>Resolution/ Mitigation Date (Projected/ Current)</td>
                                             <td>{{$corr->regulation_mitigation_date}}</td>
                                         </tr>
 										<tr>
@@ -175,10 +198,10 @@ function window.onload() {
                                         </tr>
                                         <tr>
 									   		<td colspan="2">
-									   			<i>Initialized By : {{$info->row_creator}} | 
-									   			Initialized at : {{$info->created_at}} | 
-									   			Last Updated By : {{$info->row_updator}} | 
-									   			Updated at : {{$info->updated_at}}</i>
+									   			<i>Initialized By : {{$corr->row_creator}} | 
+									   			Initialized at : {{$corr->created_at}} | 
+									   			Last Updated By : {{$corr->row_updator}} | 
+									   			Updated at : {{$corr->updated_at}}</i>
 									   		</td>
 									   		
 									   	</tr>

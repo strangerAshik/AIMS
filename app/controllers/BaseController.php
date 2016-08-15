@@ -83,6 +83,8 @@ class BaseController extends Controller {
 		}
 		
    }
+
+
 /*
  static function updateAuthors($table_name,$where_field_name,$where_value,$target_data_field_name){
 	 $query=DB::table($table_name)->where($where_field_name, $where_value)->pluck($target_data_field_name);

@@ -1,31 +1,39 @@
 @extends('layout')
 @section('content')
-<div style='display:none'>
-{{$role=Auth::User()->Role()}}
-</div>
-<section class='content contentWidth' >
-    <div class="row">
-                            <div class="col-md-12">
-                                <!-- Primary box -->
-                                <div class="box box-solid box-primary">
-                                    <div class="box-header">
-                                        <h3 class="box-title">Summary</h3>
-                                        <div class="box-tools pull-right">
-                                            <button data-widget="collapse" class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></button>
-                                            <button data-widget="remove" class="btn btn-primary btn-sm"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                       <span>Total Employee:&nbsp &nbsp <span class="badge bg-primary"> 3</span></span> 
-                                    </div><!-- /.box-body -->
-                                </div><!-- /.box -->
-                            </div>
-                        </div>
-    
+
+<section class='content ' >
+<!--Instruction Start-->
+ <?php 
+ $module='employee';
+ $instructions=CommonFunction::getModuleInstructions($module);?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
+   
                       
 						
 						<div class="row">
-						
+					   
+                    @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'access'))
+                   
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua ">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                        Notifications
+                                    </h4>
+                                    
+                                </div>
+                               
+                                <a class="small-box-footer" href="{{URL::to('qualification/notification');}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                       
+                   
+                    @endif	
                     @if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'access'))
                    
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
@@ -39,6 +47,26 @@
                                 </div>
                                
                                 <a class="small-box-footer" href="{{URL::to('qualification/employees');}}">
+                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                       
+                   
+                    @endif
+                    @if('true'==CommonFunction::hasPermission('emp_summary',Auth::user()->emp_id(),'access'))
+                   
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua ">
+                                <div class="inner">
+                                    <h4 class='title'>
+                                        Employee Summary
+                                    </h4>
+                                    
+                                </div>
+                               
+                                <a class="small-box-footer" href="{{URL::to('qualification/summary');}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -220,7 +248,7 @@
                                 </a>
                             </div>
                         </div><!-- ./col -->
-                        @if('true'==CommonFunction::hasPermission('employee_report',Auth::user()->emp_id(),'access'))
+                        @if('true'==CommonFunction::hasPermission('employee',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3">
                             <!-- small box -->
                             <div class="small-box bg-aqua ">
@@ -231,7 +259,7 @@
                                    
                                 </div>
                                 
-                                <a class="small-box-footer" href="{{URL::to('qualification/report')}}">
+                                <a class="small-box-footer" href="{{URL::to('report/reportByModuel/employee')}}">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

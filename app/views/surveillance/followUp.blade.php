@@ -20,7 +20,7 @@
                                         <p class="message">
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i>
-												{{$newDateTime = date('h:i A', strtotime($followUp->created_at));}}
+												{{$newDateTime = date('h:i A', strtotime($followUp->chat_time));}}
 													{{$date=date('d M y')}}</small>
                                                 {{$followUp->user_name}}
                                             </a>

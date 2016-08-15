@@ -116,7 +116,7 @@
 						</tr>   
 						<tr>
 							<th class="col-md-3">									
-								Associative CAA Job Task No
+								Associated CAA Job Task No
 							</th>
 							<td>{{$info->associative_faa_job_task_no}}</td>
 						</tr>

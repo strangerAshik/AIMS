@@ -1,7 +1,7 @@
 <?php
 
 class CommonFunction extends \Eloquent {
-	protected $fillable = [];
+	protected $fillable = []; 
  
   //depricated
 	static function dDays($day,$month,$year){
@@ -60,7 +60,26 @@ static function showMultiValues($table_name,$sia_number){
 		//End Multiple selection update
 	   
    }
-static function isItMe($members,$emp_id){
+
+protected function isItMeAircraft($members,$emp_id){
+  $teamMembers=[];
+ 
+ if($members!=null){
+    foreach ($members as $key => $value) {
+       if (($pos = strpos($value, "-")) !== FALSE) { 
+            $teamMembers[] = substr($value, $pos+1); 
+        }
+    }   
+
+    }
+  
+  if (in_array($emp_id,$teamMembers))
+    return 'true';
+    return 'false';
+
+}
+
+ static function isItMe($members,$emp_id){
 
   //$user = new User(); return  $emp_id = $user->emp_id();
 
@@ -108,12 +127,16 @@ static function isItMe($members,$emp_id){
     ->where('emp_id',$empId)  
     ->pluck('license_type');
 }
-static function getInspectorList(){
- 
-  return array(''=>'--Select Inspector--')+DB::table('users')->select(DB::raw('concat (name,"-",emp_id) as full_name,id'))->where('organization','CAAB HQ')->lists('full_name', 'full_name');
+protected function companySetupOrgName(){
+  return DB::table('company_setup')->first();
+}
+static function getInspectorList(){ 
+  $orgName=DB::table('company_setup')->first()->org_name;
+  return array(''=>'Select Inspector....')+DB::table('users')->select(DB::raw('concat (name,"-",emp_id) as full_name,id'))->where('organization',$orgName)->lists('full_name', 'full_name');
 }
 static function getInspectorListWithId(){
-  return DB::table('users')->where('organization','CAAB HQ')->get();
+   $orgName=DB::table('company_setup')->first()->org_name;
+  return DB::table('users')->where('organization',$orgName)->get();
 }
 static function pelList(){
   return DB::table('users')->where('role','Inspector')->get();
@@ -234,7 +257,10 @@ static function correctiveAction($findingNumber){
   return $info=DB::table('sia_corrective_action')->where('finding_number',$findingNumber)->get();
 }
 static function isMitigate($findingNumber){
-  return $info=DB::table('sia_corrective_action')->where('finding_number',$findingNumber)->count();
+  return $info=DB::table('sia_corrective_action')
+    ->where('finding_number',$findingNumber)
+    
+    ->first();
 }
 static function isSafetyConsApproved($sc_number){
   return $info=DB::table('sc_approval_info')->where('safety_issue_number',$sc_number)->count();
@@ -354,7 +380,11 @@ foreach ($siaList as $siaNum) {
 
 static function multiSelectionDataWithPercentage($dateFieldName,$from,$to,$tableName,$whereNotNull,$columnName){
 //getting the list of column of date to date range
-    $listOfType=DB::table($tableName)->where($whereNotNull,'<>','')->whereBetween($dateFieldName,array($from,$to))->lists($columnName);
+    $listOfType=DB::table($tableName)
+        ->where($whereNotNull,'<>','N;')
+        ->where($whereNotNull,'<>','')
+        ->where($whereNotNull,'<>',' ')
+        ->whereBetween($dateFieldName,array($from,$to))->lists($columnName);
 
 //unserialize and keep in an 1D array
     $actionTypes=array();
@@ -521,6 +551,55 @@ static function userPhotoById($id){
   }
   return 'anonymous.png';
 }
+static function empNameByEmpId($empId){
+  return DB::table('users')->where('emp_id',$empId)->pluck('name');
+}
+//***************************itsOjt Report*************************
+static function formalSelf($trainerName){
+  return DB::table('itsojt_formal_ojt_course_status')
+        ->where('row_creator',$trainerName)
+        ->where('ojt_task_no','0')
+        ->count();
+}
+static function formalSelfManager($trainerName,$empTracker){
+  return DB::table('itsojt_formal_ojt_course_status')
+        ->where('row_creator',$trainerName)
+        ->where('emp_tracker',$empTracker)
+        ->where('ojt_task_no','0')
+        ->count();
+}
+static function ojtSelf($trainerName){
+  return DB::table('itsojt_formal_ojt_course_status')
+        ->where('row_creator',$trainerName)
+        ->where('ojt_task_no','<>','0')
+        ->count();
+
+}
+static function ojtSelfManager($trainerName,$empTracker){
+  return DB::table('itsojt_formal_ojt_course_status')
+        ->where('emp_tracker',$empTracker)
+        ->where('row_creator',$trainerName)
+        ->where('ojt_task_no','<>','0')
+        ->count();
+}
+static function formalManager($empTracker,$managerName){
+
+  return DB::table('itsojt_formal_ojt_course_status')
+          ->where('emp_tracker',$empTracker)
+          ->where('row_creator',$managerName)
+          ->where('ojt_task_no','0')
+          ->count();
+}
+static function ojtManager($empTracker,$managerName){
+
+   return DB::table('itsojt_formal_ojt_course_status')
+          ->where('emp_tracker',$empTracker)
+          ->where('row_creator',$managerName)
+          ->where('ojt_task_no','<>','0')
+          ->count();
+}
+
+
 //***************************itsOjt*************************
 //
 static function formalCourseStatus($its_course_number,$emp_tracker){
@@ -651,30 +730,25 @@ static function getFindingInfo($findingNumber){
   return DB::table('sia_findings')->where('finding_number',$findingNumber)->first();
 }
 static function getScNumberInfo($ScNumber){
-  $data=DB::table('sc_safety_concern')
-            ->join('sia_program', 'sc_safety_concern.sia_number', '=', 'sia_program.sia_number')
-            ->join('sia_findings', 'sc_safety_concern.finding_number', '=', 'sia_findings.finding_number')
-            ->select(
-                  'sc_safety_concern.safety_issue_number','sc_safety_concern.finding_number', 'sc_safety_concern.sia_number', 'sc_safety_concern.title as scTitle',
-                  'sc_safety_concern.target_date','sc_safety_concern.risk_assesment_from_matrix','sia_program.org_name','sia_findings.title as findingTitle'
-                  
-                  )
+  $data=DB::table('sc_safety_concern')           
+            ->where('safety_issue_number',$ScNumber)            
             ->first();
 
   return $data;
 }
+static function actionDetails($siaNumber){
+  return DB::table('sia_action')->where('sia_number',$siaNumber)->first();
+}
 static function getEdpNumberInfo($edpNumber){
   $data=DB::table('edp_primary')
-            ->join('sia_program', 'edp_primary.sia_number', '=', 'sia_program.sia_number')
-            ->join('sia_findings', 'edp_primary.finding_number', '=', 'sia_findings.finding_number')
-            ->select(
-                  'edp_primary.edp_number','edp_primary.sia_number','edp_primary.finding_number', 'edp_primary.title as edpTitle',
-                  'sia_program.org_name','sia_findings.title as findingTitle'
-                  
-                  )
+            ->where('edp_primary.edp_number',$edpNumber)
+            
             ->first();
 
   return $data;
+}
+static function orgNameUsingSiaNumber($siaNumber){
+  return DB::table('sia_program')->where('sia_number',$siaNumber)->pluck('org_name');
 }
 static function getSmsInfo($siaNumber){
   $data=DB::table('sia_sms')->where('sia_number',$siaNumber)->first();
@@ -685,9 +759,286 @@ static function getCompanySetupDetails(){
 
   return DB::table('company_setup')->orderBy('id','desc')->first();
 }
+/**************File Upload********************/
+    //document upload
+    static function docsUpload($tableName,$motherId,$fieldName,$docType){
+      //die($motherId);
+       if($files = Input::hasFile($fieldName))
+            {
+           //   die('mara kha');
+                $files = Input::file($fieldName);
+                $destinationPath = 'files/documents';
+                foreach ($files as $file) {
+                     $orginalName=$file->getClientOriginalName();
+                     $filename =$orginalName.'-'.time().'.'.$file->getClientOriginalExtension();
+                     $upload_success = $file->move($destinationPath, $filename);
+                     //insert in document table
+                     DB::table('documents')->insert(array(
+                            'table_name'=>$tableName,
+                            'mother_id'=>$motherId,
+                            'calling_id'=>$filename,
+                            'field_name'=>$fieldName,
+                            'doc_type'=>$docType,
+                            'doc_name'=>$orginalName,
+
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            'updated_at'=>date('Y-m-d H:i:s'),
+                        ));
+                }          
+             }
+    }
+    //call docs
+    static function getDocs($motherId,$tableName,$fieldName){
+      //die($motherId);
+      return DB::table('documents')
+                  ->where('mother_id',$motherId)
+                  ->where('table_name',$tableName)
+                  ->where('field_name',$fieldName)
+                  ->get();
+    }
 
 
+//******************************Certification***********************
 
+    static function getFields($formId){
+      return DB::table('form_fields')->where('form_id',$formId)->orderBy('order')->get();
+    }
+    static function getForms($phaseId){
+      return DB::table('forms')->where('phase_id',$phaseId)->orderBy('order')->get();
+    }
+    static function getEvents($phaseId){
+      return DB::table('timeline')->where('phase_id',$phaseId)->orderBy('order')->get();
+    }
+    static function optionsOfCertificateField($phaseId,$formId,$fieldId){
+
+      return DB::table('dorpdown_options')
+          ->where('phase_id',$phaseId)
+          ->where('form_id',$formId)
+          ->where('field_id',$fieldId)
+          ->lists('option','option');
+
+    }
+    static function isFormValueGiven($certificateId,$formId){
+      return DB::table('certi_form_value')
+                  ->where('certificate_id',$certificateId)
+                  ->where('form_id',$formId)
+                  ->count();
+    }
+    static function formName($formId){
+      return DB::table('forms')->where('forms.id',$formId)->pluck('form_name');
+    }
+    static function fieldName($fieldId){
+      return DB::table('form_fields')->where('form_fields.id',$fieldId)->pluck('field_name');
+    }
+    static function recordFindings($recordId){
+      return DB::table('certi_event_record_finding')->where('record_id',$recordId)->get();
+    }
+    static function getEventStatus($certificateId,$eventId){
+      return DB::table('certi_event_status')
+            ->where('certificate_id',$certificateId)
+            ->where('event_id',$eventId)
+            ->pluck('status');
+    }
+    static function getUpdatedDuration($certificateId,$eventId){
+
+      return DB::table('certi_update_timeline_duration')
+                ->where('certificate_id',$certificateId)
+                ->where('event_id',$eventId)
+                ->orderBy('id','desc')
+                ->first();
+
+    }
+    
+    static function isGiven($certificateId,$eventId){
+
+      return DB::table('certi_update_timeline_duration')
+                ->where('certificate_id',$certificateId)
+                ->where('event_id',$eventId)
+                ->pluck('duration');
+
+    }
+    static function inputedForms($certificateId,$phaseId){
+      return DB::table('certi_form_input')
+              ->where('certi_id',$certificateId)
+              ->where('phase_id',$phaseId)
+              ->orderBy('form_order')
+              //->select('id','form_id')
+              ->get();
+    }
+    static function getFieldValue($certiFormInputId,$formId,$fieldId){
+      return DB::table('certi_form_value')
+                ->where('certi_form_input_id',$certiFormInputId)
+                ->where('form_id',$formId)
+                ->where('field_id',$fieldId)
+                //->select('value','id')
+                ->pluck('value');
+    }
+    static function getFieldValueId($certiFormInputId,$formId,$fieldId){
+      return DB::table('certi_form_value')
+                ->where('certi_form_input_id',$certiFormInputId)
+                ->where('form_id',$formId)
+                ->where('field_id',$fieldId)
+                //->select('value','id')
+                ->pluck('id');
+    }
+    static function submittedEvents($certificateId,$phaseId){
+    //  return $phaseId;
+      return DB::table('certi_event_status')
+              ->where('certificate_id',$certificateId)
+              ->where('phase_id',$phaseId)
+              ->count();
+
+    }
+    static function totalEvents($phaseId){
+      return DB::table('timeline')->where('phase_id',$phaseId)->count();
+    }
+    static function phaseInfo($phaseId){
+      return DB::table('phase')->where('id',$phaseId)->first();
+    }
+    static function formInfo($phaseId,$formId){
+      return DB::table('forms')->where('id',$formId)->where('phase_id',$phaseId)->first();
+    }
+    static function fieldInfo($phaseId,$formId,$fieldId){
+      return DB::table('dorpdown_options')
+          ->where('id',$fieldId)
+          ->where('form_id',$formId)
+          ->where('phase_id',$phaseId)
+          ->first();
+    }
+
+// *******************AIRCRFT Notification*************************
+    static function isAircraftFormDataGiven($tableName,$mm,$msn){
+      return DB::table($tableName)->where('aircraft_MM',$mm)->where('aircraft_MSN',$msn)->count();
+    }
+    static function columnNotApprove($tableName){
+      return DB::table($tableName)->where('approve','0')->count();
+    }
+    static function associatedMeColumnNotApprove($tableName){
+      
+      //pull all unapproved info of this table
+       $unApproveRows=DB::table($tableName)->where('approve','0')->get();
+       $num=0;
+       foreach ($unApproveRows as $row) {
+        //get primary info of that mm msn
+         $members=DB::table('aircraft_primary_info')->where('aircraft_MM',$row->aircraft_MM)->where('aircraft_MSN',$row->aircraft_MSN)->pluck('assigned_inspector');
+         if($members!=='N;')  $members=unserialize($members);
+         else $members=null;
+         //$me=$this->isItMeAircraft($members,Auth::user()->emp_id());
+         // function
+         $emp_id=Auth::user()->emp_id();
+         $teamMembers=[];
+ 
+         if($members!=null){
+          //return $members;
+            foreach ($members as $key => $value) {
+               if (($pos = strpos($value, "-")) !== FALSE) { 
+                    $teamMembers[] = substr($value, $pos+1); 
+                }
+            }   
+
+            }
+          
+          if (in_array($emp_id,$teamMembers))
+           ++$num;
+          //else $num--;
+        }
+
+        return $num;
+       
+
+
+    }
+    static function iAmAssociatedInspector($members){
+      if($members!='N;')$members=unserialize($members);
+      else $members=null;
+      $empId=Auth::user()->emp_id();
+
+      $teamMembers=[];
+
+         if($members!=null){          
+            foreach ($members as $key => $value) {
+               if (($pos = strpos($value, "-")) !== FALSE) { 
+                    $teamMembers[] = substr($value, $pos+1); 
+                }
+            }   
+
+            }
+          
+          if (in_array($empId,$teamMembers)) return true; return false;
+    }
+
+    static function aircraftPrimaryInfo($mm,$msn){
+      return DB::table('aircraft_primary_info')->where('aircraft_MM',$mm)->where('aircraft_MSN',$msn)->first();
+    }
+
+
+    // Employee summary
+    static function totalEntryOfThisEmpId($tableName,$empId){
+      return DB::table($tableName)->where('emp_id',$empId)->count();
+    }
+    static function totalTraingOrWorkshopOrOjt($key,$empId){
+      return DB::table('qualification_training_ojt')
+                  ->where('emp_id',$empId)
+                  ->where('category',$key)
+                  ->count();
+    }
+    static function activeTask($empId){
+      return DB::table('qualification_employee_verification')
+              ->where('emp_id',$empId)
+              ->where('active','Yes')
+              ->count();
+    }
+    static function completeTask($empId){
+      return DB::table('qualification_employee_verification')
+              ->where('emp_id',$empId)
+              ->where('termination_date','<>','')
+              ->count();
+    }
+    static function getlistOfActionedSia(){
+      return DB::table('sia_action')->select('sia_number','team_members')->get();
+    }
+    static function allAircraftPrimaryInfo(){
+      return DB::table('aircraft_primary_info')->select('assigned_inspector','aircraft_MM','aircraft_MSN','serial_number')->get();
+    }
+  /*******************Employee notification**********************/
+  static function columnNotApproveEmployee($tableName){
+     return DB::table($tableName)->where('verify','<>','1')->count();
+  }
+ static function associatedMeColumnNotApproveEmployee($tableName){
+     return DB::table($tableName)->where('verify','<>','1')->where('emp_id',Auth::user()->emp_id())->count();
+  }
+  static function empPersonalInfo($empId){
+    return DB::table('qualification_personal')->where('emp_id',$empId)->first();
+  }
+  /****************Role**********************/
+  static function roles(){
+    return [''=>'Select Designation....']+DB::table('role_names')->lists('role_name','id');
+  }
+  static function roleName($roleId){
+    return DB::table('role_names')->where('id',$roleId)->pluck('role_name');
+  }
+/**************Module & Instruction & Reports*******************/ 
+static function getModules(){
+  return DB::table('module_names')->where('label','<>','')->lists('label','id');
+}
+static function getModuleLabelByName($moduleName){
+  return DB::table('module_names')->where('module_name',$moduleName)->pluck('label');
+}
+
+static function getModuleInstructions($moduleName){
+  return DB::table('module_details')
+               ->where('module_name',$moduleName)
+               ->where('active',"Yes")
+               ->orderBy('order')->get();
+}
+static function reports($type,$module){
+  return DB::table('module_reports')
+          ->where('category',$type)
+          ->where('module_name',$module)
+          ->where('active','Yes')
+          ->orderBy('order')
+          ->get();
+}
 
 
 

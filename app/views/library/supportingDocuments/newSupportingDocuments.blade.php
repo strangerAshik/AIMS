@@ -5,18 +5,18 @@
 </div>
 <section class='content widthController' style='margin: 0 auto; max-width: 1000px;'>
 <p class="text-center">
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#supportingDocsType">New Supporting Document  Type</button>
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#supportingDocsType">Add Document Category</button>
 	
 </p>
 <p class="text-center">
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#supportingDocs">New Supporting Document </button>
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#supportingDocs">Add Document </button>
 	
 </p>
 <div class="row">
                         <div class="col-md-12">
 							<div class="box box-primary">
                                 <div class="box-header">									
-                                    <h3 class="box-title">Document Type List</h3>
+                                    <h3 class="box-title">Document Category List</h3>
 									<div class="col-md-4 col-md-offset-3  position">
 										<form action="" class="search-form">
 											

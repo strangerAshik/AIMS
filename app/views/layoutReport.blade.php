@@ -21,7 +21,9 @@
         <script src="http://code.highcharts.com/highcharts-3d.js"></script>
 
        
-
+       <!-- date picker -->
+     {{ HTML::style('plugin/datepicker/jquery.datetimepicker.css') }}
+     
        
 
 
@@ -61,7 +63,9 @@
           <div class="row">
 
               <div class="col-md-10 col-md-offset-2">
-               {{Form::open(array('url'=>'surveillance/reportByDateToDate','method'=>'get','class'=>'form-inline','data-toggle'=>'validator','role'=>'form'))}}
+               {{Form::open(array('url'=>'report/reportChartByDateToDate','method'=>'get','class'=>'form-inline','data-toggle'=>'validator','role'=>'form'))}}
+               {{Form::hidden('fileName',$fileName)}}
+               {{Form::hidden('active',$active)}}
                   <div class="form-group">
                     <label for="email"> From :</label>
                     {{Form::select('from_date', $dates, $from_Date ,array('class'=>'form-control','required'=>''))}}
@@ -81,6 +85,7 @@
                  <h4 class="text-center text-success"> Report Shown For <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
               </div>
                 
+
         <!--Content-->
         @yield('content')
      
@@ -100,6 +105,24 @@
        
         
         <!-- page script -->
+             <!-- date picker -->
+ <script src="{{URL::asset('plugin/datepicker/jquery.datetimepicker.full.js')}}" type="text/javascript"></script>  
+        <script>
+
+          $.datetimepicker.setLocale('en');
+
+
+          $('.datepicker').datetimepicker({
+            timepicker:false,
+            format:'d F Y'
+
+          });
+
+
+
+      </script>
+
+       <!-- date picker -->
        
 
     </body>

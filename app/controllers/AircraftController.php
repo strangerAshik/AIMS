@@ -23,17 +23,20 @@ class AircraftController extends \BaseController {
 	}
 	//report
 	public function report(){
-		return App::make('SurveillanceController')->report('aircraft');
+		return View::make('aircraft/report')
+		->with('PageName','Report')
+		->with('active','aircraft');
 	}
 	public function reportByDateToDate(){
 		return App::make('SurveillanceController')->reportByDateToDate('aircraft');
 	}
 	//Start Save data
 	public function savePrimary(){	
+		$inspectors=serialize(Input::get('assigned_inspector'));
 	DB::table('aircraft_primary_info')->insert(array(
 			'aircraft_MM'=>Input::get('aircraft_MM',' '),
 			'aircraft_MSN'=>Input::get('aircraft_MSN',' '),
-			'assigned_inspector'=>Input::get('assigned_inspector',' '),
+			'assigned_inspector'=>$inspectors,
 			'serial_number'=>Input::get('serial_number',' '),
 			'state_registration'=>Input::get('state_registration',' '),
 			'registration_no'=>Input::get('registration_no',' '),
@@ -46,7 +49,7 @@ class AircraftController extends \BaseController {
 			'insurance'=>Input::get('insurance',false),
 			'currently_leased'=>Input::get('currently_leased',false),
 			'memo'=>Input::get('memo',' '),
-			'approve'=>'1',
+			'approve'=>'0',
 			'warning'=>'0',
 			'soft_delete'=>'0',
 
@@ -57,6 +60,7 @@ class AircraftController extends \BaseController {
 		
 	}
 	public function editPrimary(){		
+		$inspectors=serialize(Input::get('assigned_inspector'));
 	   $id= Input::get('id');
 			DB::table('aircraft_primary_info')
             ->where('id','=',$id)
@@ -65,7 +69,7 @@ class AircraftController extends \BaseController {
             	'aircraft_MM'=>Input::get('aircraft_MM'),
 				'aircraft_MSN'=>Input::get('aircraft_MSN'),
 
-				'assigned_inspector' => Input::get('assigned_inspector'),
+				'assigned_inspector' => $inspectors,
 				'serial_number' => Input::get('serial_number'),
 				'registration_no' => Input::get('registration_no'),
 				'aircraft_operator' => Input::get('aircraft_operator'),
@@ -78,6 +82,8 @@ class AircraftController extends \BaseController {
 				'insurance' =>Input::get('insurance') ,	
 				'currently_leased' =>Input::get('currently_leased') ,	
 				'memo' =>Input::get('memo') ,	
+				'approve'=>'0',
+				'warning'=>'0',
 				
 				'updated_at'=>date('Y-m-d H:i:s')	
 			));
@@ -157,7 +163,7 @@ class AircraftController extends \BaseController {
 		
 		$aircraft->tc_upload=$tc_upload;
 		
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 		$aircraft->created_at=date('Y-m-d H:i:s');
@@ -210,6 +216,9 @@ class AircraftController extends \BaseController {
 				'tcds_revision_no' => Input::get('tcds_revision_no'),
 				'tdcs_link' => Input::get('tdcs_link'),
 				'tc_upload' => $tc_upload,
+				'approve'=>'0',
+				'warning'=>'0',
+
 
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
@@ -240,7 +249,7 @@ class AircraftController extends \BaseController {
 		$stc_upload=parent::fileUpload('stc_upload','air_stc_upload');
 		$aircraft->stc_upload=$stc_upload;
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 		$aircraft->created_at=date('Y-m-d H:i:s');
@@ -274,7 +283,8 @@ class AircraftController extends \BaseController {
 				'stc_purpose' => Input::get('stc_purpose'),
 
 				'stc_upload' =>$stc_upload,				
-					
+				'approve'=>'0',
+				'warning'=>'0',
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
 		return Redirect::back()->with('message', 'Successfully Updated!!');
@@ -298,7 +308,7 @@ class AircraftController extends \BaseController {
 		$exemption_upload=parent::fileUpload('exemption_upload','air_exemption_upload');
 		$aircraft->exemption_upload=$exemption_upload;
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 
@@ -324,7 +334,9 @@ class AircraftController extends \BaseController {
 				'effective_year' =>Input::get('effective_year'),				
 				'exemption_control_number' =>Input::get('exemption_control_number'),				
 				'basis' =>Input::get('basis'),				
-				'exemption_upload' =>$exemption_upload,								
+				'exemption_upload' =>$exemption_upload,	
+				'approve'=>'0',
+				'warning'=>'0',							
 					
 				'updated_at' =>date('Y-m-d H:i:s')	
 			));
@@ -359,7 +371,7 @@ class AircraftController extends \BaseController {
 		$registration_upload=parent::fileUpload('registration_upload','air_registration_upload');
 		$aircraft->registration_upload=$registration_upload;
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 
@@ -394,7 +406,10 @@ class AircraftController extends \BaseController {
 				'de_regisration_basis' => Input::get('de_regisration_basis'),				
 				'previous_state_registration' => Input::get('previous_state_registration'),				
 				'reg_status_memo' => Input::get('reg_status_memo'),									
-				'registration_upload' =>$registration_upload,									
+				'registration_upload' =>$registration_upload,
+
+				'approve'=>'0',
+				'warning'=>'0',									
 					
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
@@ -433,7 +448,7 @@ class AircraftController extends \BaseController {
 		$ac_upload=parent::fileUpload('ac_upload','air_ac_upload');
 		$aircraft->ac_upload=$ac_upload;
 		
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 
@@ -471,7 +486,9 @@ class AircraftController extends \BaseController {
 				'ac_status_memo' => Input::get('ac_status_memo'),				
 				'ac_exemption' => Input::get('ac_exemption'),
 
-				'ac_upload' =>$ac_upload,				
+				'ac_upload' =>$ac_upload,	
+				'approve'=>'0',
+				'warning'=>'0',			
 											
 					
 				'updated_at' =>date('Y-m-d H:i:s')
@@ -502,7 +519,7 @@ class AircraftController extends \BaseController {
 		$approval_upload=parent::fileUpload('approval_upload','air_approval_upload');
 		$aircraft->approval_upload=$approval_upload;
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 
@@ -531,7 +548,10 @@ class AircraftController extends \BaseController {
 				'limiting_factor' => Input::get('limiting_factor'),				
 				'terms_of_approval_memo' => Input::get('terms_of_approval_memo'),	
 
-				'approval_upload' =>$approval_upload,				
+				'approval_upload' =>$approval_upload,	
+
+				'approve'=>'0',
+				'warning'=>'0',			
 				
 					
 				'updated_at' =>date('Y-m-d H:i:s')
@@ -565,7 +585,7 @@ class AircraftController extends \BaseController {
 		$owner_upload=parent::fileUpload('owner_upload','air_owner_upload');
 		$aircraft->owner_upload=$owner_upload;
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';
 
@@ -596,7 +616,9 @@ class AircraftController extends \BaseController {
 				'owner_postal_code' => Input::get('owner_postal_code'),				
 				'owner_country' => Input::get('owner_country'),				
 				'owner_lessor' => Input::get('owner_lessor'),		
-				'owner_upload' =>$owner_upload,		
+				'owner_upload' =>$owner_upload,	
+				'approve'=>'0',
+				'warning'=>'0',	
 					
 				'updated_at' =>date('Y-m-d H:i:s')
 			));
@@ -629,7 +651,7 @@ class AircraftController extends \BaseController {
 
 
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';	
 
@@ -660,7 +682,9 @@ class AircraftController extends \BaseController {
 				'lessee_postal_code' => Input::get('lessee_postal_code'),				
 				'lessee_country' => Input::get('lessee_country'),
 
-				'lesse_upload' =>$lesse_upload,				
+				'lesse_upload' =>$lesse_upload,	
+				'approve'=>'0',
+				'warning'=>'0',			
 				
 					
 				'updated_at' =>date('Y-m-d H:i:s')	
@@ -699,7 +723,7 @@ class AircraftController extends \BaseController {
 		
 
 
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';		
 
@@ -734,7 +758,10 @@ class AircraftController extends \BaseController {
 				'insurer_expiration_date' => Input::get('insurer_expiration_date'),				
 				'insurer_expiration_month' => Input::get('insurer_expiration_month'),				
 				'insurer_expiration_year' => Input::get('insurer_expiration_year'),
-				'insurer_upload' =>$insurer_upload,		
+				'insurer_upload' =>$insurer_upload,	
+
+				'approve'=>'0',
+				'warning'=>'0',	
 					
 				'updated_at' =>date('Y-m-d H:i:s')	
 			));
@@ -787,7 +814,7 @@ class AircraftController extends \BaseController {
 		$equip_upload=parent::fileUpload('equip_upload','air_equip_upload');
 		$aircraft->equip_upload=$equip_upload;
 		
-		$aircraft->approve='1';
+		$aircraft->approve='0';
 		$aircraft->warning='0';
 		$aircraft->soft_delete='0';		
 
@@ -840,7 +867,10 @@ class AircraftController extends \BaseController {
 				'elt_mm' => Input::get('elt_mm'),				
 				'note' => Input::get('note'),	
 
-				'equip_upload' =>$equip_upload,				
+				'equip_upload' =>$equip_upload,
+
+				'approve'=>'0',
+				'warning'=>'0',				
 				
 					
 				'updated_at' =>date('Y-m-d H:i:s')
@@ -996,6 +1026,118 @@ class AircraftController extends \BaseController {
 		return View::make('aircraft.myAircraftList')
 		->with('PageName','My Aircraft List')
 		->with('active','aircraft')
+		->with('aircrafts',$aircrafts);
+	}
+	protected function aircraftPrimaryInfo(){
+		return DB::table('aircraft_primary_info')->get();
+	}
+
+	public function summary(){
+		$primaryInfo=$this->aircraftPrimaryInfo();
+		return View::make('aircraft.summary')
+		->with('PageName','Aircraft Central Search')
+		->with('active','aircraft')
+		->with('dates',parent::dates())
+		->with('months',parent::months())
+		->with('years',parent::years())
+		->with('primaryInfo',$primaryInfo)
+
+		;
+	}
+	public function notification(){
+		return View::make('aircraft.notification')
+		->with('PageName','Aircraft Notification')
+		->with('active','aircraft');
+	}
+	protected function notApprovedInfo($tableName){
+		return DB::table($tableName)->where('approve','0')->get();
+	}
+	public function primaryAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_primary_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Primary Information')
+		->with('active','aircraft')
+		->with('onPageIdName','primaryAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function tcAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_tc_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft TC Information')
+		->with('active','aircraft')
+		->with('onPageIdName','tcAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function stcAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_stc_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft STC Information')
+		->with('active','aircraft')
+		->with('onPageIdName','stcAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function exemptionAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_exemption_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Exemption Information')
+		->with('active','aircraft')
+		->with('onPageIdName','exemptionAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function registrationAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_registration_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Registration Information ')
+		->with('active','aircraft')
+		->with('onPageIdName','registrationAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function airworthinessAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_airworthiness_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Airworthiness Information')
+		->with('active','aircraft')
+		->with('onPageIdName','airworthinessAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function caaAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_caa_approval_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft CAA Approval Information')
+		->with('active','aircraft')
+		->with('onPageIdName','caaAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function ownerAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_owner_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Owner Information')
+		->with('active','aircraft')
+		->with('onPageIdName','ownerAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function lesseeAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_lessee_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Lessee Information')
+		->with('active','aircraft')
+		->with('onPageIdName','lesseeAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function insurerAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_insurer_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Insurer Information')
+		->with('active','aircraft')
+		->with('onPageIdName','insurerAprovalWaiting')
+		->with('aircrafts',$aircrafts);
+	}
+	public function equipmentReviewAprovalWaiting(){
+		$aircrafts=$this->notApprovedInfo('aircraft_equipment_review_info');
+		return View::make('aircraft.noticeDetails')
+		->with('PageName','Aircraft Eqipment Review Information')
+		->with('active','aircraft')
+		->with('onPageIdName','equipmentReviewAprovalWaiting')
 		->with('aircrafts',$aircrafts);
 	}
 }

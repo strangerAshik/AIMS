@@ -27,7 +27,7 @@
 											{{Form::label('assigned_inspector', 'Assigned Inspector', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $inspector=CommonFunction::getInspectorList();?>
-											{{Form::select('assigned_inspector', $inspector,'0',array('class'=>'form-control'))}}
+											{{Form::select('assigned_inspector[]', $inspector,'0',array('class'=>'','multiple'=>'multiple','id'=>'assigned_inspector',))}}
 											</div>
 											
                     </div>
@@ -214,6 +214,7 @@
 $(document).ready(function(){
 $('#organizations').selectize();
 $('#state_registration').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+$('#assigned_inspector').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 	
 });
 </script>	

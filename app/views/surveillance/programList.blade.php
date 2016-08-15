@@ -1,4 +1,4 @@
-@extends('layoutTable')
+@extends('layoutMT')
 @section('content')
   <!-- Right side column. Contains the navbar and content of the page -->
             
@@ -35,19 +35,21 @@
                                 <div class="box-body table-responsive">
                                <h4 class="text-center text-success"> Record Shown From <b class="text-primary">{{date('d F Y',strtotime($from))}}</b> To <b class="text-primary">{{date('d F Y',strtotime($to))}}</b></h4>
                               
-                                    <table id="example1" class="table table-bordered table-striped table-responsive">
+                                    <table id="example" class="table table-bordered table-striped table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Date[Y-M-D]</th>
-                                                <th>Time</th>
+                                                <!-- <th>Time</th> -->
                                                 <th>SIA/Tracking No</th>
                                                 <th>Organization</th>
+                                                <th>SIA Area</th>
                                                 <th>Event</th>
                                                 
                                                 
                                                 <th>Team members</th>
-                                                <th>Accomplish Status</th>
+                                                <th>Action Status</th>
+                                                <th>Program Status</th>
                                               
                                                 <th>Details</th>
                                             </tr>
@@ -61,10 +63,22 @@
                                             <tr>
                                            
                                                 <td>{{++$num}}</td>                                                
-                                                <td>{{date('d F Y',strtotime($program->date))}}</td>
-                                                <td>{{$program->time}}</td>
+                                                <td>{{date('Y/m/d',strtotime($program->date))}}</td>
+                                               <!--  <td>{{$program->time}}</td> -->
                                                 <td>{{$program->sia_number}}</td>                                                
                                                 <td>{{$program->org_name}}</td>
+                                                <td>
+                                                      @if($program->sia_by_area)
+                                                      <?php $areas=unserialize($program->sia_by_area);?>
+                                                      @foreach($areas as $area)
+                                                         {{$area}},
+                                                      @endforeach
+
+                                                      @else 
+                                                      No Area Selected 
+
+                                                      @endif
+                                                </td>
                                                 <td>{{$program->event}}</td>
                                                 
                                                 <td>
@@ -83,10 +97,18 @@
                                                     No Members Added!!
                                                 @endif</td>
                                                 <td>@if($insNum=CommonFunction::inspectionHappend($program->sia_number)>0) 
-                                                    <span style="color:green">Done</span>
+                                                    <span style="color:#0DD43F">Yes</span>
                                                     @else
-                                                   <span style="color:#FFC200"> Action Not Taken</span>
+                                                   <span style="color:#FD11BC">No</span>
                                                     @endif
+                                                 </td>
+                                                 <td>
+                                                     <?php $programStatus=CommonFunction::programStatus($program->sia_number);?>
+                                                     @if($programStatus>0)
+                                                        <span style="color: green">Close</span>
+                                                     @else 
+                                                       <span style="color: red">Open</span> 
+                                                     @endif
                                                  </td>
                                                 
                                                 <td><a  href="{{URL::to('surveillance/singleProgram/'.$program->sia_number)}}">Details</a></td>
@@ -95,20 +117,7 @@
                                            
                                         @endforeach
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Date[Y-M-D]</th>
-                                                <th>SIA/Tracking No</th>
-                                                <th>Event</th>
-                                                
-                                                <th>Time</th>
-                                                <th>Teammembers</th>
-                                                <th>Accomplished?</th>
-                                                <th>Remark</th>
-                                                <th>Details</th>
-                                            </tr>
-                                        </tfoot>
+                                       
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->

@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 <section class='content widthController'>
-
+<?php $siaNumber=0;?>
 	<div class='row col-md-12 hidden-print'>
 				@if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'entry'))
 				@if(!$legalOpinions)
@@ -38,6 +38,7 @@
 							<div class="box-header">
 									<h3 class="box-title"style='color:#367FA9;font-weight:bold;' >EDP Details</h3>
 							@foreach ($edpDetails as $info) 
+							@if(!$legalOpinions)
 							<span class='hidden-print'>
 								@if('true'==CommonFunction::hasPermission('edp',Auth::user()->emp_id(),'par_delete'))
 
@@ -59,7 +60,10 @@
 									</a>
 								@endif
 									
-							</span>				
+							</span>	
+							@else 
+							<span colspan="2" class="text-danger pull-right">Legal Opinion Given</span>
+							@endif			
 									
 							</div>							 
               
@@ -74,11 +78,18 @@
             <tbody>
            
           
-			   <tr><th class='col-md-4'>SIA / Tracking Number</th><td>{{$info->sia_number}}</td></tr>
-			   <tr><th>Finding Number</th><td>{{$info->finding_number}}</td></tr>
-			   <tr><th>SC Number</th><td>{{$info->sc_number}}</td></tr>
-			   <tr><th>EDP Number</th><td>{{$info->edp_number}}</td></tr>
-			   <tr><th>Title</th><td>{{$info->title}}</td></tr>
+			   <tr>
+			   <th class='col-md-4'>SIA / Tracking Number</th>
+			   <td>
+			    <a href="{{URL::to('surveillance/singleProgram/'.$info->sia_number)}}">{{$sia_number=$info->sia_number}}</a>
+			   
+			   <?php $siaNumber=$info->sia_number;?>
+			   </td>
+			   </tr>
+			   <tr><th>Finding Title</th><td>{{CommonFunction::findingTitle($info->finding_number)}} [{{$info->finding_number}}]</td></tr>
+			   <tr><th>SC Title</th><td>{{CommonFunction::safetyTitle($info->sc_number)}} [{{$info->sc_number}}]</td></tr>
+			   
+			   <tr><th>Title</th><td>{{$info->title}} [{{$info->edp_number}}]</td></tr>
 			   <tr><th>Severity Level</th><td>{{$info->severity_level}}</td></tr>
 			   <tr><th>Explanation</th><td>{{$info->severity_explanation}}</td></tr>
 			   <tr><th>Likelihood Level</th><td>{{$info->likelihood_level}}</td></tr>
@@ -178,6 +189,7 @@
                         <tbody>
 						    <tr>               
 								<th colspan='2' style='color:#72C2E6'>Legal Opinion #{{++$num}}
+								@if(!$approvalInfos)
 								<span class='hidden-print'>
 									 @if('true'==CommonFunction::hasPermission('edp_legal_opinion',Auth::user()->emp_id(),'par_delete'))
 										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_legal_opinion',$opinion->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
@@ -191,6 +203,9 @@
 										</a>
 									 @endif
 								</span>
+								@else 
+								<span class="pull-right text-danger">EDP Approved</span>
+								@endif
 								</th>
 								
 						    </tr>        
@@ -262,13 +277,14 @@
 					{{$num=0}}
 					</div>	
                     <table class="table table-bordered">
+                    <?php $siaApproval=CommonFunction::programStatus($siaNumber);?>					
 					@if($approvalInfos)
 					@foreach($approvalInfos as $info)
                         <tbody>
 						    <tr>               
 								<th colspan='2' style='color:#72C2E6'>Approval Info. #{{++$num}}
+								@if($siaApproval=='0')
 								<span class='hidden-print'>
-
 									 @if('true'==CommonFunction::hasPermission('edp_approval',Auth::user()->emp_id(),'par_delete'))
 										{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('edp_approval',$info->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>" return confirm('Wanna Delete?')")) }}
 									 @endif
@@ -281,6 +297,9 @@
 										</a>
 									 @endif
 								</span>
+								@else 
+								<span class="text-danger pull-right">SIA Approved</span>
+								@endif
 								</th>
 								
 						    </tr>        

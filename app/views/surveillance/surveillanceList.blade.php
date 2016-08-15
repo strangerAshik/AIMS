@@ -51,8 +51,8 @@
                                                 <th>No</th>
                                                 <th>SIA Number</th>
                                                 <th>Organization</th>
-                                                <th>Safety Concern(s)</th>
                                                 <th>Finding(s)</th>
+                                                <th>Safety Concern(s)</th>
                                                 <th>EDP</th>
                                                 <th>Status</th>
                                                 <th>View Details</th>
@@ -64,22 +64,23 @@
                                                 <td>{{++$num}}</td>
                                                 <td>{{$info->sia_number}}</td>
                                                 <td>{{$info->organization}}</td>
-                                                <td>
-                                                <?php $sNum=CommonFunction::saftyConsCount($info->sia_number) ?>
-                                                @if($sNum!=0)
-                                                    SC-{{$sNum}}
-                                                @else
-                                                    No SC Listed Yet
-                                                @endif
-
-                                                </td>
+                                                
                                                 <td>
                                                     <?php $fNum=CommonFunction::findingCount($info->sia_number);?>
                                                     @if($fNum!=0)
                                                     Finding-{{$fNum}}
                                                     @else
-                                                        No Finding Listed Yet
+                                                        No Finding
                                                     @endif
+
+                                                </td>
+                                                <td>
+                                                <?php $sNum=CommonFunction::saftyConsCount($info->sia_number) ?>
+                                                @if($sNum!=0)
+                                                    SC-{{$sNum}}
+                                                @else
+                                                    No SC 
+                                                @endif
 
                                                 </td>
                                                 <td>
@@ -87,7 +88,7 @@
                                                     @if($edpNum!=0)
                                                     EDP-{{$edpNum}}
                                                     @else
-                                                        No EDP Listed Yet
+                                                        No EDP
                                                     @endif
 
                                                 </td>

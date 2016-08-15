@@ -7,7 +7,7 @@
 <section class="content contentWidth">
  <div class="row" style="">
                         <!-- left column -->
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingPersonalInfo">
                             <!-- general form elements -->
                             <div class="box box-primary">
 							 <div class="box-header">
@@ -332,7 +332,7 @@
 <!--End Personnel-->
 <!--Start academic Education-->
 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingAcademicQualification">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Academic Qualification</h3>
@@ -559,7 +559,7 @@
 <!--End academic Education-->
 <!--Start Thesis Education-->
 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingThesis">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Thesis/Project/Internship/Dissertation  </h3>
@@ -736,7 +736,7 @@ $(document).ready(function(){
 <!--End Thesis Education-->
 <!--Start Pro_degree-->
 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingProfessionalDeg">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Professional Degree </h3>
@@ -901,7 +901,7 @@ $(document).ready(function(){
 <!--End Pro_degree-->
 <!--Start Training/workshop/ojt-->
 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingTraining">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Training/ Workshop & Seminar / OJT  </h3>
@@ -1263,7 +1263,7 @@ $(document).ready(function(){
 <!--End Training/workshop/ojt-->
 <!--Start Language-->
 <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="approvalPendingLanguage">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Language</h3>
@@ -1413,7 +1413,7 @@ $(document).ready(function(){
 <!--End Language-->
 <!--Start Technical licence-->
 <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="approvalPendingTechnicalLicence">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Technical License Record</h3>
@@ -1605,7 +1605,7 @@ $(document).ready(function(){
 <!--End Technical licence-->
 <!--Start aircraft Qualification-->
 <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="approvalPendingAircraftQuali">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">CAA Employee Aircraft Qualification</h3>
@@ -1856,7 +1856,7 @@ $(document).ready(function(){
 <!--Start Employment history-->
  
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingEmployment">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Employment History </h3>
@@ -2133,7 +2133,7 @@ $(document).ready(function(){
 
 <!--Start Reference Qualification-->
 <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="approvalPendingReference">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Reference</h3>
@@ -2318,7 +2318,7 @@ $(document).ready(function(){
 <!--End Reference Qualification-->
 <!--Start Emp Verification-->
 <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="approvalPendingAssignment">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Employee Assignment</h3>
@@ -2334,7 +2334,7 @@ $(document).ready(function(){
                         <tbody>
 						{{Employee::notApproved($veri)}}	
                             <tr>
-                                <th colspan='2'>Employee Assignment #{{++$ev}}
+                                <th colspan='2' id="task_{{$veri->id}}">Employee Assignment #{{++$ev}}
                                 <span class='hidden-print'>
 								@if('true'==CommonFunction::hasPermission('emp_admin_list',Auth::user()->emp_id(),'par_delete'))    
                                
@@ -2539,7 +2539,7 @@ $(document).ready(function(){
 <!--End Emp Verification-->
 <!--Start Other publications-->
 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingPublication">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Publication</h3>
@@ -2653,7 +2653,7 @@ $(document).ready(function(){
 <!--End Other publications-->
 <!--Start Other Membership-->
  <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="approvalPendingMembership">
 							<div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title">Membership</h3>

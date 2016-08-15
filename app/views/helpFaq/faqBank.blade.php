@@ -14,11 +14,11 @@
                                     <h3 class="box-title">FAQ Bank</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                    <table id="example1" class="table table-bordered table-striped table-responsive">
+                                    <table id="faqhelp" class="table table-hover table-bordered  table-responsive">
                                         <thead>
                                             <tr>
                                                
-                                                <th class="col-md-1">Date</th>
+                                                <th class="col-md-2">Date</th>
                                                 <th class="col-md-2">Category</th>
                                                 <th id="question">Questions</th>
                                                 <th >Name</th>
@@ -56,16 +56,7 @@
                                       @endforeach
                                            
                                         </tbody>
-                                       <tfoot>
-                                            <tr>
-                                               
-                                                <th class="col-md-1">Date</th>
-                                                <th class="col-md-2">Category</th>
-                                                <th>Questions</th>
-                                                <th>Status</th>
-                                                <th class="col-md-1">Details</th>
-                                            </tr>
-                                        </tfoot>
+                                    
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->

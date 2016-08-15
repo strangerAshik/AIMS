@@ -4,9 +4,13 @@
 .inner a h4{color: #FFF}
 </style>
 <section class='content' >
-<div style='display:none'>
-{{$role = Auth::user()->Role();}}
-</div>
+<!--Instruction Start-->
+ <?php
+$module='dashboard_main';
+ $instructions=CommonFunction::getModuleInstructions($module);?>
+  @include('commonInstruction')
+  @yield('instruction')
+<!--End Instruction-->
 
     <div class="row" style='margin:0px 0px 0px 0px;;'>
                       
@@ -39,7 +43,7 @@
                             <!-- small box -->
 						<div class="small-box bg-blue  height" >
 							<div    class="inner">
-								<a  class="small-box-footer" href="{{'surveillance/main'}}"><h4 style='font-weight:bold; color:#fff; z-index:99999'>Surveillance, Inspection & Audit (SIA)</h4></a>
+								<a  class="small-box-footer" href="{{'surveillance/main'}}"><h4 style='font-weight:bold; color:#fff; z-index:99999'>Surveillance, Inspection & Audit (SIA) & RSC (CE-7,8)</h4></a>
 							</div>
 							<div class="icon">
                                 <a class="small-box-footer" href="{{'surveillance/main'}}">
@@ -96,7 +100,7 @@
 					@if('true'==CommonFunction::hasPermission('personnel_licensing',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-blue height">
+                            <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'>
                                     Personnel Licensing
@@ -113,22 +117,23 @@
                             </div>
                         </div><!-- ./col -->
 						@endif
-						@if('true'==CommonFunction::hasPermission('service_provider',Auth::user()->emp_id(),'access'))
+						@if('true'==CommonFunction::hasPermission('service_provider_certification',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
-                            <div class="small-box bg-aqua height">
+                            <div class="small-box bg-blue height">
                                 <div class="inner">
                                     <h4 class='title'>
-                                         Service Provider Certification
+                                         Certification (CE-6)
                                     </h4>
                                     
                                 </div>
                                 <div class="icon">
                                     <i class="icon ion-pricetags"></i>
                                 </div>
-                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
-                                  <!--   More info --> <i class="fa fa-arrow-circle-right"></i>
+                                <a class="small-box-footer" href="{{'certification/certificationMain'}}">
+                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
+                                 
                             </div>
                         </div><!-- ./col -->
 						@endif
@@ -160,7 +165,7 @@
                                 <div class="inner">
                                 <a href="{{URL::to('itsOjt/main');}}">
                                     <h4 class='title'>
-                                       ITS
+                                       ITS (CE-4)
                                     </h4>
                                 </a>
                                    
@@ -176,13 +181,34 @@
                         </div><!-- ./col -->
                         @endif
                     
-					@if('true'==CommonFunction::hasPermission('ans_aga_aerodrome_inspection ',Auth::user()->emp_id(),'access'))
+                    @if('true'==CommonFunction::hasPermission('ans_aga_aerodrome_inspection ',Auth::user()->emp_id(),'access'))
                         <div class="col-lg-3 col-xs-6 col-md-3 ">
                             <!-- small box -->
                             <div class="small-box bg-aqua height">
                                 <div class="inner">
                                     <h4 class='title'> 
                                         ANS/AGA/Aerodrome Inspection
+                                    </h4>
+                                    <p>
+                                        
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-bag"></i>
+                                </div>
+                                <a class="small-box-footer" href="#" onclick="alert('Sorry!! This Module is Under Development.')">
+                                    <!-- More info --> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div><!-- ./col -->
+                        @endif    
+					@if('true'==CommonFunction::hasPermission('ans_aga_aerodrome_inspection ',Auth::user()->emp_id(),'access'))
+                        <div class="col-lg-3 col-xs-6 col-md-3 ">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua height">
+                                <div class="inner">
+                                    <h4 class='title'> 
+                                        State Letters
                                     </h4>
                                     <p>
                                         
@@ -262,7 +288,7 @@
                                 <div class="inner">
                                  <a class="small-box-footer" href="{{URL::to('library/main');}}">
                                     <h4 class='title'>
-                                         E-Library
+                                         E-Library (CE-1,2,3,5)
                                     </h4>
                                 </a>
                                     
@@ -337,7 +363,7 @@
                         </div><!-- ./col -->
                     @endif
                      @if('true'==CommonFunction::hasPermission('report ',Auth::user()->emp_id(),'access'))
-                            <div class="col-lg-3 col-xs-6 col-md-3 ">
+                            <div class="col-lg-3 col-xs-6 col-md-3 disNon">
                                 <!-- small box -->
                                 <div class="small-box bg-blue  height">
                                     <div class="inner">
@@ -367,7 +393,7 @@
                                 <div class="inner">
                                  <a class="small-box-footer" href="{{'voluntary/main'}}">
                                     <h4 class='title'>
-                                        Voluntary  Reporting
+                                        Voluntary & Mandatory Reporting
                                     </h4>   
                                 </a>                                 
                                 </div>

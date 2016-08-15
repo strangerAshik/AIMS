@@ -16,15 +16,18 @@
 					{{Form::hidden('id',$primary->id)}}
 					{{Form::hidden('old_aircraft_MM',$primary->aircraft_MM)}}
 					{{Form::hidden('aircraft_MSN',$primary->aircraft_MSN)}}
-					<div class="form-group required">
+				
+                    <div class="form-group ">
                                            
-											{{Form::label('assigned_inspector', 'Assigned Inspector ', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('assigned_inspector', 'Assigned Inspector', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
+											
 											<?php $inspector=CommonFunction::getInspectorList();?>
-											{{Form::select('assigned_inspector', $inspector,$primary->assigned_inspector,array('class'=>'form-control'))}}
+											{{Form::select('assigned_inspector[]', $inspector,unserialize($primary->assigned_inspector),array('class'=>'','multiple'=>'multiple','id'=>'assigned_inspector',))}}
 											</div>
 											
-                    </div><div class="form-group required">
+                    </div>
+                    <div class="form-group required">
                                            
 											{{Form::label('serial_number', 'Serial Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -202,7 +205,8 @@
 <script>
 $(document).ready(function(){
 $('#organizations').selectize();	
-$('#state_registration').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});	
+$('#state_registration').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+$('#assigned_inspector').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});	
 
 });
 </script>

@@ -45,7 +45,7 @@
                                 <td class="col-md-3">									
 									Role
 								</td>
-                                <td>{{$info->role}}</td>
+                                <td>{{CommonFunction::roleName($info->role)}}</td>
                             </tr>
                             <tr>
                                 <td class="col-md-3">									

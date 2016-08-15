@@ -66,7 +66,7 @@
 											{{Form::label('doc_series', 'Series', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_series',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),'0',array('class'=>'form-control'))}}
+														{{Form::text('doc_series',' ', array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -76,7 +76,7 @@
 											{{Form::label('doc_edition', 'Edition', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_edition',array(''=>'--Select Series --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),'0',array('class'=>'form-control'))}}
+													{{Form::text('doc_edition',' ', array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -86,7 +86,7 @@
 											{{Form::label('doc_part', 'Part', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_part',array(''=>'--Select Part --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),'0',array('class'=>'form-control'))}}
+													{{Form::text('doc_part',' ', array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -96,7 +96,7 @@
 											{{Form::label('doc_volume', 'Volume', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_volume',array(''=>'--Select Volume --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),'0',array('class'=>'form-control'))}}
+													{{Form::text('doc_volume',' ', array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											
@@ -106,7 +106,8 @@
 											{{Form::label('doc_amendment', 'Amendment', array('class' => 'col-xs-4 control-label'))}}
 											
 												<div class="col-xs-6">
-														{{Form::select('doc_amendment',array(''=>'--Select Amendment --','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'),'0',array('class'=>'form-control'))}}
+													
+														{{Form::text('doc_amendment',' ', array('class' => 'form-control','placeholder'=>''))}}
 												</div>													
 													
 											

@@ -44,7 +44,7 @@
                                     <h6 class='title'>
                                       {{$info->name}}
                                     </h6>
-                                    Role:{{$info->role}}</br>
+                                    Role:{{CommonFunction::roleName($info->role)}}</br>
                                     Emp Id:{{$info->emp_id}}</br>
                                     Org:{{$info->organization}}</br>
                                     Email:{{$info->email}}

@@ -102,6 +102,7 @@ class voluntaryReportingController extends \BaseController {
 					array(
 							'email'=>Input::get('email'),
 							'title'=>Input::get('title'),
+							'category'=>Input::get('category'),
 							'report'=>Input::get('report'),
 							'file'=>$file,
 

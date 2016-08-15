@@ -1,4 +1,4 @@
-@extends('layoutMT')
+@extends('layoutTable')
 @section('content')
 <style type="text/css">
 	.modal-backdrop {
@@ -23,15 +23,17 @@
 								<div style="display:none">
 									{{$num=0;}}
 								</div>
-                                    <table id="example" class="table table-bordered table-striped">
+                                    <table id="example1" class="table table-bordered table-striped">
 										<thead>
 											<tr>
 												<th>No.</th>
 												<th>Label</th>
 												<th>Module Name</th>
 												<th>Update</th>
-												<th>Permanent Delete</th>
-												<th>Soft Delete</th>												
+												<th>P.Delete</th>
+												<th>S.Delete</th>	
+												<th>Report</th>
+												<th>Instruction</th>												
 											</tr>
 										</thead>
 										
@@ -48,10 +50,16 @@
 		                                    </a>
 												</td>
 												<td class='text-centre'>
-													{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('module_names',$module->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+													{{ HTML::linkAction('AircraftController@permanentDelete', 'P.D',array('module_names',$module->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>"return confirm('Wanna Delete?')")) }}
 												</td>
 												<td class='text-centre'>
-													{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('module_names',$module->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;')) }}
+													{{ HTML::linkAction('AircraftController@softDelete', 'S.D',array('module_names',$module->id), array('class' => 'glyphicon glyphicon-trash','style'=>'color:red;float:right;padding:5px;','onclick'=>"return confirm('Wanna Delete?')")) }}
+												</td>
+												<td>
+													<a href="{{URL::to('moduleRepors/'.$module->id)}}">Details</a>
+												</td>
+												<td>
+													<a href="{{URL::to('moduleInstruction/'.$module->id)}}">Details</a>
 												</td>
 											</tr>
 										@endforeach

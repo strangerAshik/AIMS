@@ -21,6 +21,22 @@
 											</div>
 											
                     </div>
+					<div class="form-group">
+                                           
+											{{Form::label('related_sia', 'Related Pevious SIA', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('related_sia',' ', array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                    </div>
+					<div class="form-group">
+                                           
+											{{Form::label('certificate_number', 'Certificate Number', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											{{Form::text('certificate_number',' ', array('class' => 'form-control','placeholder'=>''))}}
+											</div>
+											
+                    </div>
                      
                     <div class="form-group required">
                                            
@@ -36,6 +52,26 @@
 											</div>
 											
                     </div>
+                   
+					<div class="form-group required">
+                                        
+											{{Form::label('sia_by_area ', 'SIA Area ', array('class' => 'col-xs-4 control-label'))}}
+											<div class="col-xs-6">
+											<?php $options=CommonFunction::getOptions('SIA_By_Area');?>
+											
+											
+
+											<select required="" id="sia_by_area_e"  multiple name="sia_by_area[]" class="demo-default" >
+												<option value="">Select Critical Area</option>
+												@foreach($options as $option)
+												<option  value="{{$option}}">{{$option}}</option>
+												@endforeach
+											</select>
+																						
+											</div>
+											
+                    </div>
+
                     <div class="form-group required">
                                            
 											{{Form::label('event','Event On', array('class' => 'col-xs-4 control-label'))}}
@@ -159,6 +195,7 @@
 	//$('#org_name').selectize();
 	$('#event').selectize();
 	$('#organizations').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
+	$('#sia_by_area_e').selectize({ create: true, sortField: {field: 'text',direction: 'asc'}});
 	//multiple selection from options
 var eventHandler = function(name) {
 					return function() {
@@ -343,6 +380,7 @@ var eventHandler = function(name) {
             <div class="modal-body"> 
                               
 				{{Form::open(array('url' => 'surveillance/saveAction', 'method' => 'post',  'class'=>'form-horizontal','data-toggle'=>'validator', 'role'=>'form','files'=>true))}}
+
 					{{Form::hidden('PageName',$PageName)}}
 
 					@if($PageName=='Single Program')
@@ -384,7 +422,7 @@ var eventHandler = function(name) {
 
                   
 
-                    <div class="form-group  ">
+                    <div class="form-group  required">
                                         
 						{{Form::label('objective', 'Objective ', array('class' => 'col-xs-4 control-label',"title"=>"Objective Defecation"))}}
 
@@ -392,12 +430,12 @@ var eventHandler = function(name) {
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::getOptions('SIA_objective');?>
 											
-											{{ Form::select('objective',$options,null, ['class' => 'demo-default','id'=>'objective','placeholder'=>'Select objective']) }}
+											{{ Form::select('objective',$options,null, ['class' => 'demo-default','id'=>'objective','placeholder'=>'Select objective','required'=>'']) }}
 
 											</div>
 											
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group disNon">
                                            
 											{{Form::label('iats_code','ISWC', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
@@ -507,7 +545,8 @@ No.', array('class' => 'col-xs-4 control-label'))}}
                                         
 											{{Form::label('pel_num', 'PEL Number', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
-											<?php $pels=array();//CommonFunction::pelList(); ?>
+											<?php $pels=array();//CommonFunction::pelList(); 
+											?>
 											<select id="pel_num"  multiple name="pel_numbers[]" class="demo-default" >
 												<option value="">Select Team Lead First...</option>
 												@foreach($pels as $pel)
@@ -527,13 +566,13 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 											</div>
 											
                     </div>
-                  <div class="form-group ">
+                  <div class="form-group required">
                                         
 											{{Form::label('critical_element ', 'SIA by Critical Elements ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::getOptions('SIA_Critical_Element');?>
 											
-											<select id="critical_element_sia"  multiple name="critical_element[]" class="demo-default" >
+											<select id="critical_element_sia"  multiple name="critical_element[]" class="demo-default" required="" >
 												<option value="">Select Critical Element</option>
 												@foreach($options as $option)
 												<option  value="{{$option}}">{{$option}}</option>
@@ -542,14 +581,11 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 											</div>
 											
                     </div>
-					<div class="form-group ">
+					<div class="form-group disNon">
                                         
 											{{Form::label('sia_by_area ', 'SIA by Critical Area ', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											<?php $options=CommonFunction::getOptions('SIA_By_Area');?>
-											
-											
-
 											<select id="sia_by_area_e"  multiple name="sia_by_area[]" class="demo-default" >
 												<option value="">Select Critical Area</option>
 												@foreach($options as $option)
@@ -569,6 +605,18 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 										 
 										  <label> {{ Form::radio('has_finding', 'Yes') }} &nbsp  Yes</label>
 										 <label> {{ Form::radio('has_finding', 'No',true) }} &nbsp  No</label>
+										</div>
+										
+									</div>
+	                </div>
+	                 <div class="form-group ">
+	                                           
+												{{Form::label('has_saf_cons', 'Has Safety Concern?', array('class' => 'col-xs-4 control-label'))}}
+												
+	                                <div class="col-xs-6">
+										<div class="radio">										 
+										  <label> {{ Form::radio('has_safety_concern', 'Yes') }} &nbsp  Yes</label>
+										  <label> {{ Form::radio('has_safety_concern', 'No',true) }} &nbsp  No</label>
 										</div>
 										
 									</div>
@@ -594,16 +642,16 @@ No.', array('class' => 'col-xs-4 control-label'))}}
 										</div>										
 									</div>
 	                </div>
+	               
 	                <div class="form-group ">
 	                                           
-												{{Form::label('has_saf_cons', 'Has Safety Concern?', array('class' => 'col-xs-4 control-label'))}}
+									{{Form::label('file', 'ISWC File', array('class' => 'col-xs-4 control-label'))}}
 												
 	                                <div class="col-xs-6">
-										<div class="radio">										 
-										  <label> {{ Form::radio('has_safety_concern', 'Yes') }} &nbsp  Yes</label>
-										  <label> {{ Form::radio('has_safety_concern', 'No',true) }} &nbsp  No</label>
-										</div>
 										
+											{{Form::file('file[]',array("accept"=>"image/*,application/pdf",'class'=>'fileupload','multiple'=>'multiple'))}}
+
+											
 									</div>
 	                </div>
                  
@@ -920,7 +968,7 @@ var eventHandler = function(name) {
                   
                     <div class="form-group required">
                                            
-											{{Form::label('finding', 'Finding', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('finding', 'Finding Details', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('finding','', array('required'=>'','class' => 'form-control','placeholder'=>'',''=>'','size'=>'4x1'))}}
 											
@@ -931,7 +979,7 @@ var eventHandler = function(name) {
                     
 					 <div class="form-group required">
 	                                           
-												{{Form::label('date', 'Target Date', array('class' => 'col-xs-4 control-label'))}}
+												{{Form::label('date', 'Target Date for Resolution', array('class' => 'col-xs-4 control-label'))}}
 												
 														<div class="row">
 															<div class="col-xs-2">
@@ -1275,15 +1323,15 @@ var eventHandler = function(name) {
 											{{Form::label('revived_date', 'CAP Initiated On', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
-														{{Form::select('revived_date', $dates,'0',array('class'=>'form-control',''=>''))}}
+														{{Form::select('revived_date', $dates,date('d'),array('class'=>'form-control',''=>''))}}
 														</div>
 														<div class="col-xs-3">
-														{{Form::select('revived_month',$months,'0',array('class'=>'form-control',''=>''))}}
+														{{Form::select('revived_month',$months,date('F'),array('class'=>'form-control',''=>''))}}
 											
 															
 														</div>
 														<div class="col-xs-2">
-															{{Form::select('revived_year',$years,'0',array('class'=>'form-control',''=>''))}}
+															{{Form::select('revived_year',$years,date('Y'),array('class'=>'form-control',''=>''))}}
 														</div>
 											</div>
 											
@@ -1301,6 +1349,7 @@ var eventHandler = function(name) {
 											{{Form::label('regulation_mitigation', 'Resolution /Mitigation', array('class' => 'col-xs-4 control-label'))}}
 											<div class="col-xs-6">
 											{{Form::textarea('regulation_mitigation','', array('class' => 'form-control','placeholder'=>'','size'=>'4x1',''=>''))}}
+											<span style="color: red">Note: Must Provide After Completion of CAP</span>
 											</div>
 											
                     </div>
@@ -1308,18 +1357,18 @@ var eventHandler = function(name) {
 					
 					<div class="form-group ">
                                            
-											{{Form::label('regulation_mitigation_date', 'Resolution / Mitigation Date', array('class' => 'col-xs-4 control-label'))}}
+											{{Form::label('regulation_mitigation_date', 'Resolution / Mitigation Date (Projected/ Current)', array('class' => 'col-xs-4 control-label'))}}
 											<div class="row">
 														<div class="col-xs-2">
-														{{Form::select('regulation_mitigation_date', $dates,'0',array('class'=>'form-control',''=>''))}}
+														{{Form::select('regulation_mitigation_date', $dates,date('d'),array('class'=>'form-control',''=>''))}}
 														</div>
 														<div class="col-xs-3">
-														{{Form::select('regulation_mitigation_month',$months,'0',array('class'=>'form-control',''=>''))}}
+														{{Form::select('regulation_mitigation_month',$months,date('F'),array('class'=>'form-control',''=>''))}}
 											
 															
 														</div>
 														<div class="col-xs-2">
-															{{Form::select('regulation_mitigation_year',$years,'0',array('class'=>'form-control',''=>''))}}
+															{{Form::select('regulation_mitigation_year',$years,date('Y'),array('class'=>'form-control',''=>''))}}
 														</div>
 													</div>
 											

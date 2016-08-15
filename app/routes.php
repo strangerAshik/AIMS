@@ -85,7 +85,23 @@ Route::get('about',function(){
 
 
 Route::group(array('before'=>'auth'),function(){
+// Role routes
+	Route::get('roleManagment','SettingsController@roleManagment');
+	Route::post('saveRole','SettingsController@saveRole');
+	Route::post('editRole','SettingsController@editRole');
+	Route::get('roleNameDelete/{id}','SettingsController@roleNameDelete');
 
+	Route::get('rolePrivillage/{role_id}','SettingsController@rolePrivillage');
+	Route::post('saveRolePrivileges','SettingsController@saveRolePrivileges');
+	Route::post('editRolePrivileges','SettingsController@editRolePrivileges');
+
+	Route::get('removeIndividualPrivilegeArea/{id}','SettingsController@removeIndividualPrivilegeArea');
+
+	Route::get('privilageUpdateToAllOfThisRole/{role_id}','SettingsController@privilageUpdateToAllOfThisRole');
+
+	Route::get('rolePrivillageDetails/{role_id}/{section_id}','SettingsController@rolePrivillageDetails');
+	Route::post('updatePrivilegeAreaPermission','SettingsController@updatePrivilegeAreaPermission');
+//End role toutes
 	Route::get('settings','SettingsController@index');
 
 	Route::get('logout','SettingsController@logout');
@@ -93,12 +109,18 @@ Route::group(array('before'=>'auth'),function(){
 	Route::get('viewUsers','SettingsController@viewUsers');
 
 	Route::get('singleUser/{emp_id}','SettingsController@singleUser');
-
+	//Module start
 	Route::get('viewModule','SettingsController@viewModule');
-
+	Route::get('moduleInstruction/{id}','SettingsController@moduleInstruction');
+	Route::get('moduleInstructionManagment/{moduleName}','SettingsController@moduleInstructionManagment');
+	Route::get('moduleRepors/{id}','SettingsController@moduleRepors');
+	Route::get('moduleReporManage/{module_name}','SettingsController@moduleReporManage');
+	
 	Route::post('saveModule','SettingsController@saveModule');
-
 	Route::post('updateModule','SettingsController@updateModule');
+	Route::post('saveModuleInstruction','SettingsController@saveModuleInstruction');
+	Route::post('saveModuleReports','SettingsController@saveModuleReports');
+	//Module start End 
 
 	Route::post('newUser/save','SettingsController@saveUser');
 
@@ -249,10 +271,26 @@ Route::group(array('prefix' => 'aircraft','before'=>'auth'),function(){
 	//permanent delete 
 
 	Route::get('permanentDelete/{table}/{id}','AircraftController@permanentDelete');
+	//Central Search 
+	Route::get('summary','AircraftController@summary');
+	//notification
+	Route::get('notification','AircraftController@notification');
 	
 	//report
 	Route::get('report','AircraftController@report');
 	Route::get('reportByDateToDate','AircraftController@reportByDateToDate');
+//*************Aircraft Notification******************* 
+	Route::get('primaryAprovalWaiting','AircraftController@primaryAprovalWaiting');
+	Route::get('tcAprovalWaiting','AircraftController@tcAprovalWaiting');
+	Route::get('stcAprovalWaiting','AircraftController@stcAprovalWaiting');
+	Route::get('exemptionAprovalWaiting','AircraftController@exemptionAprovalWaiting');
+	Route::get('registrationAprovalWaiting','AircraftController@registrationAprovalWaiting');
+	Route::get('airworthinessAprovalWaiting','AircraftController@airworthinessAprovalWaiting');
+	Route::get('caaAprovalWaiting','AircraftController@caaAprovalWaiting');
+	Route::get('ownerAprovalWaiting','AircraftController@ownerAprovalWaiting');
+	Route::get('lesseeAprovalWaiting','AircraftController@lesseeAprovalWaiting');
+	Route::get('insurerAprovalWaiting','AircraftController@insurerAprovalWaiting');
+	Route::get('equipmentReviewAprovalWaiting','AircraftController@equipmentReviewAprovalWaiting');
 
 });
 
@@ -261,6 +299,22 @@ Route::group(array('prefix' => 'aircraft','before'=>'auth'),function(){
 Route::group(array('prefix' => 'qualification','before'=>'auth'), function()
 
 {
+
+	Route::get('notification','QualificationController@notification');
+	Route::get('approvalPendingPersonalInfo','QualificationController@approvalPendingPersonalInfo');
+	Route::get('approvalPendingAcademicQualification','QualificationController@approvalPendingAcademicQualification');
+	Route::get('approvalPendingThesis','QualificationController@approvalPendingThesis');
+	Route::get('approvalPendingEmployment','QualificationController@approvalPendingEmployment');
+	Route::get('approvalPendingProfessionalDeg','QualificationController@approvalPendingProfessionalDeg');
+	Route::get('approvalPendingTraining','QualificationController@approvalPendingTraining');
+	Route::get('approvalPendingLanguage','QualificationController@approvalPendingLanguage');
+	Route::get('approvalPendingMembership','QualificationController@approvalPendingMembership');
+	Route::get('approvalPendingPublication','QualificationController@approvalPendingPublication');
+	Route::get('approvalPendingTechnicalLicence','QualificationController@approvalPendingTechnicalLicence');
+	Route::get('approvalPendingAircraftQuali','QualificationController@approvalPendingAircraftQuali');
+	Route::get('approvalPendingReference','QualificationController@approvalPendingReference');
+	Route::get('approvalPendingAssignment','QualificationController@approvalPendingAssignment');
+
 
 	Route::get('employees','QualificationController@employees');
 
@@ -394,6 +448,9 @@ Route::group(array('prefix' => 'qualification','before'=>'auth'), function()
 	//report
 	Route::get('report','QualificationController@report');
 	Route::get('reportByDateToDate','QualificationController@reportByDateToDate');
+
+	//emp summary 
+	Route::get('summary','QualificationController@summary');
 
 
 });
@@ -705,16 +762,37 @@ Route::group(array('prefix'=>'certification','before'=>'auth'),function(){
 	Route::get('followup/{cerNo}','CertificationController@followup');
 	//all phasecs
 	Route::get('allPhases','CertificationController@allPhases');
-	Route::get('phase1','CertificationController@phase1');
+	Route::get('phaseDetails/{certificate_id}/{category}','CertificationController@phaseDetails');
+	Route::get('eventDetails/{certificate_id}/{event_id}','CertificationController@eventDetails');
 	Route::get('timelines','CertificationController@timelines');
+	Route::post('saveEventRecord','CertificationController@saveEventRecord');
+
+	Route::get('formDelete/{certiFormInputId}','CertificationController@formDelete');
+
+	Route::post('saveRecordFinding','CertificationController@saveRecordFinding');
+	Route::post('updateStatus','CertificationController@updateStatus');
 
 	//Admin
 	Route::get('addPhase','CertificationController@addPhase');
+	Route::post('savePhase','CertificationController@savePhase');
 	Route::get('phase/{phaseId}','CertificationController@phase');
 	Route::get('timeline/{phaseId}','CertificationController@timeline');
+	Route::post('saveTimeline','CertificationController@saveTimeline');
+
 	Route::get('document/{phaseId}','CertificationController@document');
+	Route::post('saveForm','CertificationController@saveForm');
+
 	Route::get('documentField/{phaseId}/{docId}','CertificationController@documentField');
+	Route::post('saveFormField','CertificationController@saveFormField');
+
 	Route::get('documentFieldOption/{phaseId}/{docId}/{optionId}','CertificationController@documentFieldOption');
+	Route::post('saveOption','CertificationController@saveOption');
+		//
+	Route::post('saveFormValue','CertificationController@saveFormValue');
+	
+	Route::post('saveCertificationInit','CertificationController@saveCertificationInit');
+	
+	Route::post('saveNewDuration','CertificationController@saveNewDuration');
 
 });
 
@@ -758,6 +836,8 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 	Route::get('checkList','SurveillanceController@checkList');
 
 	Route::get('report','SurveillanceController@report');
+	Route::get('reportChart/{fileName}/{active}','SurveillanceController@reportChart');
+
 	Route::get('reportByDateToDate','SurveillanceController@reportByDateToDate');
 
 	Route::get('singleProgram/{sia_number}','SurveillanceController@singleProgram');
@@ -804,9 +884,11 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 	Route::get('executionDateExceed','SurveillanceController@executionDateExceed');
 	Route::get('findingTargetTimeExceed','SurveillanceController@findingTargetTimeExceed');
 	Route::get('scTargetTimeExceed','SurveillanceController@scTargetTimeExceed');
+	Route::get('scCorrPendingAproval','SurveillanceController@scCorrPendingAproval');
 	Route::get('siaAprovalWaiting','SurveillanceController@siaAprovalWaiting');
 	Route::get('scAprovalWaiting','SurveillanceController@scAprovalWaiting');
 	Route::get('edpAprovalWaiting','SurveillanceController@edpAprovalWaiting');
+	Route::get('edpPendingLegalOpinion','SurveillanceController@edpPendingLegalOpinion');
 		//	20 Feb 2016
 	Route::get('pendingSmsApproval','SurveillanceController@pendingSmsApproval');
 	Route::get('pendingFindingCorrectiveActionList','SurveillanceController@pendingFindingCorrectiveActionList');
@@ -818,6 +900,7 @@ Route::group(array('prefix'=>'surveillance','before'=>'auth'),function(){
 	
 
 });
+Route::get('reportChart/{fileName}/{active}','SurveillanceController@reportChart');
 
 Route::group(array('prefix'=>'edp','before'=>'auth'),function(){
 
@@ -1068,8 +1151,9 @@ Route::group(array('prefix'=>'usoap','before'=>'auth'),function(){
 Route::group(array('prefix' => 'report','before'=>'auth'), function()
 {
 	//report
+	Route::get('reportByModuel/{moduleName}','reportController@reportByModuel');
 	Route::get('report','reportController@report');
-	Route::get('reportByDateToDate','reportController@reportByDateToDate');
+	Route::get('reportChartByDateToDate','reportController@reportChartByDateToDate');
 });
 
 Route::get('surveillance/findingNumbers/{siaNum}',function(){
@@ -1174,6 +1258,9 @@ Route::group(array('prefix'=>'itsOjt','before'=>'auth'),function(){
 	Route::get('centralSearch','itsOjtController@centralSearch');
 
 	Route::get('itsRecords','itsOjtController@itsRecords');
+	// report
+	Route::get('report','itsOjtController@report');
+	Route::get('itsOjtRecordProvider','itsOjtController@itsOjtRecordProvider');
 	
 	});
 
